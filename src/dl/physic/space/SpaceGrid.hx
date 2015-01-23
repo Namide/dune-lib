@@ -24,6 +24,8 @@ class Grid
 		this.maxTileX = maxTileX;
 		this.maxTileY = maxTileY;
 		
+		trace( minTileX, minTileY, maxTileX, maxTileY );
+		
 		_grid = [];
 		var x:Int = -1;
 		for ( i in minTileX...maxTileX )
@@ -176,10 +178,10 @@ class SpaceGrid
 		_pitchXExp = Calcul.exposantInt( _pitchX );
 		_pitchYExp = Calcul.exposantInt( _pitchY );
 		
-		this.xMin = (xMin == null) ? 0xFFFFFF : (Math.floor(xMin / _pitchX) * _pitchX);
-		this.xMax = (xMax == null) ? -0xFFFFFF : (Math.ceil(xMax / _pitchX) * _pitchX);
-		this.yMin = (yMin == null) ? 0xFFFFFF : (Math.floor(yMin / _pitchY) * _pitchY);
-		this.yMax = (yMax == null) ? -0xFFFFFF : (Math.ceil(yMax / _pitchY) * _pitchY);
+		this.xMin = (xMin == null) ? 0 : (Math.floor(xMin / _pitchX) * _pitchX);
+		this.xMax = (xMax == null) ? 0 : (Math.ceil(xMax / _pitchX) * _pitchX);
+		this.yMin = (yMin == null) ? 0 : (Math.floor(yMin / _pitchY) * _pitchY);
+		this.yMax = (yMax == null) ? 0 : (Math.ceil(yMax / _pitchY) * _pitchY);
 		
 		_active = [];
 		_activeSleeping = [];
@@ -193,6 +195,7 @@ class SpaceGrid
 	{
 		if ( _grid != null )
 			_grid.dispose();
+		
 		
 		_grid = new Grid( 	xMin >> _pitchXExp,
 							yMin >> _pitchYExp,
@@ -226,20 +229,8 @@ class SpaceGrid
 			init();
 		
 		for ( node in _passive )
-		{
-			//node.body.shape.updateAABB( node.body.entity.transform );
 			node.refresh( _pitchXExp, _pitchYExp, _grid );
-		}
 		
-		/*for ( node in _activeSleeping )
-		{
-			var t:Transform = node.body.entity.transform;
-			if ( node.lastX != t.x || node.lastY != t.y )
-			{
-				_activeSleeping.remove( node );
-				_active.push( node );
-			}
-		}*/
 		wakeUp();
 		
 		for ( node in _active )
@@ -288,38 +279,35 @@ class SpaceGrid
 		var node:Node = new Node( body, insomniac );
 		node.init( _pitchX, _pitchY, _grid );
 		
-		if ( body.type & BodyType.passive == BodyType.passive )
+		if ( autoLimits )
 		{
-			if ( autoLimits )
-			{
-				var sh = body.shape;
-				if ( sh.aabbXMin < xMin ) {
-					xMin = Math.ceil(sh.aabbXMin);
-					_grid.outdated = true;
-				}
-				
-				if ( sh.aabbYMin < yMin ) {
-					yMin = Math.ceil(sh.aabbYMin);
-					_grid.outdated = true;
-				}
-					
-				if ( sh.aabbXMax > xMax ) {
-					xMax = Math.floor(sh.aabbXMax);
-					_grid.outdated = true;
-				}
-					
-				if ( sh.aabbYMax > yMax ) {
-					yMax = Math.floor(sh.aabbYMax);
-					_grid.outdated = true;
-				}
+			var sh = body.shape;
+			if ( sh.aabbXMin < xMin ) {
+				xMin = Math.floor(sh.aabbXMin / _pitchX) * _pitchX;
+				_grid.outdated = true;
 			}
-			_passive.push( node );
+			
+			if ( sh.aabbYMin < yMin ) {
+				yMin = Math.floor(sh.aabbYMin / _pitchY) * _pitchY;
+				_grid.outdated = true;
+			}
+				
+			if ( sh.aabbXMax > xMax ) {
+				xMax = Math.ceil(sh.aabbXMax / _pitchX) * _pitchX;
+				_grid.outdated = true;
+			}
+				
+			if ( sh.aabbYMax > yMax ) {
+				yMax = Math.ceil(sh.aabbYMax / _pitchY) * _pitchY;
+				_grid.outdated = true;
+			}
 		}
 		
+		if ( body.type & BodyType.passive == BodyType.passive )
+			_passive.push( node );
+		
 		if ( body.type & BodyType.active == BodyType.active )
-		{
 			_active.push( node );
-		}
 		
 		all.push( body );
 	}

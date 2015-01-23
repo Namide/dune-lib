@@ -132,4 +132,9 @@ class Shape
 		return ( d1 * d1 - d2 * d2 <= b.r * b.r );
 	}
 	
+	public function toString()
+	{
+		return "[Shape w:" + (aabbXMax-aabbXMin) + " h:" + (aabbYMax-aabbYMin) + "]";
+	}
+	
 }

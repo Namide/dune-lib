@@ -103,7 +103,7 @@ class Body
 	}
 	
 	public function toString() {
-		return "[Body" + shape +"]";
+		return "[Body x:" + shape.aabbXMin + " y:" + shape.aabbYMin + " " + shape +"]";
 	}
 	
 	

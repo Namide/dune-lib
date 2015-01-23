@@ -44,6 +44,7 @@ class Main
 		
 		trace( b1 );
 		trace( b2 );
+		trace( b1.shape.hitTest(b2.shape) );
 		
 		
 		trace( sg.hitTest() );
