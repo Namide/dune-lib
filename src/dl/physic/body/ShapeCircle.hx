@@ -1,11 +1,11 @@
 package dl.physic.body;
-import dl.physic.body.ShapePoint.ShapeType;
+import dl.physic.body.Shape.ShapeType;
 
 /**
  * ...
  * @author Namide
  */
-class ShapeCircle extends ShapePoint
+class ShapeCircle extends Shape
 {
 	public var r(default, default):Float;
 	
@@ -16,8 +16,10 @@ class ShapeCircle extends ShapePoint
 		r = 0.0;
 	}
 	
-	override public function updateAABB( x:Float, y:Float )
+	override public function updateAABB( x:Float, y:Float, fix:Bool )
 	{
+		move( x, y, fix );
+		
 		var rd = r + r;
 		aabbXMin = x;
 		aabbXMax = x + rd;

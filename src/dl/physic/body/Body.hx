@@ -65,7 +65,7 @@ class Body
 	/**
 	* Delimit the shape of this body
 	*/
-	public var shape(default, default):ShapePoint;
+	public var shape(default, default):Shape;
 	
 	/**
 	* Other body in contact with this one
@@ -86,23 +86,27 @@ class Body
 	
 	//public var insomniac(default, default):Bool = false;
 	
-	public function new( shape:ShapePoint ) 
+	public function new( shape:Shape ) 
 	{
 		type = 0 | BodyType.passive;
-		moved = false;
+		//moved = false;
 		this.shape = shape;
 		this.contacts = new BodyContact( this );
 	}
 	
-	public function toString()
-	{
+	public inline function updatePos( x:Float, y:Float, fix:Bool = true ) {
+		shape.updateAABB(x, y, fix);
+	}
+	
+	public inline function moved():Bool {
+		return shape.moved;
+	}
+	
+	public function toString() {
 		return "[Body" + shape +"]";
 	}
 	
-	public inline function updatePos( x:Float, y:Float, fix:Bool = true )
-	{
-		shape.updatePos(x, y, fix);
-	}
+	
 	
 	
 }

@@ -210,7 +210,7 @@ class SpaceGrid
 	{
 		for ( node in _activeSleeping )
 		{
-			if ( node.body.moved )
+			if ( node.body.moved() )
 			{
 				_activeSleeping.remove( node );
 				_active.push( node );
@@ -245,7 +245,7 @@ class SpaceGrid
 		for ( node in _active )
 		{
 			//var t:Transform = node.body.entity.transform;
-			if ( !node.insomniac && !node.body.moved )
+			if ( !node.insomniac && !node.body.moved() )
 			{
 				_active.remove( node );
 				_activeSleeping.push( node );
@@ -263,7 +263,7 @@ class SpaceGrid
 			var contacts:Array<Node> = _grid.getContacts( node );
 			for ( node2 in contacts )
 			{
-				if ( ShapePoint.hitTest( b.shape, node2.body.shape ) )
+				if ( b.shape.hitTest( node2.body.shape ) )
 				{
 					b.contacts.push( node2.body );
 					if ( !isAffected )
@@ -315,10 +315,12 @@ class SpaceGrid
 			}
 			_passive.push( node );
 		}
-		else
+		
+		if ( body.type & BodyType.active == BodyType.active )
 		{
 			_active.push( node );
 		}
+		
 		all.push( body );
 	}
 	
