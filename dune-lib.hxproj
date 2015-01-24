@@ -5,7 +5,7 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\dunelib.swf" />
-    <movie fps="30" />
+    <movie fps="12" />
     <movie width="800" />
     <movie height="600" />
     <movie version="11" />
@@ -22,7 +22,7 @@
     <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="dl.Main" />
+    <option mainClass="dl.StressTestSpaces" />
     <option enabledebug="True" />
     <option additional="" />
   </build>
@@ -33,6 +33,7 @@
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
     <compile path="src\dl\Main.hx" />
+    <compile path="src\dl\StressTestSpaces.hx" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>

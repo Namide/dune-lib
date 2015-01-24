@@ -3,7 +3,6 @@ import dl.math.Calcul;
 import dl.physic.body.Body;
 import dl.physic.body.ShapePoint;
 
-
 class Grid
 {
 	public var minTileX(default, null):Int;
@@ -23,8 +22,6 @@ class Grid
 		this.minTileY = minTileY;
 		this.maxTileX = maxTileX;
 		this.maxTileY = maxTileY;
-		
-		trace( minTileX, minTileY, maxTileX, maxTileY );
 		
 		_grid = [];
 		var x:Int = -1;
@@ -90,11 +87,13 @@ class Node
 	public var maxTileY(default, default):Int;
 	
 	public var insomniac:Bool = false;
+	public var inGrid:Bool;
 	
 	public function new( body:Body, insomniac:Bool )
 	{
 		this.body = body;
 		this.insomniac = insomniac;
+		inGrid = (body.type & BodyType.passive == BodyType.passive);
 	}
 	
 	public function init( pitchExpX:Int, pitchExpY:Int, grid:Grid )
@@ -109,6 +108,9 @@ class Node
 	
 	public function removeFromGrid( grid:Grid )
 	{
+		if ( !inGrid )
+			return;
+		
 		for ( i in minTileX...maxTileX )
 			for ( j in minTileY...maxTileY )
 				grid.remove( i, j, this );
@@ -126,13 +128,16 @@ class Node
 				nXMax != maxTileX ||
 				nYMax != maxTileY )
 		{
-			for ( i in minTileX...maxTileX )
-				for ( j in minTileY...maxTileY )
-					grid.remove( i, j, this );
-			
-			for ( i in nXMin...nXMax )
-				for ( j in nYMin...nYMax )
-					grid.push( i, j, this );
+			if ( inGrid )
+			{
+				for ( i in minTileX...maxTileX )
+					for ( j in minTileY...maxTileY )
+						grid.remove( i, j, this );
+				
+				for ( i in nXMin...nXMax )
+					for ( j in nYMin...nYMax )
+						grid.push( i, j, this );
+			}
 			
 			minTileX = nXMin;
 			minTileY = nYMin;
@@ -141,8 +146,6 @@ class Node
 		}
 	}
 }
-
-
 
 /**
  * ...
@@ -191,6 +194,11 @@ class SpaceGrid
 		init();
 	}
 	
+	public function toString():String
+	{
+		return "[SpaceGrid x:"+xMin+" y:"+yMin+" w:"+xMax+" h:"+yMax+"]";
+	}
+	
 	function init()
 	{
 		if ( _grid != null )
@@ -235,7 +243,6 @@ class SpaceGrid
 		
 		for ( node in _active )
 		{
-			//var t:Transform = node.body.entity.transform;
 			if ( !node.insomniac && !node.body.moved() )
 			{
 				_active.remove( node );
@@ -243,18 +250,16 @@ class SpaceGrid
 			}
 			
 			var b:Body = node.body;
-			/*node.lastX = b.entity.transform.x;
-			node.lastY = b.entity.transform.y;*/
-			
 			var isAffected:Bool = false;
 			b.contacts.clear();
-			//b.shape.updateAABB( b.entity.transform );
 			
 			node.refresh( _pitchXExp, _pitchYExp, _grid );
 			var contacts:Array<Node> = _grid.getContacts( node );
+			
 			for ( node2 in contacts )
 			{
-				if ( b.shape.hitTest( node2.body.shape ) )
+				if ( b.shape.hitTest( node2.body.shape ) &&
+					 b.contacts.list.indexOf( node2.body ) < 0 )
 				{
 					b.contacts.push( node2.body );
 					if ( !isAffected )
