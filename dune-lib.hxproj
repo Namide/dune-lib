@@ -22,7 +22,7 @@
     <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="dl.StressTestSpaces" />
+    <option mainClass="dl.samples.StressTestSpaces" />
     <option enabledebug="True" />
     <option additional="" />
   </build>
@@ -34,6 +34,7 @@
   <compileTargets>
     <compile path="src\dl\Main.hx" />
     <compile path="src\dl\StressTestSpaces.hx" />
+    <compile path="src\dl\samples\StressTestSpaces.hx" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>

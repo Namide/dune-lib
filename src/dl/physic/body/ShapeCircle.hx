@@ -1,4 +1,5 @@
 package dl.physic.body;
+import dl.physic.body.Shape;
 import dl.physic.body.Shape.ShapeType;
 
 /**
@@ -16,14 +17,26 @@ class ShapeCircle extends Shape
 		r = 0.0;
 	}
 	
-	override public function updateAABB( x:Float, y:Float, fix:Bool )
+	public override function updateAABB( x:Float, y:Float/*, fix:Bool*/ )
 	{
-		move( x, y, fix );
+		//move( x, y, fix );
 		
 		var rd = r + r;
 		aabbXMin = x;
 		aabbXMax = x + rd;
 		aabbYMin = x;
 		aabbYMax = y + rd;
+	}
+	
+	public override function clone():ShapeCircle 
+	{
+		var c = new ShapeCircle();
+		c.type = type;
+		c.aabbXMin = aabbXMin;
+		c.aabbXMax = aabbXMax;
+		c.aabbYMin = aabbYMin;
+		c.aabbYMax = aabbYMax;
+		c.r = r;
+		return c;
 	}
 }

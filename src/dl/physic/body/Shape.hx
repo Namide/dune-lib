@@ -27,20 +27,20 @@ abstract ShapeType(Int)
  */
 class Shape
 {
-	var _lastX:Float;
-	var _lastY:Float;
+	//var _lastX:Float;
+	//var _lastY:Float;
 	
 	public var aabbXMin(default, null):Float;
 	public var aabbXMax(default, null):Float;
 	public var aabbYMin(default, null):Float;
 	public var aabbYMax(default, null):Float;
 	
-	public var moved(default, null):Bool;
+	//public var moved(default, null):Bool;
 	public var type(default, null):ShapeType;
 	
-	public function new() { moved = true; }
+	public function new() { /*moved = true;*/ }
 	
-	function move(x:Float, y:Float, fix:Bool)
+	/*function move(x:Float, y:Float)
 	{
 		moved = (x != _lastX && y != _lastY);
 		
@@ -48,12 +48,25 @@ class Shape
 		{
 			_lastX = aabbXMin;
 			_lastY = aabbYMin;
-			aabbXMin = x;
-			aabbYMin = y;
-		}
+			
+		//}
+	}*/
+	
+	public function clone():Shape
+	{
+		var c = new Shape();
+		c.aabbXMin = aabbXMin;
+		c.aabbXMax = aabbXMax;
+		c.aabbYMin = aabbYMin;
+		c.aabbYMax = aabbYMax;
+		return c;
 	}
 	
-	public function updateAABB( x:Float, y:Float, fix:Bool ) { }
+	public function updateAABB( x:Float, y:Float )
+	{
+		aabbXMin = x;
+		aabbYMin = y;
+	}
 	
 	public static function getW( a:ShapePoint ):Float
 	{
@@ -134,7 +147,8 @@ class Shape
 	
 	public function toString()
 	{
-		return "[Shape w:" + (aabbXMax-aabbXMin) + " h:" + (aabbYMax-aabbYMin) + "]";
+		var t = (type == ShapeType.point)?"point":(type == ShapeType.circle)?"circle":(type == ShapeType.rect)?"rect":"";
+		return "[Shape " + t + " w:" + (aabbXMax - aabbXMin) + " h:" + (aabbYMax - aabbYMin) + "]";
 	}
 	
 }

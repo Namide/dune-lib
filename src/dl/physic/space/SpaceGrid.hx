@@ -118,6 +118,8 @@ class Node
 	
 	public function refresh( pitchExpX:Int, pitchExpY:Int, grid:Grid ):Void
 	{
+		body.updateAABB();
+		
 		var nXMin:Int = (Math.floor(body.shape.aabbXMin) >> pitchExpX);
 		var nYMin:Int = (Math.floor(body.shape.aabbYMin) >> pitchExpY);
 		var nXMax:Int = (Math.ceil(body.shape.aabbXMax) >> pitchExpX) + 1;
@@ -204,7 +206,6 @@ class SpaceGrid
 		if ( _grid != null )
 			_grid.dispose();
 		
-		
 		_grid = new Grid( 	xMin >> _pitchXExp,
 							yMin >> _pitchYExp,
 							xMax >> _pitchXExp,
@@ -217,11 +218,11 @@ class SpaceGrid
 			node.init( _pitchXExp, _pitchYExp, _grid );
 	}
 	
-	function wakeUp():Void
+	inline function wakeUp():Void
 	{
 		for ( node in _activeSleeping )
 		{
-			if ( node.body.moved() )
+			if ( node.body.moved )
 			{
 				_activeSleeping.remove( node );
 				_active.push( node );
@@ -243,7 +244,7 @@ class SpaceGrid
 		
 		for ( node in _active )
 		{
-			if ( !node.insomniac && !node.body.moved() )
+			if ( !node.insomniac && !node.body.moved )
 			{
 				_active.remove( node );
 				_activeSleeping.push( node );

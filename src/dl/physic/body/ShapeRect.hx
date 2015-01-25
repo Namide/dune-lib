@@ -19,10 +19,18 @@ class ShapeRect extends Shape
 		this.h = h;
 	}
 	
-	override public function updateAABB( x:Float, y:Float, fix:Bool )
+	public override function clone():ShapeRect
 	{
-		move( x, y, fix );
-		
+		var c = new ShapeRect( w, h );
+		c.aabbXMin = aabbXMin;
+		c.aabbXMax = aabbXMax;
+		c.aabbYMin = aabbYMin;
+		c.aabbYMax = aabbYMax;
+		return c;
+	}
+	
+	override public function updateAABB( x:Float, y:Float )
+	{
 		aabbXMin = x;
 		aabbXMax = x + w;
 		aabbYMin = y;

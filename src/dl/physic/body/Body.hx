@@ -17,12 +17,15 @@ abstract BodyType(Int)
 	/**
 	* You can jump from bottom over a platform
 	*/
-	var platform = 4;
+	var platformBottom = 4;
+	var platformTop = 8;
+	var platformLeft = 16;
+	var platformRight = 32;
 	
 	/**
 	* You can't cross it
 	*/
-	var wall = 8;
+	var wall = 64;
 	
 	/**
 	* You can climb it
@@ -33,12 +36,12 @@ abstract BodyType(Int)
 	* Collision is activated, but not physic.
 	* It's usable for life, ennemy, ammo...
 	*/
-	var item = 16;
+	var item = 128;
 	
 	/**
 	* Your solid reacts with passives bodies (platform, wall, ladder)
 	*/
-	var mover = 32;
+	var mover = 256;
 	
 	//public inline static var SOLID_TYPE_EATER:UInt = 32;
 	
@@ -66,6 +69,7 @@ class Body
 	* Delimit the shape of this body
 	*/
 	public var shape(default, default):Shape;
+	public var print(default, default):Shape;
 	
 	/**
 	* Other body in contact with this one
@@ -73,6 +77,10 @@ class Body
 	public var contacts(default, null):BodyContact;
 
 	public var type:BodyType;
+	
+	public var x(default, null):Float;
+	public var y(default, null):Float;
+	public var moved(default, null):Bool;
 	
 	/*public var x(default, null):Float;
 	public var y(default, null):Float;
@@ -91,16 +99,37 @@ class Body
 		type = 0 | BodyType.passive;
 		//moved = false;
 		this.shape = shape;
+		this.print = shape.clone();
 		this.contacts = new BodyContact( this );
 	}
 	
-	public inline function updatePos( x:Float, y:Float, fix:Bool = true ) {
-		shape.updateAABB(x, y, fix);
+	public inline function setPos( x:Float, y:Float )
+	{
+		var m = (x != this.x && y != this.y);
+		
+		if ( m )
+		{
+			this.x = x;
+			this.y = y;
+			moved = true;
+		}
 	}
 	
-	public inline function moved():Bool {
-		return shape.moved;
+	public function updateAABB()
+	{
+		if ( !moved )
+			return;
+			
+		var t = print;
+		print = shape;
+		t.updateAABB( x, y );
+		shape = t;
+		moved = false;
 	}
+	
+	/*public inline function moved():Bool {
+		return shape.moved;
+	}*/
 	
 	public function toString() {
 		return "[Body"+type+" x:" + shape.aabbXMin + " y:" + shape.aabbYMin + " " + shape +"]";

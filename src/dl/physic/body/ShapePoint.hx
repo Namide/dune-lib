@@ -14,9 +14,19 @@ class ShapePoint extends Shape
 		type = ShapeType.point;
 	}
 	
-	override public function updateAABB( x:Float, y:Float, fix:Bool )
+	public override function clone():ShapePoint
 	{
-		move( x, y, fix );
+		var c = new ShapePoint();
+		c.aabbXMin = aabbXMin;
+		c.aabbXMax = aabbXMax;
+		c.aabbYMin = aabbYMin;
+		c.aabbYMax = aabbYMax;
+		return c;
+	}
+	
+	override public function updateAABB( x:Float, y:Float )
+	{
+		//move( x, y, fix );
 		
 		aabbXMin =
 		aabbXMax = x;

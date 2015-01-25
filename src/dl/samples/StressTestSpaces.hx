@@ -1,4 +1,4 @@
-package dl;
+package dl.samples ;
 
 import dl.physic.body.Body;
 import dl.physic.body.ShapeRect;
@@ -32,7 +32,7 @@ class Data
 		d = 50 + Math.random() * 100;
 	} 
 }
- 
+
 class StressTestSpaces 
 {
 	var datas:Array<Data>;
@@ -44,9 +44,12 @@ class StressTestSpaces
 	var timesS:Array<Float>;
 	
 	var activeN:Int = 100;
-	var passiveN:Int = 1000;
+	var passiveN:Int = 2000;
 	
 	static var m:StressTestSpaces;
+	var print:Bool = true;
+	
+	var t:Float;
 	
 	static function main() 
 	{
@@ -64,14 +67,13 @@ class StressTestSpaces
 	
 	function init()
 	{
+		t = 0;
 		datas = [];
 		spaceG = new SpaceGrid( 32, 32, -1024, 1024, -1024, 1024 );
 		spaceS = new SpaceSimple();
 		sprite = new Sprite();
 		timesG = [];
 		timesS = [];
-		
-		
 		
 		for ( i in 0...activeN )
 		{
@@ -101,31 +103,33 @@ class StressTestSpaces
 		}
 		
 		sprite.addEventListener( Event.ENTER_FRAME, refresh );
-		
 	}
 	
 	inline function updatePos( d:Data )
 	{
 		var pt = new Point();
-		var t = haxe.Timer.stamp();
+		t += 1 / 60;//haxe.Timer.stamp();
 		
 		pt.x = d.p.x + d.d * Math.cos( d.t + t );
 		pt.y = d.p.y + d.d * Math.sin( d.t + t );
-		d.b.updatePos( pt.x, pt.y, true );
+		d.b.setPos( pt.x, pt.y );
+		//d.b.updateAABB();
 	}
 	
 	function refresh( d:Dynamic ):Void
 	{
 		// updates positions
 		for ( d in datas )
-		{
 			updatePos(d);
-		}
 		
 		// run test grid
 		var t = haxe.Timer.stamp();
 		var lg = spaceG.hitTest();
 		timesG.push( (haxe.Timer.stamp() - t)*1000 );
+		
+		// updates positions
+		for ( d in datas )
+			updatePos(d);
 		
 		// run test simple
 		t = haxe.Timer.stamp();
@@ -145,12 +149,14 @@ class StressTestSpaces
 		averageS /= timesS.length;
 		
 		// trace results
-		trace( " " + activeN + " actives ; " + passiveN + " passives) " );
-		trace( 'grid: ' + lg.length + " col in - " + Math.round(timesG[timesG.length-1] * 100) / 100 /*+ " average:" + Math.round( averageG * 100 ) / 100*/ + " ms" );
-		trace( 'simp: ' + ls.length + " col in - " + Math.round(timesS[timesS.length-1] * 100) / 100 /*+ " average:" + Math.round( averageS * 100 ) / 100*/ + " ms" );
-		trace( '---' );
+		if (print)
+		{
+			trace( " " + activeN + " actives ; " + passiveN + " passives) " );
+			trace( 'grid: ' + lg.length + " col in - " + Math.round(timesG[timesG.length-1] * 100) / 100 /*+ " average:" + Math.round( averageG * 100 ) / 100*/ + " ms" );
+			trace( 'simp: ' + ls.length + " col in - " + Math.round(timesS[timesS.length-1] * 100) / 100 /*+ " average:" + Math.round( averageS * 100 ) / 100*/ + " ms" );
+			trace( '---' );
+		}
+		
 	}
-	
-	
 	
 }

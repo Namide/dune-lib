@@ -28,11 +28,13 @@ class SpaceSimple
 		{
 			var af:Bool = false;
 			b.contacts.clear();
+			b.updateAABB();
 			//b.shape.updateAABB( b.entity.transform );
 			
 			for ( b2 in _passive )
 			{
 				//trace( b, b2 );
+				b2.updateAABB();
 				if ( 	b.shape.hitTest( b2.shape ) /*&&
 						b.contacts.list.indexOf( b2 ) < 0*/ )
 				{
