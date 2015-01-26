@@ -34,7 +34,10 @@ class SpaceSimple
 			for ( b2 in _passive )
 			{
 				//trace( b, b2 );
-				b2.updateAABB();
+				
+				if ( b2.physicType & BodyPhysicFlags.fix == 0 )
+					b2.updateAABB();
+				
 				if ( 	b.shape.hitTest( b2.shape ) /*&&
 						b.contacts.list.indexOf( b2 ) < 0*/ )
 				{
@@ -58,10 +61,15 @@ class SpaceSimple
 	 */
 	public function addBody( body:Body ):Void
 	{
-		if ( body.type == BodyType.passive )
+		if ( body.colliderType & BodyColliderFlags.passive == BodyColliderFlags.passive )
+		{
+			if ( body.colliderType & BodyPhysicFlags.fix == 0 )
+				body.updateAABB();
+			
 			_passive.push( body );
+		}
 		
-		if ( body.type == BodyType.active )
+		if ( body.colliderType & BodyColliderFlags.active == BodyColliderFlags.active )
 			_active.push( body );
 		
 		all.push( body );
@@ -74,10 +82,10 @@ class SpaceSimple
 	 */
 	public function removeBody( body:Body ):Void
 	{
-		if ( body.type == BodyType.passive )
+		if ( body.colliderType & BodyColliderFlags.passive == BodyColliderFlags.passive )
 			_passive.remove( body );
 		
-		if ( body.type == BodyType.active )
+		if ( body.colliderType & BodyColliderFlags.active == BodyColliderFlags.active )
 			_active.remove( body );
 		
 		all.remove( body );

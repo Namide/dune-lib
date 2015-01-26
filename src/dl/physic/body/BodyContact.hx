@@ -1,5 +1,5 @@
 package dl.physic.body ;
-import dl.physic.body.Body.BodyType;
+import dl.physic.body.Body.BodyColliderFlags;
 
 /**
  * ...
@@ -16,12 +16,12 @@ class BodyContact
 		list = [];
 	}
 	
-	public inline function hasType( type:BodyType ):Bool {
+	public inline function hasType( type:BodyColliderFlags ):Bool {
 		return hasTypeInA( type, list );
 	}
 	
-	public inline function getByType( type:BodyType ):Array<Body> {
-		return list.filter( function( cb:Body ):Bool { return cb.type & type == type; });
+	public inline function getByType( type:BodyColliderFlags ):Array<Body> {
+		return list.filter( function( cb:Body ):Bool { return cb.colliderType & type == type; });
 	}
 	
 	public inline function push( body:Body ):Void { list.push( body ); }
@@ -31,7 +31,7 @@ class BodyContact
 		untyped list.length = 0;
 	}
 
-	inline function hasTypeInA( type:BodyType, a:Array<Body> ):Bool {
-		return Lambda.exists( a, function(cp:Body):Bool { return cp.type & type == type; });
+	inline function hasTypeInA( type:BodyColliderFlags, a:Array<Body> ):Bool {
+		return Lambda.exists( a, function(cp:Body):Bool { return cp.colliderType & type == type; });
 	}
 }

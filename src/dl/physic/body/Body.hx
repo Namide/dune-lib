@@ -2,7 +2,7 @@ package dl.physic.body ;
 import dl.physic.body.ShapePoint;
 
 @:enum
-abstract BodyType(Int)
+abstract BodyColliderFlags(Int)
 {
 	/**
 	* This body don't test the collision but the actives bodies tests the collision with this one
@@ -38,26 +38,44 @@ abstract BodyType(Int)
 	*/
 	var item = 128;
 	
-	/**
-	* Your solid reacts with passives bodies (platform, wall, ladder)
-	*/
-	var mover = 256;
-	
-	//public inline static var SOLID_TYPE_EATER:UInt = 32;
-	
 	inline function new( i:Int ) { this = i; }
 	
 	@:from
-	public static function fromInt(i:Int):BodyType {
-		return new BodyType(i);
+	public static function fromInt(i:Int):BodyColliderFlags {
+		return new BodyColliderFlags(i);
 	}
 	
 	@:to
-	public function toUInt():Int {
+	public function toInt():Int {
 		return this;
 	}
 }
 
+@:enum
+abstract BodyPhysicFlags(Int)
+{
+	/**
+	 * Your body never move
+	 */
+	var fix = 1;
+	
+	/**
+	* Your solid reacts with passives bodies (platform, wall, ladder)
+	*/
+	var dependant = 2;
+	
+	inline function new( i:Int ) { this = i; }
+	
+	@:from
+	public static function fromInt(i:Int):BodyPhysicFlags {
+		return new BodyPhysicFlags(i);
+	}
+	
+	@:to
+	public function toInt():Int {
+		return this;
+	}
+}
 
 /**
  * ...
@@ -76,35 +94,34 @@ class Body
 	*/
 	public var contacts(default, null):BodyContact;
 
-	public var type:BodyType;
+	public var colliderType:BodyColliderFlags;
+	public var physicType:BodyPhysicFlags;
 	
 	public var x(default, null):Float;
 	public var y(default, null):Float;
 	public var moved(default, null):Bool;
 	
-	/*public var x(default, null):Float;
-	public var y(default, null):Float;
-	
-	public var lx(default, null):Float;
-	public var ly(default, null):Float;
-	
-	public var moved:Bool;*/
-	//var _lastPosX:Float;
-	//var _lastPosY:Float;
-	
-	//public var insomniac(default, default):Bool = false;
-	
-	public function new( shape:Shape ) 
+	public function new( shape:Shape, x:Float = 0, y:Float = 0 ) 
 	{
-		type = 0 | BodyType.passive;
-		//moved = false;
+		colliderType = 0 | BodyColliderFlags.passive;
 		this.shape = shape;
-		this.print = shape.clone();
 		this.contacts = new BodyContact( this );
+		
+		this.x = x;
+		this.y = y;
+		shape.updateAABB( x, y );
+		this.print = shape.clone();
 	}
 	
 	public inline function setPos( x:Float, y:Float )
 	{
+		#if (debug)
+		
+			if ( physicType & BodyPhysicFlags.fix != 0 )
+				throw "Can't move a fix body!";
+				
+		#end
+		
 		var m = (x != this.x && y != this.y);
 		
 		if ( m )
@@ -117,22 +134,26 @@ class Body
 	
 	public function updateAABB()
 	{
+		#if (debug)
+		
+			if ( physicType & BodyPhysicFlags.fix != 0 )
+				throw "Can't updateAABB() a fix body!";
+				
+		#end
+		
 		if ( !moved )
 			return;
 			
 		var t = print;
 		print = shape;
+		
 		t.updateAABB( x, y );
 		shape = t;
 		moved = false;
 	}
 	
-	/*public inline function moved():Bool {
-		return shape.moved;
-	}*/
-	
 	public function toString() {
-		return "[Body"+type+" x:" + shape.aabbXMin + " y:" + shape.aabbYMin + " " + shape +"]";
+		return "[Body"+colliderType+" x:" + x + " y:" + y + " " + shape +"]";
 	}
 	
 	

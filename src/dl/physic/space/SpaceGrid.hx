@@ -75,6 +75,22 @@ class Grid
 	{
 		_grid = null;
 	}
+	
+	#if(debug)
+	public function toString()
+	{
+		var s = "";
+		for ( c in _grid )
+		{
+			s += "\n";
+			for ( l in c )
+			{
+				s += " " + l.length + " ";
+			}
+		}
+		return s;
+	}
+	#end
 }
 
 class Node
@@ -93,7 +109,7 @@ class Node
 	{
 		this.body = body;
 		this.insomniac = insomniac;
-		inGrid = (body.type & BodyType.passive == BodyType.passive);
+		inGrid = body.colliderType & BodyColliderFlags.passive != 0;
 	}
 	
 	public function init( pitchExpX:Int, pitchExpY:Int, grid:Grid )
@@ -106,19 +122,18 @@ class Node
 		refresh( pitchExpX, pitchExpY, grid );
 	}
 	
-	public function removeFromGrid( grid:Grid )
+	public inline function removeFromGrid( grid:Grid )
 	{
-		if ( !inGrid )
-			return;
-		
-		for ( i in minTileX...maxTileX )
-			for ( j in minTileY...maxTileY )
-				grid.remove( i, j, this );
+		if ( inGrid )
+			for ( i in minTileX...maxTileX )
+				for ( j in minTileY...maxTileY )
+					grid.remove( i, j, this );
 	}
 	
 	public function refresh( pitchExpX:Int, pitchExpY:Int, grid:Grid ):Void
 	{
-		body.updateAABB();
+		if ( body.physicType & BodyPhysicFlags.fix == 0 )
+			body.updateAABB();
 		
 		var nXMin:Int = (Math.floor(body.shape.aabbXMin) >> pitchExpX);
 		var nYMin:Int = (Math.floor(body.shape.aabbYMin) >> pitchExpY);
@@ -130,6 +145,7 @@ class Node
 				nXMax != maxTileX ||
 				nYMax != maxTileY )
 		{
+			
 			if ( inGrid )
 			{
 				for ( i in minTileX...maxTileX )
@@ -147,6 +163,13 @@ class Node
 			maxTileY = nYMax;
 		}
 	}
+	
+	#if(debug)
+	public function toString()
+	{
+		return "[Node x:" + minTileX + " y:" + minTileY + " w:" + (maxTileX - minTileX) + " h:" + (maxTileY - minTileY) + " ]";
+	}
+	#end
 }
 
 /**
@@ -160,6 +183,7 @@ class SpaceGrid
 	var _active(default, null):Array<Node>;
 	var _activeSleeping(default, null):Array<Node>;
 	var _passive(default, null):Array<Node>;
+	var _passiveFixed(default, null):Array<Node>;
 	
 	var _pitchX:Int;
 	var _pitchY:Int;
@@ -191,18 +215,22 @@ class SpaceGrid
 		_active = [];
 		_activeSleeping = [];
 		_passive = [];
+		_passiveFixed = [];
 		all = new List<Body>();
 		
 		init();
 	}
 	
+	#if(debug)
 	public function toString():String
 	{
 		return "[SpaceGrid x:"+xMin+" y:"+yMin+" w:"+xMax+" h:"+yMax+"]";
 	}
+	#end
 	
 	function init()
 	{
+		
 		if ( _grid != null )
 			_grid.dispose();
 		
@@ -213,8 +241,14 @@ class SpaceGrid
 		
 		for ( node in _passive )
 			node.init( _pitchXExp, _pitchYExp, _grid );
+			
+		for ( node in _passiveFixed )
+			node.init( _pitchXExp, _pitchYExp, _grid );
 		
 		for ( node in _active )
+			node.init( _pitchXExp, _pitchYExp, _grid );
+			
+		for ( node in _activeSleeping )
 			node.init( _pitchXExp, _pitchYExp, _grid );
 	}
 	
@@ -242,6 +276,8 @@ class SpaceGrid
 		
 		wakeUp();
 		
+		//trace( _grid );
+		
 		for ( node in _active )
 		{
 			if ( !node.insomniac && !node.body.moved )
@@ -249,24 +285,26 @@ class SpaceGrid
 				_active.remove( node );
 				_activeSleeping.push( node );
 			}
-			
-			var b:Body = node.body;
-			var isAffected:Bool = false;
-			b.contacts.clear();
-			
-			node.refresh( _pitchXExp, _pitchYExp, _grid );
-			var contacts:Array<Node> = _grid.getContacts( node );
-			
-			for ( node2 in contacts )
+			else
 			{
-				if ( b.shape.hitTest( node2.body.shape ) &&
-					 b.contacts.list.indexOf( node2.body ) < 0 )
+				var b:Body = node.body;
+				var isAffected:Bool = false;
+				b.contacts.clear();
+				
+				node.refresh( _pitchXExp, _pitchYExp, _grid );
+				var contacts:Array<Node> = _grid.getContacts( node );
+				
+				for ( node2 in contacts )
 				{
-					b.contacts.push( node2.body );
-					if ( !isAffected )
+					if ( b.shape.hitTest( node2.body.shape ) &&
+						 b.contacts.list.indexOf( node2.body ) < 0 )
 					{
-						isAffected = true;
-						affected.push( b );
+						b.contacts.push( node2.body );
+						if ( !isAffected )
+						{
+							isAffected = true;
+							affected.push( b );
+						}
 					}
 				}
 			}
@@ -283,7 +321,7 @@ class SpaceGrid
 	public function addBody( body:Body, insomniac:Bool = false ):Void
 	{
 		var node:Node = new Node( body, insomniac );
-		node.init( _pitchX, _pitchY, _grid );
+		node.init( _pitchXExp, _pitchYExp, _grid );
 		
 		if ( autoLimits )
 		{
@@ -309,10 +347,15 @@ class SpaceGrid
 			}
 		}
 		
-		if ( body.type & BodyType.passive == BodyType.passive )
-			_passive.push( node );
+		if ( body.colliderType & BodyColliderFlags.passive != 0 )
+		{
+			if ( body.physicType & BodyPhysicFlags.fix != 0 )
+				_passiveFixed.push( node );
+			else
+				_passive.push( node );
+		}
 		
-		if ( body.type & BodyType.active == BodyType.active )
+		if ( body.colliderType & BodyColliderFlags.active != 0 )
 			_active.push( node );
 		
 		all.push( body );
@@ -326,11 +369,20 @@ class SpaceGrid
 	 */
 	public function removeBody( body:Body ):Void
 	{
-		if ( body.type & BodyType.passive == BodyType.passive )
+		if ( body.colliderType & BodyColliderFlags.passive == BodyColliderFlags.passive )
 		{
-			var node:Node = Lambda.find( _passive, function( n:Node ):Bool { return n.body == body; } );
-			node.removeFromGrid( _grid );
-			_passive.remove( node );
+			if ( body.physicType & BodyPhysicFlags.fix == BodyPhysicFlags.fix )
+			{
+				var node:Node = Lambda.find( _passiveFixed, function( n:Node ):Bool { return n.body == body; } );
+				node.removeFromGrid( _grid );
+				_passiveFixed.remove( node );
+			}
+			else
+			{
+				var node:Node = Lambda.find( _passive, function( n:Node ):Bool { return n.body == body; } );
+				node.removeFromGrid( _grid );
+				_passive.remove( node );
+			}
 		}
 		else
 		{
