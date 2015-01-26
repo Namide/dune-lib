@@ -64,6 +64,16 @@ abstract BodyPhysicFlags(Int)
 	*/
 	var dependant = 2;
 	
+	/**
+	 * Physic engine apply the velocity
+	 */
+	var velocity = 4;
+	
+	/**
+	 * Physic engine apply the gravity
+	 */
+	var gravity = 8;
+	
 	inline function new( i:Int ) { this = i; }
 	
 	@:from
@@ -99,6 +109,12 @@ class Body
 	
 	public var x(default, null):Float;
 	public var y(default, null):Float;
+	
+	public var vX(default, null):Float;
+	public var vY(default, null):Float;
+	
+	public var mass(default, null):Float;
+	
 	public var moved(default, null):Bool;
 	
 	public function new( shape:Shape, x:Float = 0, y:Float = 0 ) 
