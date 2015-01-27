@@ -127,19 +127,19 @@ class Body
 		this.y = y;
 		shape.updateAABB( x, y );
 		this.print = shape.clone();
+		moved = true;
 	}
 	
 	public inline function setPos( x:Float, y:Float )
 	{
 		#if (debug)
-		
+			
 			if ( physicType & BodyPhysicFlags.fix != 0 )
 				throw "Can't move a fix body!";
-				
+			
 		#end
 		
 		var m = (x != this.x && y != this.y);
-		
 		if ( m )
 		{
 			this.x = x;
@@ -154,12 +154,12 @@ class Body
 		
 			if ( physicType & BodyPhysicFlags.fix != 0 )
 				throw "Can't updateAABB() a fix body!";
-				
+			
 		#end
 		
 		if ( !moved )
 			return;
-			
+		
 		var t = print;
 		print = shape;
 		

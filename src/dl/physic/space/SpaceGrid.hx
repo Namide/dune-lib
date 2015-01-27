@@ -57,14 +57,15 @@ class Grid
 		return ( i >= minTileX && i < maxTileX && j >= minTileY && j < maxTileY ) ? _grid[i - minTileX][j - minTileY] : [];
 	}
 	
-	public function getContacts( n:Node ):Array<Node>
+	public inline function getContacts( n:Node ):Array<Node>
 	{
 		var c:Array<Node> = [n];
 		
 		for ( i in n.minTileX...n.maxTileX )
 			for ( j in n.minTileY...n.maxTileY )
 				for ( n2 in getNodes( i, j ) )
-					if ( !Lambda.has( c, n2 ) )
+					if ( 	!Lambda.has( c, n2 ) &&
+							n.body.shape.hitTest( n2.body.shape ) )
 						c.push( n2 );
 		
 		c.remove( n );
@@ -79,13 +80,20 @@ class Grid
 	#if(debug)
 	public function toString()
 	{
-		var s = "";
+		var s = "x:" + this.minTileX + " y:" + minTileY + " w:" + (maxTileX-minTileX) + " h:" + (maxTileY-minTileY);
 		for ( c in _grid )
 		{
-			s += "\n";
+			s += "\n|";
 			for ( l in c )
 			{
-				s += " " + l.length + " ";
+				var le = l.length;
+				
+				if ( le < 10 )
+					s += " " + le + " |";
+				else if ( le < 100 )
+					s += " " +  le + "|";
+				else
+					s += "" + le + "|";
 			}
 		}
 		return s;
@@ -102,13 +110,13 @@ class Node
 	public var maxTileX(default, default):Int;
 	public var maxTileY(default, default):Int;
 	
-	public var insomniac:Bool = false;
+	//public var insomniac:Bool = false;
 	public var inGrid:Bool;
 	
-	public function new( body:Body, insomniac:Bool )
+	public function new( body:Body/*, insomniac:Bool*/ )
 	{
 		this.body = body;
-		this.insomniac = insomniac;
+		//this.insomniac = insomniac;
 		inGrid = body.colliderType & BodyColliderFlags.passive != 0;
 	}
 	
@@ -181,7 +189,6 @@ class SpaceGrid
 	public var all(default, null):List<Body>;
 	
 	var _active(default, null):Array<Node>;
-	var _activeSleeping(default, null):Array<Node>;
 	var _passive(default, null):Array<Node>;
 	var _passiveFixed(default, null):Array<Node>;
 	
@@ -213,7 +220,6 @@ class SpaceGrid
 		this.yMax = (yMax == null) ? 0 : (Math.ceil(yMax / _pitchY) * _pitchY);
 		
 		_active = [];
-		_activeSleeping = [];
 		_passive = [];
 		_passiveFixed = [];
 		all = new List<Body>();
@@ -221,16 +227,8 @@ class SpaceGrid
 		init();
 	}
 	
-	#if(debug)
-	public function toString():String
-	{
-		return "[SpaceGrid x:"+xMin+" y:"+yMin+" w:"+xMax+" h:"+yMax+"]";
-	}
-	#end
-	
 	function init()
 	{
-		
 		if ( _grid != null )
 			_grid.dispose();
 		
@@ -247,21 +245,6 @@ class SpaceGrid
 		
 		for ( node in _active )
 			node.init( _pitchXExp, _pitchYExp, _grid );
-			
-		for ( node in _activeSleeping )
-			node.init( _pitchXExp, _pitchYExp, _grid );
-	}
-	
-	inline function wakeUp():Void
-	{
-		for ( node in _activeSleeping )
-		{
-			if ( node.body.moved )
-			{
-				_activeSleeping.remove( node );
-				_active.push( node );
-			}
-		}
 	}
 	
 	public function hitTest():List<Body>
@@ -274,40 +257,30 @@ class SpaceGrid
 		for ( node in _passive )
 			node.refresh( _pitchXExp, _pitchYExp, _grid );
 		
-		wakeUp();
-		
-		//trace( _grid );
-		
-		for ( node in _active )
+		for ( nodeA in _active )
 		{
-			if ( !node.insomniac && !node.body.moved )
+			
+			var b:Body = nodeA.body;
+			var isAffected:Bool = false;
+			b.contacts.clear();
+			
+			nodeA.refresh( _pitchXExp, _pitchYExp, _grid );
+			var contacts:Array<Node> = _grid.getContacts( nodeA );
+			
+			for ( nodeP in contacts )
 			{
-				_active.remove( node );
-				_activeSleeping.push( node );
-			}
-			else
-			{
-				var b:Body = node.body;
-				var isAffected:Bool = false;
-				b.contacts.clear();
-				
-				node.refresh( _pitchXExp, _pitchYExp, _grid );
-				var contacts:Array<Node> = _grid.getContacts( node );
-				
-				for ( node2 in contacts )
-				{
-					if ( b.shape.hitTest( node2.body.shape ) &&
-						 b.contacts.list.indexOf( node2.body ) < 0 )
+				/*if ( b.contacts.list.indexOf( nodeP.body ) < 0 &&
+					 b.shape.hitTest( nodeP.body.shape ) )
+				{*/
+					b.contacts.push( nodeP.body );
+					if ( !isAffected )
 					{
-						b.contacts.push( node2.body );
-						if ( !isAffected )
-						{
-							isAffected = true;
-							affected.push( b );
-						}
+						isAffected = true;
+						affected.push( b );
 					}
-				}
+				//}
 			}
+			
 		}
 		
 		return affected;
@@ -318,9 +291,9 @@ class SpaceGrid
 	 * 
 	 * @param	body			Body to add in the system
 	 */
-	public function addBody( body:Body, insomniac:Bool = false ):Void
+	public function addBody( body:Body/*, insomniac:Bool = false*/ ):Void
 	{
-		var node:Node = new Node( body, insomniac );
+		var node:Node = new Node( body/*, insomniac*/ );
 		node.init( _pitchXExp, _pitchYExp, _grid );
 		
 		if ( autoLimits )
@@ -393,4 +366,10 @@ class SpaceGrid
 		all.remove( body );
 	}
 	
+	#if(debug)
+	public function toString():String
+	{
+		return "[SpaceGrid x:"+xMin+" y:"+yMin+" w:"+xMax+" h:"+yMax+"]";
+	}
+	#end
 }
