@@ -2,8 +2,9 @@ package dl.samples ;
 
 import dl.physic.body.Body;
 import dl.physic.body.ShapeRect;
-import dl.physic.space.SpaceGrid;
-import dl.physic.space.SpaceSimple;
+import dl.physic.contact.BodyContact.BodyContactsFlags;
+import dl.physic.contact.SpaceGrid;
+import dl.physic.contact.SpaceSimple;
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
@@ -39,10 +40,10 @@ class StressTestSpaces
 	public static inline var CIRCLE:Int = 22;
 	
 	public static inline var TEST_GRID:Bool = true;
-	public static inline var TEST_SIMPLE:Bool = false;
+	public static inline var TEST_SIMPLE:Bool = true;
 	
-	public static inline var activeN:Int = 10000;
-	public static inline var passiveN:Int = 10000;
+	public static inline var activeN:Int = 200;
+	public static inline var passiveN:Int = 2000;
 	
 	static var m:StressTestSpaces;
 	
@@ -87,8 +88,7 @@ class StressTestSpaces
 		{
 			var s2 = new ShapeRect( 20, 20 );
 			var b2 = new Body(s2, Math.random() * MAX_SIZE, Math.random() * MAX_SIZE);
-			b2.colliderType = BodyColliderFlags.passive;
-			b2.physicType = BodyPhysicFlags.fix;
+			b2.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.fix );
 			var d2 = new Data(b2);
 			
 			spaceG.addBody( b2 );
@@ -99,7 +99,8 @@ class StressTestSpaces
 		{
 			var s1 = new ShapeRect( 20, 20 );
 			var b1 = new Body( s1, Math.random() * MAX_SIZE, Math.random() * MAX_SIZE );
-			b1.colliderType = BodyColliderFlags.active;
+			b1.addBodyContact( BodyContactsFlags.active );
+			//b1.contacts.flags = BodyContactsFlags.active;
 			
 			var d1 = new Data(b1);
 			updatePos(d1);

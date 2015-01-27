@@ -1,11 +1,12 @@
-package dl.physic.space;
+package dl.physic.contact ;
 import dl.physic.body.Body;
+import dl.physic.contact.BodyContact.BodyContactsFlags;
 
 /**
  * ...
  * @author Namide
  */
-class SpaceSimple
+class SpaceSimple implements ISpace
 {
 	public var all(default, null):List<Body>;
 	
@@ -35,7 +36,7 @@ class SpaceSimple
 			{
 				//trace( b, b2 );
 				
-				if ( b2.physicType & BodyPhysicFlags.fix == 0 )
+				if ( b2.contacts.flags & BodyContactsFlags.fix == 0 )
 					b2.updateAABB();
 				
 				if ( 	b.shape.hitTest( b2.shape ) /*&&
@@ -61,15 +62,18 @@ class SpaceSimple
 	 */
 	public function addBody( body:Body ):Void
 	{
-		if ( body.colliderType & BodyColliderFlags.passive == BodyColliderFlags.passive )
+		if ( body.contacts == null )
+			body.addBodyContact( 0 );
+		
+		if ( body.contacts.flags & BodyContactsFlags.passive != 0 )
 		{
-			if ( body.colliderType & BodyPhysicFlags.fix == 0 )
+			if ( body.contacts.flags & BodyContactsFlags.fix == 0 )
 				body.updateAABB();
 			
 			_passive.push( body );
 		}
 		
-		if ( body.colliderType & BodyColliderFlags.active == BodyColliderFlags.active )
+		if ( body.contacts.flags & BodyContactsFlags.active != 0 )
 			_active.push( body );
 		
 		all.push( body );
@@ -82,10 +86,10 @@ class SpaceSimple
 	 */
 	public function removeBody( body:Body ):Void
 	{
-		if ( body.colliderType & BodyColliderFlags.passive == BodyColliderFlags.passive )
+		if ( body.contacts.flags & BodyContactsFlags.passive != 0 )
 			_passive.remove( body );
 		
-		if ( body.colliderType & BodyColliderFlags.active == BodyColliderFlags.active )
+		if ( body.contacts.flags & BodyContactsFlags.active != 0 )
 			_active.remove( body );
 		
 		all.remove( body );

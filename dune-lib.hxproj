@@ -5,7 +5,7 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\dunelib.swf" />
-    <movie fps="12" />
+    <movie fps="60" />
     <movie width="800" />
     <movie height="600" />
     <movie version="11" />
@@ -22,7 +22,7 @@
     <option directives="" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="dl.samples.TestSpaces" />
+    <option mainClass="dl.samples.PlatformGame" />
     <option enabledebug="True" />
     <option additional="" />
   </build>
@@ -34,7 +34,7 @@
   <compileTargets>
     <compile path="src\dl\Main.hx" />
     <compile path="src\dl\StressTestSpaces.hx" />
-    <compile path="src\dl\samples\TestSpaces.hx" />
+    <compile path="src\dl\samples\PlatformGame.hx" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>

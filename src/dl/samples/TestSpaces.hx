@@ -2,8 +2,9 @@ package dl.samples ;
 
 import dl.physic.body.Body;
 import dl.physic.body.ShapeRect;
-import dl.physic.space.SpaceGrid;
-import dl.physic.space.SpaceSimple;
+import dl.physic.contact.BodyContact.BodyContactsFlags;
+import dl.physic.contact.SpaceGrid;
+import dl.physic.contact.SpaceSimple;
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
@@ -41,7 +42,7 @@ class TestSpaces
 	{
 		var s1 = new ShapeRect( 32, 32 );
 		var b1 = new Body( s1, 0, 0 );
-		b1.colliderType = BodyColliderFlags.active;
+		b1.addBodyContact( BodyContactsFlags.active );
 		return b1;
 	}
 	
@@ -49,8 +50,7 @@ class TestSpaces
 	{
 		var s2 = new ShapeRect( 20, 20 );
 		var b2 = new Body( s2, 32, 32 );
-		b2.colliderType = BodyColliderFlags.passive;
-		b2.physicType = BodyPhysicFlags.fix;
+		b2.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.fix );
 		return b2;
 	}
 	
@@ -58,8 +58,7 @@ class TestSpaces
 	{
 		var s2 = new ShapeRect( 20, 20 );
 		var b2 = new Body( s2, 16, 16 );
-		b2.colliderType = BodyColliderFlags.passive;
-		b2.physicType = BodyPhysicFlags.fix;
+		b2.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.fix );
 		return b2;
 	}
 	

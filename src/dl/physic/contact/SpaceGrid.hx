@@ -1,7 +1,8 @@
-package dl.physic.space;
+package dl.physic.contact ;
 import dl.math.Calcul;
 import dl.physic.body.Body;
 import dl.physic.body.ShapePoint;
+import dl.physic.contact.BodyContact.BodyContactsFlags;
 
 class Grid
 {
@@ -110,14 +111,12 @@ class Node
 	public var maxTileX(default, default):Int;
 	public var maxTileY(default, default):Int;
 	
-	//public var insomniac:Bool = false;
 	public var inGrid:Bool;
 	
-	public function new( body:Body/*, insomniac:Bool*/ )
+	public function new( body:Body )
 	{
 		this.body = body;
-		//this.insomniac = insomniac;
-		inGrid = body.colliderType & BodyColliderFlags.passive != 0;
+		inGrid = body.contacts.flags & BodyContactsFlags.passive != 0;
 	}
 	
 	public function init( pitchExpX:Int, pitchExpY:Int, grid:Grid )
@@ -140,7 +139,7 @@ class Node
 	
 	public function refresh( pitchExpX:Int, pitchExpY:Int, grid:Grid ):Void
 	{
-		if ( body.physicType & BodyPhysicFlags.fix == 0 )
+		if ( body.contacts.flags & BodyContactsFlags.fix == 0 )
 			body.updateAABB();
 		
 		var nXMin:Int = (Math.floor(body.shape.aabbXMin) >> pitchExpX);
@@ -184,9 +183,9 @@ class Node
  * ...
  * @author Namide
  */
-class SpaceGrid
+class SpaceGrid implements ISpace
 {
-	public var all(default, null):List<Body>;
+	public var all(default, null):Array<Body>;
 	
 	var _active(default, null):Array<Node>;
 	var _passive(default, null):Array<Node>;
@@ -222,7 +221,7 @@ class SpaceGrid
 		_active = [];
 		_passive = [];
 		_passiveFixed = [];
-		all = new List<Body>();
+		all = [];
 		
 		init();
 	}
@@ -291,9 +290,15 @@ class SpaceGrid
 	 * 
 	 * @param	body			Body to add in the system
 	 */
-	public function addBody( body:Body/*, insomniac:Bool = false*/ ):Void
+	public function addBody( body:Body ):Void
 	{
-		var node:Node = new Node( body/*, insomniac*/ );
+		if ( all.indexOf( body ) > 0 )
+			removeBody( body );
+		
+		if ( body.contacts == null )
+			body.addBodyContact( 0 );
+		
+		var node:Node = new Node( body );
 		node.init( _pitchXExp, _pitchYExp, _grid );
 		
 		if ( autoLimits )
@@ -320,15 +325,15 @@ class SpaceGrid
 			}
 		}
 		
-		if ( body.colliderType & BodyColliderFlags.passive != 0 )
+		if ( body.contacts.flags & BodyContactsFlags.passive != 0 )
 		{
-			if ( body.physicType & BodyPhysicFlags.fix != 0 )
+			if ( body.contacts.flags & BodyContactsFlags.fix != 0 )
 				_passiveFixed.push( node );
 			else
 				_passive.push( node );
 		}
 		
-		if ( body.colliderType & BodyColliderFlags.active != 0 )
+		if ( body.contacts.flags & BodyContactsFlags.active != 0 )
 			_active.push( node );
 		
 		all.push( body );
@@ -342,9 +347,9 @@ class SpaceGrid
 	 */
 	public function removeBody( body:Body ):Void
 	{
-		if ( body.colliderType & BodyColliderFlags.passive == BodyColliderFlags.passive )
+		if ( body.contacts.flags & BodyContactsFlags.passive != 0 )
 		{
-			if ( body.physicType & BodyPhysicFlags.fix == BodyPhysicFlags.fix )
+			if ( body.contacts.flags & BodyContactsFlags.fix != 0 )
 			{
 				var node:Node = Lambda.find( _passiveFixed, function( n:Node ):Bool { return n.body == body; } );
 				node.removeFromGrid( _grid );

@@ -1,91 +1,7 @@
 package dl.physic.body ;
 import dl.physic.body.ShapePoint;
-
-@:enum
-abstract BodyColliderFlags(Int)
-{
-	/**
-	* This body don't test the collision but the actives bodies tests the collision with this one
-	*/
-	var passive = 1;
-	
-	/**
-	* This body test the collision with the passives bodies
-	*/
-	var active = 2;
-	
-	/**
-	* You can jump from bottom over a platform
-	*/
-	var platformBottom = 4;
-	var platformTop = 8;
-	var platformLeft = 16;
-	var platformRight = 32;
-	
-	/**
-	* You can't cross it
-	*/
-	var wall = 64;
-	
-	/**
-	* You can climb it
-	*/
-	//var lader = 4;
-	
-	/**
-	* Collision is activated, but not physic.
-	* It's usable for life, ennemy, ammo...
-	*/
-	var item = 128;
-	
-	inline function new( i:Int ) { this = i; }
-	
-	@:from
-	public static function fromInt(i:Int):BodyColliderFlags {
-		return new BodyColliderFlags(i);
-	}
-	
-	@:to
-	public function toInt():Int {
-		return this;
-	}
-}
-
-@:enum
-abstract BodyPhysicFlags(Int)
-{
-	/**
-	 * Your body never move
-	 */
-	var fix = 1;
-	
-	/**
-	* Your solid reacts with passives bodies (platform, wall, ladder)
-	*/
-	var dependant = 2;
-	
-	/**
-	 * Physic engine apply the velocity
-	 */
-	var velocity = 4;
-	
-	/**
-	 * Physic engine apply the gravity
-	 */
-	var gravity = 8;
-	
-	inline function new( i:Int ) { this = i; }
-	
-	@:from
-	public static function fromInt(i:Int):BodyPhysicFlags {
-		return new BodyPhysicFlags(i);
-	}
-	
-	@:to
-	public function toInt():Int {
-		return this;
-	}
-}
+import dl.physic.contact.BodyContact;
+import dl.physic.move.BodyPhysic;
 
 /**
  * ...
@@ -103,23 +19,24 @@ class Body
 	* Other body in contact with this one
 	*/
 	public var contacts(default, null):BodyContact;
-
-	public var colliderType:BodyColliderFlags;
-	public var physicType:BodyPhysicFlags;
+	public var physic(default, null):BodyPhysic;
+	
+	
+	//public var colliderType:BodyContactsFlags;
+	//public var physicType:BodyPhysicFlags;
 	
 	public var x(default, null):Float;
 	public var y(default, null):Float;
 	
-	public var vX(default, null):Float;
+	/*public var vX(default, null):Float;
 	public var vY(default, null):Float;
-	
-	public var mass(default, null):Float;
+	public var mass(default, null):Float;*/
 	
 	public var moved(default, null):Bool;
 	
 	public function new( shape:Shape, x:Float = 0, y:Float = 0 ) 
 	{
-		colliderType = 0 | BodyColliderFlags.passive;
+		//colliderType = 0 | BodyContactsFlags.passive;
 		this.shape = shape;
 		this.contacts = new BodyContact( this );
 		
@@ -130,16 +47,17 @@ class Body
 		moved = true;
 	}
 	
-	public inline function setPos( x:Float, y:Float )
+	public function setPos( x:Float, y:Float )
 	{
 		#if (debug)
 			
-			if ( physicType & BodyPhysicFlags.fix != 0 )
+			if ( contacts != null &&
+				 contacts.flags & BodyContactsFlags.fix != 0 )
 				throw "Can't move a fix body!";
 			
 		#end
 		
-		var m = (x != this.x && y != this.y);
+		var m = (x != this.x || y != this.y);
 		if ( m )
 		{
 			this.x = x;
@@ -148,11 +66,31 @@ class Body
 		}
 	}
 	
+	public function addPos( x:Float, y:Float )
+	{
+		#if (debug)
+			
+			if ( contacts != null &&
+				 contacts.flags & BodyContactsFlags.fix != 0 )
+				throw "Can't move a fix body!";
+			
+		#end
+		
+		var m = (x != 0 || y != 0);
+		if ( m )
+		{
+			this.x += x;
+			this.y += y;
+			moved = true;
+		}
+	}
+	
 	public function updateAABB()
 	{
 		#if (debug)
 		
-			if ( physicType & BodyPhysicFlags.fix != 0 )
+			if ( contacts != null &&
+				 contacts.flags & BodyContactsFlags.fix != 0 )
 				throw "Can't updateAABB() a fix body!";
 			
 		#end
@@ -168,8 +106,24 @@ class Body
 		moved = false;
 	}
 	
+	public inline function addBodyContact( flags:BodyContactsFlags = 0 ):Void
+	{
+		if ( contacts == null )
+			contacts = new BodyContact(this);
+		
+		contacts.flags = flags;
+	}
+	
+	public inline function addBodyPhysic( flags:BodyPhysicFlags = 0 ):Void
+	{
+		if ( physic == null )
+			physic = new BodyPhysic(this);
+		
+		physic.flags = flags;
+	}
+	
 	public function toString() {
-		return "[Body"+colliderType+" x:" + x + " y:" + y + " " + shape +"]";
+		return "[Body x:" + x + " y:" + y + " " + shape +"]";
 	}
 	
 	
