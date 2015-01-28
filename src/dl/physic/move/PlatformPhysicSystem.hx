@@ -13,11 +13,9 @@ class PlatformPhysicSystem
 	
 	public var gX:Float = 0;
 	public var gY:Float = 30;
-	public var space:ISpace;
 	
-	public function new( space:ISpace, gravityY = 2.0 ) 
+	public function new( gravityY = 2.0 ) 
 	{
-		this.space = space;
 		gY = gravityY;
 		all = [];
 	}
@@ -34,11 +32,9 @@ class PlatformPhysicSystem
 		{
 			all.push( body );
 		}
-		
-		space.addBody( body );
 	}
 	
-	public function update()
+	public function updateMoves()
 	{
 		for ( b in all )
 		{
@@ -55,9 +51,10 @@ class PlatformPhysicSystem
 				b.addPos( p.vX, p.vY );
 			}
 		}
-		
-		var contacts = space.hitTest();
-		
+	}
+	
+	public function updatePositions()
+	{
 		for ( b in all )
 		{
 			var p = b.physic;
@@ -69,7 +66,6 @@ class PlatformPhysicSystem
 	public function removeBody( body:Body ):Void
 	{
 		all.remove( body );
-		space.removeBody( body );
 	}
 	
 }

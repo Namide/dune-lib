@@ -87,7 +87,7 @@ class PlatformGame
 	{
 		
 		space = new SpaceGrid( TILE_SIZE, TILE_SIZE );
-		physic = new PlatformPhysicSystem( space, 0.8 );
+		physic = new PlatformPhysicSystem( 0.8 );
 		
 		for ( i in 0...5 )
 		{
@@ -104,7 +104,10 @@ class PlatformGame
 	
 	public function refresh( ?e:Dynamic )
 	{
-		physic.update();
+		physic.updateMoves();
+		space.hitTest();
+		physic.updatePositions();
+		
 		player.refresh();
 	}
 	
