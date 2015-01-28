@@ -66,6 +66,42 @@ class Body
 		}
 	}
 	
+	public function setX( x:Float )
+	{
+		#if (debug)
+			
+			if ( contacts != null &&
+				 contacts.flags & BodyContactsFlags.fix != 0 )
+				throw "Can't move a fix body!";
+			
+		#end
+		
+		var m = x != this.x;
+		if ( m )
+		{
+			this.x = x;
+			moved = true;
+		}
+	}
+	
+	public function setY( y:Float )
+	{
+		#if (debug)
+			
+			if ( contacts != null &&
+				 contacts.flags & BodyContactsFlags.fix != 0 )
+				throw "Can't move a fix body!";
+			
+		#end
+		
+		var m = y != this.y;
+		if ( m )
+		{
+			this.y = y;
+			moved = true;
+		}
+	}
+	
 	public function addPos( x:Float, y:Float )
 	{
 		#if (debug)

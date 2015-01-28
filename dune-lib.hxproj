@@ -15,15 +15,15 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="C:\HaxeToolkit\haxe\lib\openfl\2,2,4" />
-    <class path="C:\HaxeToolkit\haxe\lib\lime\2,0,6" />
-    <class path="C:\HaxeToolkit\haxe\lib\actuate\1,8,1" />
+    <class path="C:\HaxeToolkit\haxe\lib\openfl\2,1,6" />
+    <class path="C:\HaxeToolkit\haxe\lib\lime\2,0,0" />
+    <class path="C:\HaxeToolkit\haxe\lib\actuate\1,7,5" />
     <class path="src" />
     <class path="bin-nme\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="openfl=2.2.4&#xA;lime=2.0.6&#xA;actuate=1.8.1&#xA;tools=2.0.6&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
+    <option directives="openfl=2.1.6&#xA;lime=2.0.0&#xA;actuate=1.7.5&#xA;tools=2.0.0&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
@@ -39,6 +39,7 @@
     <compile path="src\dl\Main.hx" />
     <compile path="src\dl\StressTestSpaces.hx" />
     <compile path="src\dl\samples\StressTestSpaces.hx" />
+    <compile path="src\dl\samples\PlatformGame.hx" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
@@ -56,7 +57,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="OpenDocument" />
-    <option testMovieCommand="bin-nme/flash/bin/stressTestSpaces.swf" />
+    <option testMovieCommand="bin-nme/flash/bin/PlatformGame.swf" />
   </options>
   <!-- Plugin storage -->
   <storage />

@@ -1,6 +1,7 @@
 package dl.samples;
 import dl.physic.body.Body;
 import dl.physic.body.ShapeRect;
+import dl.physic.contact.BodyContact.BodyContactsFlags;
 import dl.physic.contact.SpaceGrid;
 import dl.physic.move.BodyPhysic.BodyPhysicFlags;
 import dl.physic.move.PlatformPhysicSystem;
@@ -30,6 +31,7 @@ class Player extends Sprite
 		var shape = new ShapeRect( PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
 		body = new Body( shape, x * PlatformGame.TILE_SIZE, y * PlatformGame.TILE_SIZE );
 		body.addBodyPhysic( BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity );
+		body.addBodyContact( BodyContactsFlags.active );
 		
 		graphics.beginFill( 0x0000CC );
 		graphics.drawRect( 0, 0, PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
@@ -57,6 +59,7 @@ class Floor extends Sprite
 		var shape = new ShapeRect( PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
 		body = new Body( shape, x * PlatformGame.TILE_SIZE, y * PlatformGame.TILE_SIZE );
 		body.addBodyPhysic();
+		body.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.wall );
 		
 		graphics.beginFill( 0xCC0000 );
 		graphics.drawRect( 0, 0, PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
@@ -64,7 +67,7 @@ class Floor extends Sprite
 	}	
 }
  
-class PlatformGame
+class PlatformGame extends Sprite
 {
 	public static inline var TILE_SIZE:Int = 32;
 	static var STAGE:Stage;
@@ -85,6 +88,7 @@ class PlatformGame
 	
 	public function new() 
 	{
+		super();
 		
 		space = new SpaceGrid( TILE_SIZE, TILE_SIZE );
 		physic = new PlatformPhysicSystem( 0.8 );
@@ -105,7 +109,7 @@ class PlatformGame
 	public function refresh( ?e:Dynamic )
 	{
 		physic.updateMoves();
-		space.hitTest();
+		trace( space.hitTest() );
 		physic.updatePositions();
 		
 		player.refresh();

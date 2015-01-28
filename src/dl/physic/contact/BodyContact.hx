@@ -127,7 +127,7 @@ class BodyContact
 	
 	public inline function push( body:Body ):Void { list.push( body ); }
 	public inline function change( bodies:Array<Body> ):Void { list = bodies; }
-	public inline function length():UInt { return list.length; }
+	public inline function length():Int { return list.length; }
 	
 	public function classByArea():Array<Body>
 	{

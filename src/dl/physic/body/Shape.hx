@@ -68,7 +68,17 @@ class Shape
 		aabbYMin = y;
 	}
 	
-	public static function getW( a:ShapePoint ):Float
+	public inline function getH()
+	{
+		return Shape._getH( this );
+	}
+	
+	public inline function getW()
+	{
+		return Shape._getW( this );
+	}
+	
+	static function _getW( a:Shape ):Float
 	{
 		if ( a.type == ShapeType.circle )
 			return cast( a, ShapeCircle ).r * 2;
@@ -79,7 +89,7 @@ class Shape
 		return 0;
 	}
 	
-	public static function getH( a:ShapePoint ):Float
+	static function _getH( a:Shape ):Float
 	{
 		if ( a.type == ShapeType.circle )
 			return cast( a, ShapeCircle ).r * 2;
