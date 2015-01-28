@@ -3,6 +3,8 @@ import dl.math.Calcul;
 import dl.physic.body.Body;
 import dl.physic.body.ShapePoint;
 import dl.physic.contact.BodyContact.BodyContactsFlags;
+import dl.physic.contact.BodyContact.BodyContactState;
+import dl.physic.contact.SpaceGrid.Node;
 
 class Grid
 {
@@ -58,18 +60,17 @@ class Grid
 		return ( i >= minTileX && i < maxTileX && j >= minTileY && j < maxTileY ) ? _grid[i - minTileX][j - minTileY] : [];
 	}
 	
-	public inline function getContacts( n:Node ):Array<Node>
+	public inline function getContacts( n:Node ):Array<Body>
 	{
-		var c:Array<Node> = [n];
+		var c:Array<Body> = [n.body];
 		
 		for ( i in n.minTileX...n.maxTileX )
 			for ( j in n.minTileY...n.maxTileY )
 				for ( n2 in getNodes( i, j ) )
-					if ( 	!Lambda.has( c, n2 ) &&
-							n.body.shape.hitTest( n2.body.shape ) )
-						c.push( n2 );
+					if ( !Lambda.has( c, n2.body ) && n.body.shape.hitTest( n2.body.shape ) )
+						c.push( n2.body );
 		
-		c.remove( n );
+		c.remove( n.body );
 		return c;
 	}
 	
@@ -246,6 +247,20 @@ class SpaceGrid implements ISpace
 			node.init( _pitchXExp, _pitchYExp, _grid );
 	}
 	
+	public function testActive( b:Body )
+	{
+		var n = Lambda.find( _active, function( n:Node ) { return n.body == b; } );
+		
+		if ( n == null )
+			return;
+		
+		var c = b.contacts;
+		c.clear();
+		n.refresh( _pitchXExp, _pitchYExp, _grid );
+		c.change( _grid.getContacts( n ) );
+		c.state = BodyContactState.contacts;
+	}
+	
 	public function hitTest():List<Body>
 	{
 		var affected:List<Body> = new List<Body>();
@@ -261,25 +276,29 @@ class SpaceGrid implements ISpace
 			
 			var b:Body = nodeA.body;
 			var isAffected:Bool = false;
-			b.contacts.clear();
+			var c = b.contacts;
+			c.clear();
 			
 			nodeA.refresh( _pitchXExp, _pitchYExp, _grid );
-			var contacts:Array<Node> = _grid.getContacts( nodeA );
+			var contacts:Array<Body> = _grid.getContacts( nodeA );
 			
-			for ( nodeP in contacts )
+			if ( contacts.length > 0 )
 			{
-				/*if ( b.contacts.list.indexOf( nodeP.body ) < 0 &&
-					 b.shape.hitTest( nodeP.body.shape ) )
-				{*/
-					b.contacts.push( nodeP.body );
-					if ( !isAffected )
-					{
-						isAffected = true;
-						affected.push( b );
-					}
-				//}
+				c.change( contacts );
+				affected.push( b );
 			}
 			
+			/*for ( b2 in contacts )
+			{
+				//c.push( b2 );
+				if ( !isAffected )
+				{
+					isAffected = true;
+					affected.push( b );
+				}
+				
+			}*/
+			c.state = BodyContactState.contacts;
 		}
 		
 		return affected;

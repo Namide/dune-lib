@@ -58,9 +58,16 @@ class PlatformPhysicSystem
 		for ( b in all )
 		{
 			var p = b.physic;
+			b.contacts.classByArea();
+			
 			
 			
 		}
+	}
+	
+	function updatePosBody( b:Body ):Void
+	{
+		
 	}
 	
 	public function removeBody( body:Body ):Void

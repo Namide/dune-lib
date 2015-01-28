@@ -40,9 +40,9 @@ class StressTestSpaces
 	public static inline var CIRCLE:Int = 22;
 	
 	public static inline var TEST_GRID:Bool = true;
-	public static inline var TEST_SIMPLE:Bool = true;
+	public static inline var TEST_SIMPLE:Bool = false;
 	
-	public static inline var activeN:Int = 200;
+	public static inline var activeN:Int = 2000;
 	public static inline var passiveN:Int = 2000;
 	
 	static var m:StressTestSpaces;

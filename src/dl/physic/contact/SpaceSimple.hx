@@ -1,6 +1,7 @@
 package dl.physic.contact ;
 import dl.physic.body.Body;
 import dl.physic.contact.BodyContact.BodyContactsFlags;
+import dl.physic.contact.BodyContact.BodyContactState;
 
 /**
  * ...
@@ -24,25 +25,23 @@ class SpaceSimple implements ISpace
 	{
 		
 		var affected:List<Body> = new List<Body>();
-			
+		
 		for ( b in _active )
 		{
 			var af:Bool = false;
-			b.contacts.clear();
+			var c = b.contacts;
+			c.clear();
 			b.updateAABB();
-			//b.shape.updateAABB( b.entity.transform );
 			
 			for ( b2 in _passive )
 			{
-				//trace( b, b2 );
-				
 				if ( b2.contacts.flags & BodyContactsFlags.fix == 0 )
 					b2.updateAABB();
 				
 				if ( 	b.shape.hitTest( b2.shape ) /*&&
 						b.contacts.list.indexOf( b2 ) < 0*/ )
 				{
-					b.contacts.push( b2 );
+					c.push( b2 );
 					if ( !af )
 					{
 						affected.push( b );
@@ -50,6 +49,8 @@ class SpaceSimple implements ISpace
 					}
 				}
 			}
+			
+			c.state = BodyContactState.contacts;
 		}
 		
 		return affected;

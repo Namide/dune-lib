@@ -4,27 +4,31 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\dunelib.swf" />
+    <movie path="application.xml" />
     <movie fps="60" />
-    <movie width="800" />
-    <movie height="600" />
-    <movie version="11" />
-    <movie minorVersion="8" />
-    <movie platform="Flash Player" />
-    <movie background="#FFFFFF" />
+    <movie width="1280" />
+    <movie height="720" />
+    <movie version="3" />
+    <movie minorVersion="0" />
+    <movie platform="NME" />
+    <movie background="000000" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
+    <class path="C:\HaxeToolkit\haxe\lib\openfl\2,2,4" />
+    <class path="C:\HaxeToolkit\haxe\lib\lime\2,0,6" />
+    <class path="C:\HaxeToolkit\haxe\lib\actuate\1,8,1" />
     <class path="src" />
+    <class path="bin-nme\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="" />
+    <option directives="openfl=2.2.4&#xA;lime=2.0.6&#xA;actuate=1.8.1&#xA;tools=2.0.6&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="dl.samples.PlatformGame" />
+    <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="" />
+    <option additional="-swf-version 11.2" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
@@ -34,7 +38,7 @@
   <compileTargets>
     <compile path="src\dl\Main.hx" />
     <compile path="src\dl\StressTestSpaces.hx" />
-    <compile path="src\dl\samples\PlatformGame.hx" />
+    <compile path="src\dl\samples\StressTestSpaces.hx" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
@@ -51,8 +55,8 @@
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
-    <option testMovie="Default" />
-    <option testMovieCommand="" />
+    <option testMovie="OpenDocument" />
+    <option testMovieCommand="bin-nme/flash/bin/stressTestSpaces.swf" />
   </options>
   <!-- Plugin storage -->
   <storage />

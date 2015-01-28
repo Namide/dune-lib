@@ -1,5 +1,48 @@
 package dl.physic.contact ;
 import dl.physic.body.Body;
+import dl.physic.body.Shape;
+
+@:enum
+abstract BodyLimitFlags(Int)
+{
+	var none = 0;
+	var top = 1;
+	var left = 2;
+	var right = 3;
+	var bottom = 4;
+	
+	inline function new( i:Int ) { this = i; }
+	
+	@:from
+	public static function fromInt(i:Int):BodyLimitFlags {
+		return new BodyLimitFlags(i);
+	}
+	
+	@:to
+	public function toInt():Int {
+		return this;
+	}
+}
+
+@:enum
+abstract BodyContactState(Int)
+{
+	var init = 0;
+	var contacts = 1;
+	var limits = 2;
+	
+	inline function new( i:Int ) { this = i; }
+	
+	@:from
+	public static function fromInt(i:Int):BodyContactState {
+		return new BodyContactState(i);
+	}
+	
+	@:to
+	public function toInt():Int {
+		return this;
+	}
+}
 
 @:enum
 abstract BodyContactsFlags(Int)
@@ -60,13 +103,18 @@ class BodyContact
 {
 	public var parent:Body;
 	public var list(default, default):Array<Body>;
+	public var state:BodyContactState;
 	
 	public var flags:BodyContactsFlags;
+	
+	public var fixedLimits:BodyLimitFlags;
 	
 	public function new( p:Body ) 
 	{
 		parent = p;
 		list = [];
+		state = BodyContactState.init;
+		fixedLimits = BodyLimitFlags.none;
 	}
 	
 	/*public inline function hasType( type:BodyContactsFlags ):Bool {
@@ -78,13 +126,40 @@ class BodyContact
 	}*/
 	
 	public inline function push( body:Body ):Void { list.push( body ); }
+	public inline function change( bodies:Array<Body> ):Void { list = bodies; }
 	public inline function length():UInt { return list.length; }
+	
+	public function classByArea():Array<Body>
+	{
+		list.sort( function( a:Body, b:Body ):Int {
+			if ( getArea( parent.shape, a.shape ) > getArea( parent.shape, b.shape ) )
+				return 1;
+			return -1;			
+		} );
+		return list;
+	}
+	
+	static function getArea( a:Shape, b:Shape ):Float
+	{
+		var w = min( a.aabbXMax, b.aabbXMax ) - max( a.aabbXMin, b.aabbXMin );
+		var h = min( a.aabbYMax, b.aabbYMax ) - max( a.aabbYMin, b.aabbYMin );
+		return w * h;
+	}
 	
 	public inline function clear() {
 		untyped list.length = 0;
+		state = BodyContactState.init;
+		fixedLimits = BodyLimitFlags.none;
 	}
 
 	/*inline function hasTypeInA( type:BodyContactsFlags, a:Array<Body> ):Bool {
 		return Lambda.exists( a, function(cp:Body):Bool { return cp.colliderType & type == type; });
 	}*/
+	
+	static inline function max( a : Float, b : Float ) {
+		return a < b ? b : a;
+	}
+	static inline function min( a : Float, b : Float ) {
+		return a > b ? b : a;
+	}
 }
