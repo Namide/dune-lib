@@ -58,8 +58,6 @@ class PlatformPhysicSystem
 	{
 		for ( b in all )
 		{
-			trace(b.contacts.length());
-			
 			if ( b.physic.flags & BodyPhysicFlags.dependant != 0 )
 				updatePosBody( b, b.contacts.length() );
 			
@@ -82,6 +80,8 @@ class PlatformPhysicSystem
 		if ( ba0.aabbXMax <= bb0.aabbXMin ) { pos |= BodyLimitFlags.right; corner++; }
 		if ( ba0.aabbYMin >= bb0.aabbYMax ) { pos |= BodyLimitFlags.top; corner++; }
 		if ( ba0.aabbYMax <= bb0.aabbYMin ) { pos |= BodyLimitFlags.bottom; corner++; }
+		
+		trace(pos, corner);
 		
 		if ( corner > 1 )
 		{
@@ -136,6 +136,8 @@ class PlatformPhysicSystem
 				}
 			}
 		}
+		
+		trace("->", pos);
 		
 		if ( pos & BodyLimitFlags.none != 0 )
 			pos = BodyLimitFlags.bottom;

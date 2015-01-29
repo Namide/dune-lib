@@ -82,13 +82,17 @@ class Grid
 	#if(debug)
 	public function toString()
 	{
-		var s = "x:" + this.minTileX + " y:" + minTileY + " w:" + (maxTileX-minTileX) + " h:" + (maxTileY-minTileY);
-		for ( c in _grid )
+		var s = "x:" + this.minTileX + " y:" + minTileY + " w:" + (maxTileX - minTileX) + " h:" + (maxTileY - minTileY);
+		
+		var colLength = _grid.length;
+		var linLength = (_grid.length > 0 && _grid[0].length > 0) ? _grid[0].length : 0;
+		
+		for ( i in 0...linLength )
 		{
 			s += "\n|";
-			for ( l in c )
+			for ( j in 0...colLength )
 			{
-				var le = l.length;
+				var le = _grid[j][i].length;
 				
 				if ( le < 10 )
 					s += " " + le + " |";
@@ -273,7 +277,6 @@ class SpaceGrid implements ISpace
 		
 		for ( nodeA in _active )
 		{
-			
 			var b:Body = nodeA.body;
 			var isAffected:Bool = false;
 			var c = b.contacts;
@@ -288,16 +291,6 @@ class SpaceGrid implements ISpace
 				affected.push( b );
 			}
 			
-			/*for ( b2 in contacts )
-			{
-				//c.push( b2 );
-				if ( !isAffected )
-				{
-					isAffected = true;
-					affected.push( b );
-				}
-				
-			}*/
 			c.state = BodyContactState.contacts;
 		}
 		

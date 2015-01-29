@@ -96,11 +96,11 @@ class PlatformGame extends Sprite
 		for ( i in 0...5 )
 		{
 			var f = addFloor( i, 5 );
-			physic.addBody( f.body );
 		}
 		
 		player = new Player( 1, 1 );
 		physic.addBody( player.body );
+		space.addBody( player.body );
 		
 		STAGE.addChild( player );
 		STAGE.addEventListener( Event.ENTER_FRAME, refresh );
@@ -109,7 +109,7 @@ class PlatformGame extends Sprite
 	public function refresh( ?e:Dynamic )
 	{
 		physic.updateMoves();
-		trace( space.hitTest() );
+		space.hitTest();
 		physic.updatePositions();
 		
 		player.refresh();
@@ -119,6 +119,8 @@ class PlatformGame extends Sprite
 	{
 		var f = new Floor( x, y );
 		STAGE.addChild( f );
+		physic.addBody( f.body );
+		space.addBody( f.body );
 		return f;
 	}
 	
