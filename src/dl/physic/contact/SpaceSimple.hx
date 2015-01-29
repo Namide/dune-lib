@@ -21,6 +21,22 @@ class SpaceSimple implements ISpace
 		all = new List<Body>();
 	}
 	
+	public function hitTestActive( b:Body ):Array<Body>
+	{
+		var c = b.contacts;
+		c.clear();
+		
+		if ( b.contacts.flags & BodyContactsFlags.fix == 0 )
+			b.updateAABB();
+		
+		for ( b2 in _passive )
+			if ( b.shape.hitTest( b2.shape ) )
+				c.push( b2 );
+
+		c.state = BodyContactState.contacts;
+		return b.contacts.list;
+	}
+	
 	public function hitTest():List<Body>
 	{
 		

@@ -132,19 +132,19 @@ class BodyContact
 	public function classByArea():Array<Body>
 	{
 		list.sort( function( a:Body, b:Body ):Int {
-			if ( getArea( parent.shape, a.shape ) > getArea( parent.shape, b.shape ) )
+			if ( parent.shape.getHitArea( a.shape ) < parent.shape.getHitArea( b.shape ) )
 				return 1;
 			return -1;			
 		} );
 		return list;
 	}
 	
-	static function getArea( a:Shape, b:Shape ):Float
+	/*public inline function getHitArea( b:Shape ):Float
 	{
-		var w = min( a.aabbXMax, b.aabbXMax ) - max( a.aabbXMin, b.aabbXMin );
-		var h = min( a.aabbYMax, b.aabbYMax ) - max( a.aabbYMin, b.aabbYMin );
-		return w * h;
-	}
+		BodyContact._getArea( this, b );
+	}*/
+	
+	
 	
 	public inline function clear() {
 		untyped list.length = 0;
@@ -156,10 +156,5 @@ class BodyContact
 		return Lambda.exists( a, function(cp:Body):Bool { return cp.colliderType & type == type; });
 	}*/
 	
-	static inline function max( a : Float, b : Float ) {
-		return a < b ? b : a;
-	}
-	static inline function min( a : Float, b : Float ) {
-		return a > b ? b : a;
-	}
+	
 }

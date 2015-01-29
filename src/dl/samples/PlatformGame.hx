@@ -11,6 +11,7 @@ import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.Lib;
+import haxe.Timer;
 
 /**
  * ...
@@ -108,11 +109,15 @@ class PlatformGame extends Sprite
 	
 	public function refresh( ?e:Dynamic )
 	{
+		var t = haxe.Timer.stamp();
+		
 		physic.updateMoves();
 		space.hitTest();
-		physic.updatePositions();
+		physic.updatePositions(space);
 		
 		player.refresh();
+		
+		trace( (haxe.Timer.stamp() - t) + "s" );
 	}
 	
 	public function addFloor( x:Int, y:Int)

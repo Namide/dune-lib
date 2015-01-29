@@ -251,18 +251,19 @@ class SpaceGrid implements ISpace
 			node.init( _pitchXExp, _pitchYExp, _grid );
 	}
 	
-	public function testActive( b:Body )
+	public function hitTestActive( b:Body ):Array<Body>
 	{
 		var n = Lambda.find( _active, function( n:Node ) { return n.body == b; } );
 		
 		if ( n == null )
-			return;
+			[];
 		
 		var c = b.contacts;
 		c.clear();
 		n.refresh( _pitchXExp, _pitchYExp, _grid );
 		c.change( _grid.getContacts( n ) );
 		c.state = BodyContactState.contacts;
+		return b.contacts.list;
 	}
 	
 	public function hitTest():List<Body>

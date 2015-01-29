@@ -68,6 +68,28 @@ class Shape
 		aabbYMin = y;
 	}
 	
+	public inline function getHitArea( s:Shape ):Float
+	{
+		return _getHitArea( this, s );
+	}
+	
+	static inline function _getHitArea( a:Shape, b:Shape ):Float
+	{
+		/*var w = min( a.aabbXMax, b.aabbXMax ) - max( a.aabbXMin, b.aabbXMin );
+		var h = min( a.aabbYMax, b.aabbYMax ) - max( a.aabbYMin, b.aabbYMin );
+		return w * h;*/
+		return (_min( a.aabbXMax, b.aabbXMax ) - _max( a.aabbXMin, b.aabbXMin )) * (_min( a.aabbYMax, b.aabbYMax ) - _max( a.aabbYMin, b.aabbYMin ));
+	}
+	
+	static inline function _max( a : Float, b : Float ) {
+		return a < b ? b : a;
+	}
+	
+	static inline function _min( a : Float, b : Float ) {
+		return a > b ? b : a;
+	}
+	
+	
 	public inline function getH()
 	{
 		return Shape._getH( this );

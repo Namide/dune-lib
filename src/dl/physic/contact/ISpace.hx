@@ -10,4 +10,5 @@ interface ISpace
 	public function addBody( body:Body ):Void;
 	public function removeBody( body:Body ):Void;
 	public function hitTest():List<Body>;
+	public function hitTestActive(body:Body):Array<Body>;
 }
