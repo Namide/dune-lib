@@ -12,7 +12,7 @@ class PlatformUtils
 	}
 	
 	public inline static function getVX( pxBySec:Float, frameDelay:Float ):Float {
-		return pxBySec / frameDelay;
+		return pxBySec * frameDelay;
 	}
 	
 	public inline static function getJumpStartVY( jumpPx:Float, gravity:Float ):Float {

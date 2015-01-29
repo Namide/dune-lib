@@ -59,7 +59,10 @@ class PlatformPhysicSystem
 		for ( b in all )
 		{
 			if ( b.physic.flags & BodyPhysicFlags.dependant != 0 )
+			{
+				b.contacts.fixedLimits = BodyLimitFlags.none;
 				updatePosBody( b, b.contacts.classByArea(), space );
+			}
 			
 		}
 	}
@@ -163,24 +166,28 @@ class PlatformPhysicSystem
 		{
 			case BodyLimitFlags.top:
 				
+				b.contacts.fixedLimits |= BodyLimitFlags.top;
 				b.setY( b2.shape.aabbYMax );
 				if ( b.physic.vY < 0 )
 					b.physic.vY = 0;
 				
 			case BodyLimitFlags.bottom:
 				
+				b.contacts.fixedLimits |= BodyLimitFlags.bottom;
 				b.setY( b2.shape.aabbYMin - b.shape.getH() );
 				if ( b.physic.vY > 0 )
 					b.physic.vY = 0;
 				
 			case BodyLimitFlags.left:
 				
+				b.contacts.fixedLimits |= BodyLimitFlags.left;
 				b.setX( b2.shape.aabbXMax );
 				if ( b.physic.vX < 0 )
 					b.physic.vX = 0;
 				
 			case BodyLimitFlags.right:
 				
+				b.contacts.fixedLimits |= BodyLimitFlags.right;
 				b.setX( b2.shape.aabbXMin - b.shape.getW() );
 				if ( b.physic.vX > 0 )
 					b.physic.vX = 0;

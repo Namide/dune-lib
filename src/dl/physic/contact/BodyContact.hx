@@ -149,7 +149,7 @@ class BodyContact
 	public inline function clear() {
 		untyped list.length = 0;
 		state = BodyContactState.init;
-		fixedLimits = BodyLimitFlags.none;
+		//fixedLimits = BodyLimitFlags.none;
 	}
 
 	/*inline function hasTypeInA( type:BodyContactsFlags, a:Array<Body> ):Bool {

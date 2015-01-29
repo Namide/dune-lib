@@ -3,6 +3,7 @@ import dl.physic.body.Body;
 import dl.physic.body.ShapeRect;
 import dl.physic.contact.BodyContact.BodyContactsFlags;
 import dl.physic.contact.SpaceGrid;
+import dl.physic.input.PlatformPlayerController;
 import dl.physic.move.BodyPhysic.BodyPhysicFlags;
 import dl.physic.move.PlatformPhysicSystem;
 import flash.display.Sprite;
@@ -77,6 +78,7 @@ class PlatformGame extends Sprite
 	var physic:PlatformPhysicSystem;
 	
 	var player:Player;
+	var playerControl:PlatformPlayerController;
 	
 	static function main() 
 	{
@@ -92,14 +94,13 @@ class PlatformGame extends Sprite
 		super();
 		
 		space = new SpaceGrid( TILE_SIZE, TILE_SIZE );
-		physic = new PlatformPhysicSystem( 0.8 );
+		physic = new PlatformPhysicSystem( 2.0 );
 		
 		for ( i in 0...5 )
-		{
 			var f = addFloor( i, 5 );
-		}
 		
 		player = new Player( 1, 1 );
+		playerControl = new PlatformPlayerController( player.body, physic, 1 / 50 );
 		physic.addBody( player.body );
 		space.addBody( player.body );
 		
@@ -111,13 +112,14 @@ class PlatformGame extends Sprite
 	{
 		var t = haxe.Timer.stamp();
 		
+		playerControl.update( haxe.Timer.stamp() );
 		physic.updateMoves();
 		space.hitTest();
 		physic.updatePositions(space);
 		
 		player.refresh();
 		
-		trace( (haxe.Timer.stamp() - t) + "s" );
+		//trace( (haxe.Timer.stamp() - t) + "s" );
 	}
 	
 	public function addFloor( x:Int, y:Int)
