@@ -1,5 +1,6 @@
 package dl.physic.move;
 import dl.physic.body.Body;
+import dl.physic.contact.BodyContact;
 import dl.physic.contact.BodyContact.BodyLimitFlags;
 import dl.physic.contact.ISpace;
 import dl.physic.move.BodyPhysic.BodyPhysicFlags;
@@ -61,14 +62,16 @@ class PlatformPhysicSystem
 			if ( b.physic.flags & BodyPhysicFlags.dependant != 0 )
 			{
 				b.contacts.fixedLimits = BodyLimitFlags.none;
-				updatePosBody( b, b.contacts.classByArea(), space );
+				b.contacts.classByArea();
+				updatePosBody( b, b.contacts.list, space );
 			}
-			
 		}
 	}
 	
-	function updatePosBody( b:Body, list:Array<Body>, space:ISpace ):Void
+	function updatePosBody( b:Body, list:Array<Body>, space:ISpace, num:Int = 0 ):Void
 	{
+		//trace( num, list.length, b.shape.getHitArea( list[0].shape ) );
+		
 		if ( list.length < 1 || b.shape.getHitArea( list[0].shape ) <= 0 )
 			return;
 		
@@ -78,11 +81,11 @@ class PlatformPhysicSystem
 		var bb0 = ( b2.print != null ) ? b2.print : b2.shape;
 		
 		
-		for ( a in b.contacts.classByArea() )
+		/*for ( a in b.contacts.classByArea() )
 		{
 			var w = Math.min( a.shape.aabbXMax, b.shape.aabbXMax ) - Math.max( a.shape.aabbXMin, b.shape.aabbXMin );
 			var h = Math.min( a.shape.aabbYMax, b.shape.aabbYMax ) - Math.max( a.shape.aabbYMin, b.shape.aabbYMin );
-		}
+		}*/
 		
 		var pos:BodyLimitFlags = 0;
 		var corner:Int = 0;
@@ -90,6 +93,7 @@ class PlatformPhysicSystem
 		if ( ba0.aabbXMax <= bb0.aabbXMin ) { pos |= BodyLimitFlags.right; corner++; }
 		if ( ba0.aabbYMin >= bb0.aabbYMax ) { pos |= BodyLimitFlags.top; corner++; }
 		if ( ba0.aabbYMax <= bb0.aabbYMin ) { pos |= BodyLimitFlags.bottom; corner++; }
+		
 		
 		if ( corner > 1 )
 		{
@@ -158,7 +162,7 @@ class PlatformPhysicSystem
 		
 		
 		
-		if ( pos & BodyLimitFlags.none != 0 )
+		if ( pos == BodyLimitFlags.none )
 			pos = BodyLimitFlags.bottom;
 		
 		// update position and velocity
@@ -191,14 +195,17 @@ class PlatformPhysicSystem
 				b.setX( b2.shape.aabbXMin - b.shape.getW() );
 				if ( b.physic.vX > 0 )
 					b.physic.vX = 0;
-				
+			
 			default:
 				
-				trace("no contact direction?");
+				#if debug
+					trace("no contact direction?");
+				#end
 		}
 		
 		list = space.hitTestActive( b );
-		updatePosBody( b, list, space );
+		BodyContact.classBodiesByContactArea( b.shape, list );
+		updatePosBody( b, list, space, num + 1 );
 	}
 	
 	public function removeBody( body:Body ):Void

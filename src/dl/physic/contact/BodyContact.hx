@@ -129,20 +129,24 @@ class BodyContact
 	public inline function change( bodies:Array<Body> ):Void { list = bodies; }
 	public inline function length():Int { return list.length; }
 	
-	public function classByArea():Array<Body>
+	public inline function classByArea():Void
 	{
 		list.sort( function( a:Body, b:Body ):Int {
 			if ( parent.shape.getHitArea( a.shape ) < parent.shape.getHitArea( b.shape ) )
 				return 1;
 			return -1;			
 		} );
-		return list;
+		//return list;
 	}
 	
-	/*public inline function getHitArea( b:Shape ):Float
+	public static inline function classBodiesByContactArea( shape:Shape, list:Array<Body> ):Void
 	{
-		BodyContact._getArea( this, b );
-	}*/
+		list.sort( function( a:Body, b:Body ):Int {
+			if ( shape.getHitArea( a.shape ) < shape.getHitArea( b.shape ) )
+				return 1;
+			return -1;			
+		} );
+	}
 	
 	
 	

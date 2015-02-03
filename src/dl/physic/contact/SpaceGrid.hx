@@ -142,10 +142,10 @@ class Node
 					grid.remove( i, j, this );
 	}
 	
-	public function refresh( pitchExpX:Int, pitchExpY:Int, grid:Grid ):Void
+	public function refresh( pitchExpX:Int, pitchExpY:Int, grid:Grid, updatePrint:Bool = true ):Void
 	{
 		if ( body.contacts.flags & BodyContactsFlags.fix == 0 )
-			body.updateAABB();
+			body.updateAABB(updatePrint);
 		
 		var nXMin:Int = (Math.floor(body.shape.aabbXMin) >> pitchExpX);
 		var nYMin:Int = (Math.floor(body.shape.aabbYMin) >> pitchExpY);
@@ -258,12 +258,12 @@ class SpaceGrid implements ISpace
 		if ( n == null )
 			[];
 		
-		var c = b.contacts;
-		c.clear();
-		n.refresh( _pitchXExp, _pitchYExp, _grid );
-		c.change( _grid.getContacts( n ) );
-		c.state = BodyContactState.contacts;
-		return b.contacts.list;
+		//var c = b.contacts;
+		//c.clear();
+		n.refresh( _pitchXExp, _pitchYExp, _grid, false );
+		//c.change( _grid.getContacts( n ) );
+		//c.state = BodyContactState.contacts;
+		return _grid.getContacts( n );//b.contacts.list;
 	}
 	
 	public function hitTest():List<Body>

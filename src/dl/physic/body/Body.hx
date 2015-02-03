@@ -121,7 +121,7 @@ class Body
 		}
 	}
 	
-	public function updateAABB()
+	public function updateAABB( updatePrint:Bool = true )
 	{
 		#if (debug)
 		
@@ -134,12 +134,16 @@ class Body
 		if ( !moved )
 			return;
 		
-		var t = print;
-		print = shape;
+		if ( updatePrint )
+		{
+			var t = print;
+			print = shape;
+			shape = t;
+			moved = false;
+		}
 		
-		t.updateAABB( x, y );
-		shape = t;
-		moved = false;
+		shape.updateAABB( x, y );
+		
 	}
 	
 	public inline function addBodyContact( flags:BodyContactsFlags = 0 ):Void

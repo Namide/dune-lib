@@ -1,9 +1,10 @@
 package dl.samples;
+import dl.math.Timer;
 import dl.physic.body.Body;
 import dl.physic.body.ShapeRect;
 import dl.physic.contact.BodyContact.BodyContactsFlags;
 import dl.physic.contact.SpaceGrid;
-import dl.physic.input.PlatformPlayerController;
+import dl.input.PlatformPlayerController;
 import dl.physic.move.BodyPhysic.BodyPhysicFlags;
 import dl.physic.move.PlatformPhysicSystem;
 import flash.display.Sprite;
@@ -12,7 +13,6 @@ import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.Lib;
-import haxe.Timer;
 
 /**
  * ...
@@ -74,6 +74,7 @@ class PlatformGame extends Sprite
 	public static inline var TILE_SIZE:Int = 32;
 	static var STAGE:Stage;
 	
+	var time:Timer;
 	var space:SpaceGrid;
 	var physic:PlatformPhysicSystem;
 	
@@ -95,29 +96,33 @@ class PlatformGame extends Sprite
 		
 		space = new SpaceGrid( TILE_SIZE, TILE_SIZE );
 		physic = new PlatformPhysicSystem( 2.0 );
+		time = new Timer(50, 0);
 		
 		for ( i in 0...5 )
-			var f = addFloor( i, 5 );
+			addFloor( i, 5 );
+		
+		addFloor( 2, 4 );
+		
 		
 		player = new Player( 1, 1 );
 		playerControl = new PlatformPlayerController( player.body, physic, 1 / 50 );
 		physic.addBody( player.body );
 		space.addBody( player.body );
 		
+		time.onFrameUpdate = refresh;
 		STAGE.addChild( player );
-		STAGE.addEventListener( Event.ENTER_FRAME, refresh );
+		STAGE.addEventListener( Event.ENTER_FRAME, function(e:Dynamic) { time.update(); } );
 	}
 	
-	public function refresh( ?e:Dynamic )
+	public function refresh( dt:Float, lastUpdateForFrame:Bool )
 	{
-		var t = haxe.Timer.stamp();
-		
-		playerControl.update( haxe.Timer.stamp() );
+		playerControl.update( dt );
 		physic.updateMoves();
 		space.hitTest();
 		physic.updatePositions(space);
 		
-		player.refresh();
+		if ( lastUpdateForFrame )
+			player.refresh();
 		
 		//trace( (haxe.Timer.stamp() - t) + "s" );
 	}

@@ -1,4 +1,4 @@
-package dl.physic.input;
+package dl.input ;
 
 import dl.physic.body.Body;
 import dl.physic.contact.BodyContact.BodyLimitFlags;

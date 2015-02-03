@@ -1,4 +1,4 @@
-package dl.physic.input;
+package dl.input ;
 import dl.physic.body.Body;
 import haxe.Timer;
 import flash.events.KeyboardEvent;

@@ -27,7 +27,7 @@ class SpaceSimple implements ISpace
 		c.clear();
 		
 		if ( b.contacts.flags & BodyContactsFlags.fix == 0 )
-			b.updateAABB();
+			b.updateAABB(false);
 		
 		for ( b2 in _passive )
 			if ( b.shape.hitTest( b2.shape ) )
