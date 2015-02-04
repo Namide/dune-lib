@@ -61,7 +61,7 @@ class Floor extends Sprite
 		var shape = new ShapeRect( PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
 		body = new Body( shape, x * PlatformGame.TILE_SIZE, y * PlatformGame.TILE_SIZE );
 		body.addBodyPhysic();
-		body.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.wall );
+		body.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop );
 		
 		graphics.beginFill( 0xCC0000 );
 		graphics.drawRect( 0, 0, PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );

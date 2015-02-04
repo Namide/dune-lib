@@ -13,6 +13,8 @@ class PlatformPhysicSystem
 {
 	var all:Array<Body>;
 	
+	static inline var MAX_RECURSIVE:Int = 5; 
+	
 	public var gX:Float = 0;
 	public var gY:Float = 30;
 	
@@ -68,23 +70,15 @@ class PlatformPhysicSystem
 		}
 	}
 	
-	function updatePosBody( b:Body, list:Array<Body>, space:ISpace, num:Int = 0 ):Void
+	function getPos( a:Body, b:Body ):BodyLimitFlags
 	{
-		//trace( num, list.length, b.shape.getHitArea( list[0].shape ) );
+		var ba0 = ( a.print != null ) ? a.print : a.shape;
+		var bb0 = ( b.print != null ) ? b.print : b.shape;
 		
-		if ( list.length < 1 || b.shape.getHitArea( list[0].shape ) <= 0 )
-			return;
-		
-		// calculate last position
-		var b2 = list[0];
-		var ba0 = ( b.print != null ) ? b.print : b.shape;
-		var bb0 = ( b2.print != null ) ? b2.print : b2.shape;
-		
-		
-		/*for ( a in b.contacts.classByArea() )
+		/*for ( a in a.contacts.classByArea() )
 		{
-			var w = Math.min( a.shape.aabbXMax, b.shape.aabbXMax ) - Math.max( a.shape.aabbXMin, b.shape.aabbXMin );
-			var h = Math.min( a.shape.aabbYMax, b.shape.aabbYMax ) - Math.max( a.shape.aabbYMin, b.shape.aabbYMin );
+			var w = Math.min( a.shape.aabbXMax, a.shape.aabbXMax ) - Math.max( a.shape.aabbXMin, a.shape.aabbXMin );
+			var h = Math.min( a.shape.aabbYMax, a.shape.aabbYMax ) - Math.max( a.shape.aabbYMin, a.shape.aabbYMin );
 		}*/
 		
 		var pos:BodyLimitFlags = 0;
@@ -97,11 +91,12 @@ class PlatformPhysicSystem
 		
 		if ( corner > 1 )
 		{
-			var ba1 = b.shape;
-			var bb1 = b2.shape;
+			var ba1 = a.shape;
+			var bb1 = b.shape;
 			
-			var Vx = ba1.aabbXMin - ( ( b.print != null ) ? b.print.aabbXMin : 0 );
-			var Vy = ba1.aabbYMin - ( ( b.print != null ) ? b.print.aabbYMin : 0 );
+			var Vx = ba1.aabbXMin - ( ( a.print != null ) ? a.print.aabbXMin : 0 );
+			var Vy = ba1.aabbYMin - ( ( a.print != null ) ? a.print.aabbYMin : 0 );
+			
 			if ( Vx == 0 && Vy == 0 )
 				Vx = Vy = 1;
 			
@@ -160,52 +155,97 @@ class PlatformPhysicSystem
 			}
 		}
 		
+		/*if ( pos == BodyLimitFlags.none )
+			pos = BodyLimitFlags.bottom;*/
 		
-		
-		if ( pos == BodyLimitFlags.none )
-			pos = BodyLimitFlags.bottom;
-		
+		return pos;
+	}
+	
+	function applyReact( a:Body, b:Body, pos:BodyLimitFlags ):Bool
+	{
 		// update position and velocity
 		switch( pos )
 		{
 			case BodyLimitFlags.top:
 				
-				b.contacts.fixedLimits |= BodyLimitFlags.top;
-				b.setY( b2.shape.aabbYMax );
-				if ( b.physic.vY < 0 )
-					b.physic.vY = 0;
+				if ( (b.contacts.flags & BodyContactsFlags.platformBottom != 0 ||
+					b.contacts.flags & BodyContactsFlags.wall != 0) )
+				{
+					a.contacts.fixedLimits |= BodyLimitFlags.top;
+					a.setY( b.shape.aabbYMax );
+					if ( a.physic.vY < 0 )
+						a.physic.vY = 0;
+					return true;
+				}
 				
 			case BodyLimitFlags.bottom:
 				
-				b.contacts.fixedLimits |= BodyLimitFlags.bottom;
-				b.setY( b2.shape.aabbYMin - b.shape.getH() );
-				if ( b.physic.vY > 0 )
-					b.physic.vY = 0;
+				if ( (b.contacts.flags & BodyContactsFlags.platformTop != 0 ||
+					b.contacts.flags & BodyContactsFlags.wall != 0) )
+				{
+					a.contacts.fixedLimits |= BodyLimitFlags.bottom;
+					a.setY( b.shape.aabbYMin - a.shape.getH() );
+					if ( a.physic.vY > 0 )
+						a.physic.vY = 0;
+					return true;
+				}
 				
 			case BodyLimitFlags.left:
 				
-				b.contacts.fixedLimits |= BodyLimitFlags.left;
-				b.setX( b2.shape.aabbXMax );
-				if ( b.physic.vX < 0 )
-					b.physic.vX = 0;
+				if ( (b.contacts.flags & BodyContactsFlags.platformRight != 0 ||
+					b.contacts.flags & BodyContactsFlags.wall != 0) )
+				{
+					a.contacts.fixedLimits |= BodyLimitFlags.left;
+					a.setX( b.shape.aabbXMax );
+					if ( a.physic.vX < 0 )
+						a.physic.vX = 0;
+					return true;
+				}
 				
 			case BodyLimitFlags.right:
 				
-				b.contacts.fixedLimits |= BodyLimitFlags.right;
-				b.setX( b2.shape.aabbXMin - b.shape.getW() );
-				if ( b.physic.vX > 0 )
-					b.physic.vX = 0;
-			
+				if ( (b.contacts.flags & BodyContactsFlags.platformLeft != 0 ||
+					b.contacts.flags & BodyContactsFlags.wall != 0) )
+				{
+					a.contacts.fixedLimits |= BodyLimitFlags.right;
+					a.setX( b.shape.aabbXMin - a.shape.getW() );
+					if ( a.physic.vX > 0 )
+						a.physic.vX = 0;
+					return true;
+				}
+				
 			default:
 				
-				#if debug
+				return false;
+				/*#if debug
 					trace("no contact direction?");
-				#end
+				#end*/
 		}
+		return false;
+	}
+	
+	function updatePosBody( a:Body, list:Array<Body>, space:ISpace, num:Int = 0 )
+	{
+		//trace( num, list.length, a.shape.getHitArea( list[0].shape ) );
 		
-		list = space.hitTestActive( b );
-		BodyContact.classBodiesByContactArea( b.shape, list );
-		updatePosBody( b, list, space, num + 1 );
+		if ( list.length < 1 || a.shape.getHitArea( list[0].shape ) <= 0 || num > MAX_RECURSIVE )
+			return;
+		
+		// calculate last position
+		var b = list[0];
+		var pos = getPos( a, b );
+		
+		if ( applyReact( a, b, pos ) )
+		{
+			list = space.hitTestActive( a );
+			BodyContact.classBodiesByContactArea( a.shape, list );
+			updatePosBody( a, list, space, num + 1 );
+		}
+		else
+		{
+			list.shift();
+			updatePosBody( a, list, space, num + 1 );
+		}
 	}
 	
 	public function removeBody( body:Body ):Void
