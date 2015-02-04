@@ -6,7 +6,7 @@
 	<meta title="test" package="test" version="1.0.0" company="Namide" />
 	
 	<!-- output -->
-	<app main="dl.samples.PlatformGame" file="PlatformGame" path="bin-nme" />
+	<app main="dl.samples.LevelGeneration" file="LevelGeneration" path="bin-nme" />
 	
 	<window background="#000000" fps="50" />
 	<window width="1280" height="720" unless="mobile" />

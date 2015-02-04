@@ -248,7 +248,7 @@ class PlatformPhysicSystem
 		}
 	}
 	
-	public function removeBody( body:Body ):Void
+	public inline function removeBody( body:Body ):Void
 	{
 		all.remove( body );
 	}

@@ -27,16 +27,16 @@ class Player extends Sprite
 	{
 		super();
 		
-		this.x = x * PlatformGame.TILE_SIZE;
-		this.y = y * PlatformGame.TILE_SIZE;
+		this.x = x * LevelGeneration.TILE_SIZE;
+		this.y = y * LevelGeneration.TILE_SIZE;
 		
-		var shape = new ShapeRect( PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
-		body = new Body( shape, x * PlatformGame.TILE_SIZE, y * PlatformGame.TILE_SIZE );
+		var shape = new ShapeRect( LevelGeneration.TILE_SIZE, LevelGeneration.TILE_SIZE );
+		body = new Body( shape, x * LevelGeneration.TILE_SIZE, y * LevelGeneration.TILE_SIZE );
 		body.addBodyPhysic( BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity );
 		body.addBodyContact( BodyContactsFlags.active );
 		
 		graphics.beginFill( 0x0000CC );
-		graphics.drawRect( 0, 0, PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
+		graphics.drawRect( 0, 0, LevelGeneration.TILE_SIZE, LevelGeneration.TILE_SIZE );
 		graphics.endFill();
 	}
 	
@@ -55,21 +55,21 @@ class Floor extends Sprite
 	{
 		super();
 		
-		this.x = x * PlatformGame.TILE_SIZE;
-		this.y = y * PlatformGame.TILE_SIZE;
+		this.x = x * LevelGeneration.TILE_SIZE;
+		this.y = y * LevelGeneration.TILE_SIZE;
 		
-		var shape = new ShapeRect( PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
-		body = new Body( shape, x * PlatformGame.TILE_SIZE, y * PlatformGame.TILE_SIZE );
+		var shape = new ShapeRect( LevelGeneration.TILE_SIZE, LevelGeneration.TILE_SIZE );
+		body = new Body( shape, x * LevelGeneration.TILE_SIZE, y * LevelGeneration.TILE_SIZE );
 		body.addBodyPhysic();
 		body.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop );
 		
 		graphics.beginFill( 0xCC0000 );
-		graphics.drawRect( 0, 0, PlatformGame.TILE_SIZE, PlatformGame.TILE_SIZE );
+		graphics.drawRect( 0, 0, LevelGeneration.TILE_SIZE, LevelGeneration.TILE_SIZE );
 		graphics.endFill();
 	}	
 }
  
-class PlatformGame extends Sprite
+class LevelGeneration extends Sprite
 {
 	public static inline var TILE_SIZE:Int = 32;
 	static var STAGE:Stage;
@@ -87,7 +87,7 @@ class PlatformGame extends Sprite
 		STAGE.scaleMode = StageScaleMode.NO_SCALE;
 		STAGE.align = StageAlign.TOP_LEFT;
 		
-		new PlatformGame();
+		new LevelGeneration();
 	}
 	
 	public function new() 

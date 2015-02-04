@@ -5,7 +5,7 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="application.xml" />
-    <movie fps="60" />
+    <movie fps="50" />
     <movie width="1280" />
     <movie height="720" />
     <movie version="3" />
@@ -26,7 +26,7 @@
     <option directives="openfl=2.2.4&#xA;lime=2.0.6&#xA;actuate=1.8.1&#xA;tools=2.0.6&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="dl.samples.PlatformGame" />
+    <option mainClass="dl.samples.LevelGeneration" />
     <option enabledebug="True" />
     <option additional="-swf-version 11.2" />
   </build>
@@ -38,7 +38,7 @@
   <compileTargets>
     <compile path="src\dl\Main.hx" />
     <compile path="src\dl\StressTestSpaces.hx" />
-    <compile path="src\dl\samples\PlatformGame.hx" />
+    <compile path="src\dl\samples\LevelGeneration.hx" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
@@ -56,7 +56,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="OpenDocument" />
-    <option testMovieCommand="bin-nme/flash/bin/PlatformGame.swf" />
+    <option testMovieCommand="bin-nme/flash/bin/LevelGeneration.swf" />
   </options>
   <!-- Plugin storage -->
   <storage />

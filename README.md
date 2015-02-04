@@ -14,18 +14,22 @@ Roadmap
 ---
 
 * sockets
+	* client
+	* server
 
 * physic
-	* platform jump
+	* 90% platform jump
 	* collisions
-		* squares
-		* space grid
+		* 70% squares
+		* 100% space grid
+		* 0% multi-player
 	* reaction
-		* mass (body)
-		* velocity (body)
-		* priority
+		* 0% mass (body)
+		* 0% velocity (body)
+		* 0% priority
 			1. movables (with velocity and mass)
 			2. fixes (by area)
 * input
-	* gamepad
+	* 0% gamepad
+	* 90% keyboard
 	

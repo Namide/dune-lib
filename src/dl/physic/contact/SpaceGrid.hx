@@ -1,5 +1,5 @@
 package dl.physic.contact ;
-import dl.math.Calcul;
+import dl.utils.Calcul;
 import dl.physic.body.Body;
 import dl.physic.body.ShapePoint;
 import dl.physic.contact.BodyContact.BodyContactsFlags;
