@@ -15,8 +15,8 @@ class PlatformPhysicSystem
 	
 	static inline var MAX_RECURSIVE:Int = 5; 
 	
-	public var gX:Float = 0;
-	public var gY:Float = 30;
+	public var gX:Float = 0.0;
+	public var gY:Float = 2.0;
 	
 	public function new( gravityY = 2.0 ) 
 	{

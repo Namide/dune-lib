@@ -47,16 +47,29 @@ class PlatformPlayerController extends Keyboard
 	
 	//public var wallBrake:Float = 1;
 
-	public function new( body:Body, platformPhysicSystem:PlatformPhysicSystem, frameDelaySec:Float ) 
+	public function new( body:Body, frameDelaySec:Float = 1/50 ) 
 	{
 		super(0.08);
 		
 		_body = body;
-		_fDelay = frameDelaySec;
 		_actionPressed = false;
 		
-		setRun( 12 * 32, 0.06 );
-		setJump( 1.5 * 32, 3 * 32, 3 * 32, 6 * 32, 0.06, 0.3*1000, platformPhysicSystem.gY );
+		_fDelay = frameDelaySec;
+		init();
+	}
+	
+	public function init( 	runPxSec:Float = 12.0 * 32, 
+							jumpHeightMin:Float = 1.5 * 32,
+							jumpHeightMax:Float = 3.0 * 32,
+							jumpLengthMin:Float = 3.0 * 32,
+							jumpLengthMax:Float = 6.0 * 32,
+							gravityY:Float = 2.0 )
+	{
+		var accTime:Float = 0.06;
+		var timeLock:Float = 0.3;//0.3 * 1000;
+		
+		setRun( runPxSec, accTime );
+		setJump( jumpHeightMin, jumpHeightMax , jumpLengthMin, jumpLengthMax, accTime, timeLock, gravityY );
 	}
 	
 	function setRun( vel:Float, accTime:Float ):Void {

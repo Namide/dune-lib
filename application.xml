@@ -8,7 +8,7 @@
 	<!-- output -->
 	<app main="dl.samples.LevelGeneration" file="LevelGeneration" path="bin-nme" />
 	
-	<window background="#000000" fps="50" />
+	<window background="#000000" fps="60" />
 	<window width="1280" height="720" unless="mobile" />
 	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
 	
