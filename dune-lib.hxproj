@@ -2,15 +2,15 @@
 <project version="2">
   <!-- Output SWF options -->
   <output>
-    <movie outputType="Application" />
+    <movie outputType="CustomBuild" />
     <movie input="" />
     <movie path="application.xml" />
-    <movie fps="50" />
+    <movie fps="60" />
     <movie width="1280" />
     <movie height="720" />
-    <movie version="3" />
+    <movie version="1" />
     <movie minorVersion="0" />
-    <movie platform="NME" />
+    <movie platform="Lime" />
     <movie background="000000" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
@@ -26,9 +26,9 @@
     <option directives="openfl=2.2.4&#xA;lime=2.0.6&#xA;actuate=1.8.1&#xA;tools=2.0.6&#xA;no-compilation&#xA;openfl-flash&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="dl.samples.LevelGeneration" />
+    <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="-swf-version 11.2" />
+    <option additional="-swf-version 11.2&#xA;-debug " />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
@@ -40,23 +40,19 @@
     <compile path="src\dl\StressTestSpaces.hx" />
     <compile path="src\dl\samples\LevelGeneration.hx" />
   </compileTargets>
-  <!-- Assets to embed into the output SWF -->
-  <library>
-    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
-  </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand />
+  <preBuildCommand>"$(CompilerPath)/haxelib" run lime build "$(OutputFile)" $(TargetBuild) -$(BuildConfig) -Dfdb</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
-    <option testMovie="OpenDocument" />
-    <option testMovieCommand="bin-nme/flash/bin/LevelGeneration.swf" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
   <storage />
