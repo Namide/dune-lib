@@ -6,6 +6,7 @@ package dl.utils ;
  */
 class Timer
 {
+	static var STAGE:flash.display.Stage;
 	var _realT:Float;
 	
 	public var frameRest( default, null ):Float;
@@ -28,9 +29,17 @@ class Timer
 		
 		distord = 1;
 		frameTime = 1 / FPS;
+		
+		STAGE = flash.Lib.current.stage;
+		STAGE.addEventListener( flash.events.Event.ENTER_FRAME, update );
 	}
 	
-	public function update():Void
+	public function dispose():Void
+	{
+		STAGE.removeEventListener( flash.events.Event.ENTER_FRAME, update );
+	}
+	
+	function update( ?e:Dynamic ):Void
 	{
 		if ( pause )
 		{

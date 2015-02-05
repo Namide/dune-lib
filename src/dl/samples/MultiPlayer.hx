@@ -1,5 +1,4 @@
 package dl.samples;
-import dl.samples.LevelGeneration.Player;
 import dl.utils.PlatformLevelGen;
 import dl.utils.Timer;
 import dl.physic.body.Body;
@@ -13,15 +12,11 @@ import flash.display.Sprite;
 import flash.display.Stage;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
+import flash.events.Event;
 import flash.Lib;
 import haxe.Constraints.Function;
 
-/**
- * ...
- * @author Namide
- */
-
- class Floor extends Sprite
+class Floor extends Sprite
 {
 	public function new( body:Body )
 	{
@@ -58,7 +53,11 @@ class Player extends Floor
 	}
 }
 
-class LevelGeneration extends Sprite
+/**
+ * ...
+ * @author Namide
+ */
+class MultiPlayer extends Sprite
 {
 	public static inline var TILE_SIZE:Int = 32;
 	static var STAGE:Stage;
@@ -76,13 +75,19 @@ class LevelGeneration extends Sprite
 		STAGE.scaleMode = StageScaleMode.NO_SCALE;
 		STAGE.align = StageAlign.TOP_LEFT;
 		
-		new LevelGeneration();
+		new MultiPlayer();
 	}
 	
 	public function new() 
 	{
 		super();
+		
+		/*for ( i in 0...5 )
+			addFloor( i, 5 );
+		
+		addFloor( 2, 4 );*/
 		init();
+		
 	}
 	
 	public function init()
@@ -92,6 +97,7 @@ class LevelGeneration extends Sprite
 		time = new Timer(50, 0);
 		
 		// ENUM GENERATION
+		
 		var levelGrid:Array<Array<UInt>> = [
 			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
 			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
@@ -168,8 +174,19 @@ class LevelGeneration extends Sprite
 		
 		
 		
-		//STAGE.addEventListener( Event.ENTER_FRAME, function(e:Dynamic) { time.update(); } );
+		
+		
+		
+		/*runPxSec:Float = 12 * 32, 
+		jumpHeightMin:Float = 1.5 * 32,
+		jumpHeightMax:Float = 3 * 32,
+		jumpLength:Float = 6 * 32*/
+		// BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity 
+		
 		time.onFrameUpdate = refresh;
+		
+		
+		// BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop
 	}
 	
 	public function refresh( dt:Float, lastUpdateForFrame:Bool )
@@ -181,6 +198,8 @@ class LevelGeneration extends Sprite
 		
 		if ( lastUpdateForFrame )
 			player.refresh();
+		
+		//trace( (haxe.Timer.stamp() - t) + "s" );
 	}
 	
 	/*public function addFloor( x:Int, y:Int)

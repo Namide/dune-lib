@@ -1,0 +1,101 @@
+
+#--cwd src
+#-lib heaps
+#-D resourcesPath=../res
+#-D source-map-content
+
+# --------------------------------
+# 			STRESS TEST
+# --------------------------------
+
+--macro Sys.println('Compile: stress test space grid')
+-cp src
+-main dl.samples.StressTestSpaces
+-swf bin-all/StressTestSpaces.swf
+-swf-header 1280:420:60:FFFFFF
+-swf-version 11.8
+-dce full
+
+
+# --------------------------------
+# 			TEST SPACE
+# --------------------------------
+
+--next
+--macro Sys.println('Compile: test space')
+-cp src
+-main dl.samples.TestSpaces
+-swf bin-all/TestSpaces.swf
+-swf-header 1280:420:60:FFFFFF
+-swf-version 11.8
+-dce full
+
+
+# --------------------------------
+# 			TCHAT SERVER (NEKO)
+# --------------------------------
+
+--next
+--macro Sys.println('Compile: t\'chat server')
+-cp src
+-main dl.samples.SocketServer
+-neko bin-all/server/SocketServer.n
+-dce full
+
+
+# --------------------------------
+# 			TCHAT CLIENT (SWF)
+# --------------------------------
+
+--next
+--macro Sys.println('Compile: t\'chat client')
+-cp src
+-main dl.samples.SocketClientTchat
+-swf bin-all/SocketClientTchat.swf
+-swf-header 1280:420:60:FFFFFF
+-swf-version 11.8
+-dce full
+--macro Sys.println('To use the t\'chat, starts by run the server with bin-all/server/run-server.bat')
+
+
+# --------------------------------
+# 			LEVEL GENERATION
+# --------------------------------
+
+--next
+--macro Sys.println('Compile: level generation')
+-cp src
+-main dl.samples.LevelGeneration
+-swf bin-all/LevelGeneration.swf
+-swf-header 1280:420:60:FFFFFF
+-swf-version 11.8
+-dce full
+
+
+
+
+#--macro Sys.println('2d')
+#--cwd 2d
+#2d_swf.hxml
+#--next
+#2d_swf.hxml
+
+#--next
+#--macro Sys.println('basic')
+#--cwd ../basic
+#basic_swf.hxml
+#--next
+#basic_wgl.hxml
+
+#--next
+#--macro Sys.println('bounds')
+#--cwd ../bounds
+#bounds.hxml
+
+#--next
+#--macro Sys.println('done')
+
+
+
+#-main dl.samples.StressTestSpaces
+#2d_swf.hxml

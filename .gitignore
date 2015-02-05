@@ -1,4 +1,6 @@
 bin-nme/
+bin-all/
+bin/
 
 #################
 ## Eclipse
