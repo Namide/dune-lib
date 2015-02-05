@@ -80,6 +80,10 @@ abstract BodyContactsFlags(Int)
 	* It's usable for life, ennemy, ammo...
 	*/
 	var item = 128;
+	
+	/**
+	 * This object don't move
+	 */
 	var fix = 256;
 	
 	inline function new( i:Int ) { this = i; }

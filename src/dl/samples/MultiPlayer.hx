@@ -99,7 +99,7 @@ class MultiPlayer extends Sprite
 		var s = new ShapeRect( USER_SCALE * TILE_SIZE, USER_SCALE * TILE_SIZE );
 		var b = new Body( s, TILE_SIZE, TILE_SIZE );
 		var p = new Player( b, id );
-		//b.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.wall );
+		b.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.wall );
 		physic.addBody( b );
 		space.addBody( b );
 		STAGE.addChild( p );

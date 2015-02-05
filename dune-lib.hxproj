@@ -38,7 +38,6 @@
   <compileTargets>
     <compile path="src\dl\Main.hx" />
     <compile path="src\dl\StressTestSpaces.hx" />
-    <compile path="src\dl\samples\LevelGeneration.hx" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

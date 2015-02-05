@@ -256,13 +256,9 @@ class SpaceGrid implements ISpace
 		var n = Lambda.find( _active, function( n:Node ) { return n.body == b; } );
 		
 		if ( n == null )
-			[];
+			return [];
 		
-		//var c = b.contacts;
-		//c.clear();
 		n.refresh( _pitchXExp, _pitchYExp, _grid, false );
-		//c.change( _grid.getContacts( n ) );
-		//c.state = BodyContactState.contacts;
 		return _grid.getContacts( n );//b.contacts.list;
 	}
 	
@@ -381,7 +377,9 @@ class SpaceGrid implements ISpace
 				}
 			}
 		}
-		else
+		
+		
+		if ( body.contacts.flags & BodyContactsFlags.active != 0 )
 		{
 			var node:Node = Lambda.find( _active, function( n:Node ):Bool { return n.body == body; } );
 			if ( node != null )
