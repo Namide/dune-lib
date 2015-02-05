@@ -253,9 +253,6 @@ class SockServerScan
 					}
 				}
 				
-					
-				
-			
 			case "/kick" :
 				
 				if ( a.length > 1 )

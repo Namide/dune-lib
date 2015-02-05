@@ -92,8 +92,18 @@ class SockClientUI extends Sprite
 		refreshText();
 	}
 	
-	public inline function refreshUsers( t:String )
+	public inline function refreshUsers( list:Array<SockClientUser> )
 	{
+		list.sort( function(a:SockClientUser, b:SockClientUser) { return (a.name > b.name)?1:-1; } );
+		//var t = '<p align="center"><b>' + _room + "</b> (" + list.length + ")</p><br/>";
+		var t = '';
+		for ( u in list )
+		{
+			if ( u.name != null )
+				t += " <i>"+u.name+"</i><br/>";
+		}
+		t += "<br/><br/><i>List of commands:<br/>/help</i>";
+		
 		_list.htmlText = t;
 	}
 	

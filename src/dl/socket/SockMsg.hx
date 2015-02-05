@@ -87,7 +87,7 @@ class SockMsgGen
 		return new SockMsg( Cmd.transferDatasServer, o );
 	}
 	
-	public static function getTransferDatasClient( data:String ):SockMsg
+	public static function getTransferDatasClient( data:Dynamic ):SockMsg
 	{		
 		//var o:TransferDatasClient = { d:data, i:userId };
 		return new SockMsg( Cmd.transferDatasClient, data );
@@ -137,7 +137,7 @@ class SockMsg
 				
 			case Cmd.transferDatasServer :
 				var d:TransferDatasServer = haxe.Json.parse( text );
-				brut.struct = text;// d;
+				brut.struct = d;
 				
 			case Cmd.other:
 				brut.struct = text;

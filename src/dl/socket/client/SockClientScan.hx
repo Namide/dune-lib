@@ -19,8 +19,9 @@ class SockClientScan
 	public var other:Array<SockClientUser>;
 	
 	public var onChat:String->Void;
-	public var onUsers:String->Void;
+	public var onUsers:Array<SockClientUser>->Void;
 	public var onClear:Void->Void;
+	public var onConnected:SockClientUser->Void;
 	public var onGame:TransferDatasServer->Void;
 	
 	var _room:String;
@@ -37,11 +38,11 @@ class SockClientScan
 		
 		_room = SockConfig.ROOM_DEFAULT;
 		_socket = new SockPipe();
-		_socket.onConnected = onConnected;
+		_socket.onConnected = _onConnected;
 		_socket.onReceive = appliServer;
 	}
 	
-	function onConnected( socket:SockPipe )
+	function _onConnected( socket:SockPipe )
 	{
 		var u:UserData = { };
 		
@@ -62,6 +63,12 @@ class SockClientScan
 		
 		var msg:SockMsg = SockMsgGen.getSend( SendSubject.connect, u );
 		return _socket.send( msg );
+	}
+	
+	public inline function transfertData( text:Dynamic )
+	{
+		if ( text != null )
+			_socket.send( SockMsgGen.getTransferDatasClient( text ) );
 	}
 	
 	public function appliChat( text:String ):Void
@@ -221,6 +228,9 @@ class SockClientScan
 				other.remove( u );
 			
 			me.id = o.i;
+			
+			if ( onConnected != null )
+				onConnected( me );
 		}
 		
 		if ( o.n != null )
@@ -309,14 +319,7 @@ class SockClientScan
 		
 		// Print user list
 		var list = (me.id > -1) ? other.concat([me]) : other.concat([]);
-		list.sort( function(a:SockClientUser, b:SockClientUser) { return (a.name > b.name)?1:-1; } );
-		var roomList = '<p align="center"><b>' + _room + "</b> (" + list.length + ")</p><br/>";
-		for ( u in list )
-		{
-			if ( u.name != null ) 		roomList += " <i>"+u.name+"</i><br/>";
-		}
-		roomList += "<br/><br/><i>List of commands:<br/>/help</i>";
-		onUsers(roomList);
+		onUsers(list);
 	}
 	
 	function onChatMsg( o:Chat )

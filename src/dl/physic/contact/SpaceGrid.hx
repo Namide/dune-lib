@@ -365,21 +365,30 @@ class SpaceGrid implements ISpace
 			if ( body.contacts.flags & BodyContactsFlags.fix != 0 )
 			{
 				var node:Node = Lambda.find( _passiveFixed, function( n:Node ):Bool { return n.body == body; } );
-				node.removeFromGrid( _grid );
-				_passiveFixed.remove( node );
+				if ( node != null )
+				{
+					node.removeFromGrid( _grid );
+					_passiveFixed.remove( node );
+				}
 			}
 			else
 			{
 				var node:Node = Lambda.find( _passive, function( n:Node ):Bool { return n.body == body; } );
-				node.removeFromGrid( _grid );
-				_passive.remove( node );
+				if ( node != null )
+				{
+					node.removeFromGrid( _grid );
+					_passive.remove( node );
+				}
 			}
 		}
 		else
 		{
 			var node:Node = Lambda.find( _active, function( n:Node ):Bool { return n.body == body; } );
-			node.removeFromGrid( _grid );
-			_active.remove( node );
+			if ( node != null )
+			{
+				node.removeFromGrid( _grid );
+				_active.remove( node );
+			}
 		}
 		all.remove( body );
 	}

@@ -14,8 +14,8 @@ Roadmap
 ---
 
 * sockets
-	* client
-	* server
+	* 80% client (only flash)
+	* 80% server (only neko)
 
 * physic
 	* 90% platform jump
