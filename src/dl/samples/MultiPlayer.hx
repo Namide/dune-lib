@@ -99,6 +99,7 @@ class MultiPlayer extends Sprite
 		var s = new ShapeRect( USER_SCALE * TILE_SIZE, USER_SCALE * TILE_SIZE );
 		var b = new Body( s, TILE_SIZE, TILE_SIZE );
 		var p = new Player( b, id );
+		//b.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.wall );
 		physic.addBody( b );
 		space.addBody( b );
 		STAGE.addChild( p );
@@ -141,7 +142,7 @@ class MultiPlayer extends Sprite
 				}
 			}
 			
-			trace("me:"+playerMe.id, "otherLength:"+playerOther.length);
+			//trace("me:"+playerMe.id, "otherLength:"+playerOther.length);
 		}
 		
 		sockets.onChat = flash.Lib.trace;
@@ -163,7 +164,7 @@ class MultiPlayer extends Sprite
 			var p:Player = Lambda.find( playerOther, function(pl:Player) { return pl.id == tds.i; } );
 			
 			var o:Dynamic = Json.parse( tds.d );
-			trace( o );
+			//trace( o );
 			// {type:"pos", "x":playerMe.x, "y":playerMe.y}
 			if ( o.type == "pos" )
 			{

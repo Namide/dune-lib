@@ -12,7 +12,7 @@
 -cp src
 -main dl.samples.StressTestSpaces
 -swf bin-all/StressTestSpaces.swf
--swf-header 1280:420:60:FFFFFF
+-swf-header 1280:720:60:FFFFFF
 -swf-version 11.8
 -dce full
 
@@ -26,7 +26,7 @@
 -cp src
 -main dl.samples.TestSpaces
 -swf bin-all/TestSpaces.swf
--swf-header 1280:420:60:FFFFFF
+-swf-header 1280:720:60:FFFFFF
 -swf-version 11.8
 -dce full
 
@@ -52,7 +52,7 @@
 -cp src
 -main dl.samples.SocketClientTchat
 -swf bin-all/SocketClientTchat.swf
--swf-header 1280:420:60:FFFFFF
+-swf-header 1280:720:60:FFFFFF
 -swf-version 11.8
 -dce full
 --macro Sys.println('To use the t\'chat, starts by run the server with bin-all/server/run-server.bat')
@@ -67,10 +67,23 @@
 -cp src
 -main dl.samples.LevelGeneration
 -swf bin-all/LevelGeneration.swf
--swf-header 1280:420:60:FFFFFF
+-swf-header 1280:720:60:FFFFFF
 -swf-version 11.8
 -dce full
 
+
+# --------------------------------
+# 			MULTI-PLAYER
+# --------------------------------
+
+--next
+--macro Sys.println('Compile: multi-player')
+-cp src
+-main dl.samples.MultiPlayer
+-swf bin-all/MultiPlayer.swf
+-swf-header 1280:720:60:FFFFFF
+-swf-version 11.8
+-dce full
 
 
 

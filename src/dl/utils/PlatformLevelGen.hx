@@ -63,11 +63,14 @@ class PlatformLevelGen
 	
 	public function generate( levelData:LevelDatas, platformPhysicSystem:PlatformPhysicSystem )
 	{
-		genPlayer( levelData.playerDatas, platformPhysicSystem.gY, levelData.tileSize );
-		genGrid( levelData.levelGrid, levelData.tilesDatas, levelData.tileSize );
+		if ( levelData.playerDatas != null )
+			genPlayer( levelData.playerDatas, platformPhysicSystem.gY, levelData.tileSize );
+		
+		if ( levelData.levelGrid != null )
+			genGrid( levelData.levelGrid, levelData.tilesDatas, levelData.tileSize );
 	}
 	
-	function genPlayer( playerData:PlayerData, gravity:Float, tileSize:Float )
+	public function genPlayer( playerData:PlayerData, gravity:Float, tileSize:Float )
 	{
 		var shape = new ShapeRect( playerData.size.x * tileSize, playerData.size.y * tileSize );
 		var body = new Body( shape, playerData.posTile.x * tileSize, playerData.posTile.y * tileSize);
@@ -86,7 +89,7 @@ class PlatformLevelGen
 			playerData.graphic( body, playerControl );
 	}
 	
-	function genGrid( grid:Array<Array<UInt>>, tilesData:Array<TileData>, size:Float )
+	public function genGrid( grid:Array<Array<UInt>>, tilesData:Array<TileData>, size:Float )
 	{
 		for ( y in 0...grid.length )
 		{
