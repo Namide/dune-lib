@@ -65,7 +65,17 @@ class PlatformPhysicSystem
 			{
 				b.contacts.fixedLimits = BodyLimitFlags.none;
 				b.contacts.classByArea();
-				updatePosBody( b, b.contacts.list, space );
+				updatePosBody( b, /*b.contacts.list*/b.contacts.list.filter(function(b:Body) { return b.contacts.flags & BodyContactsFlags.drivable == 0; } ), space );
+			}
+		}
+		
+		for ( b in all )
+		{
+			if ( b.physic.flags & BodyPhysicFlags.dependant != 0 )
+			{
+				//b.contacts.fixedLimits = BodyLimitFlags.none;
+				//b.contacts.classByArea();
+				updatePosBody( b, /*b.contacts.list*/b.contacts.list.filter(function(b:Body) { return b.contacts.flags & BodyContactsFlags.drivable != 0; } ), space, 0, true );
 			}
 		}
 	}
@@ -75,12 +85,6 @@ class PlatformPhysicSystem
 		var ba0 = ( a.print != null ) ? a.print : a.shape;
 		var bb0 = ( b.print != null ) ? b.print : b.shape;
 		
-		/*for ( a in a.contacts.classByArea() )
-		{
-			var w = Math.min( a.shape.aabbXMax, a.shape.aabbXMax ) - Math.max( a.shape.aabbXMin, a.shape.aabbXMin );
-			var h = Math.min( a.shape.aabbYMax, a.shape.aabbYMax ) - Math.max( a.shape.aabbYMin, a.shape.aabbYMin );
-		}*/
-		
 		var pos:BodyLimitFlags = 0;
 		var corner:Int = 0;
 		if ( ba0.aabbXMin >= bb0.aabbXMax ) { pos |= BodyLimitFlags.left; corner++; }
@@ -88,7 +92,7 @@ class PlatformPhysicSystem
 		if ( ba0.aabbYMin >= bb0.aabbYMax ) { pos |= BodyLimitFlags.top; corner++; }
 		if ( ba0.aabbYMax <= bb0.aabbYMin ) { pos |= BodyLimitFlags.bottom; corner++; }
 		
-		
+		// determine the contact border by the previous position
 		if ( corner > 1 )
 		{
 			var ba1 = a.shape;
@@ -108,20 +112,24 @@ class PlatformPhysicSystem
 				if ( pos & BodyLimitFlags.right != 0 )
 				{
 					var Aw = ba1.aabbXMax - bb1.aabbXMin;
-					if ( Vx * Ah > Vy * Aw ) {
+					if ( Vx * Ah > Vy * Aw )
+					{
 						pos = BodyLimitFlags.right;
 					}
-					else {
+					else
+					{
 						pos = BodyLimitFlags.bottom;
 					}
 				}
 				else if ( pos & BodyLimitFlags.left != 0 )
 				{
 					var Aw = bb1.aabbXMax - ba1.aabbXMin;
-					if ( Vx * Ah > Vy * Aw ) {
+					if ( Vx * Ah > Vy * Aw )
+					{
 						pos = BodyLimitFlags.left;
 					}
-					else {
+					else
+					{
 						pos = BodyLimitFlags.bottom;
 					}
 				}
@@ -145,24 +153,28 @@ class PlatformPhysicSystem
 				else if ( pos & BodyLimitFlags.left != 0 )
 				{
 					var Aw = bb1.aabbXMax - ba1.aabbXMin;
-					if ( Vx * Ah > Vy * Aw ) {
+					if ( Vx * Ah > Vy * Aw )
+					{
 						pos = BodyLimitFlags.left;
 					}
-					else {
+					else
+					{
 						pos = BodyLimitFlags.top;
 					}
 				}
 			}
 		}
 		
-		/*if ( pos == BodyLimitFlags.none )
-			pos = BodyLimitFlags.bottom;*/
-		
 		return pos;
 	}
 	
-	function applyReact( a:Body, b:Body, pos:BodyLimitFlags ):Bool
+	function applyReact( a:Body, b:Body, pos:BodyLimitFlags, reactBody:Bool ):Bool
 	{
+		throw "to do (react body)";
+		// TODO
+		// b.contacts.fixedLimits & BodyLimitFlags.bottom != 0
+		
+		
 		// update position and velocity
 		switch( pos )
 		{
@@ -224,7 +236,7 @@ class PlatformPhysicSystem
 		return false;
 	}
 	
-	function updatePosBody( a:Body, list:Array<Body>, space:ISpace, num:Int = 0 )
+	function updatePosBody( a:Body, list:Array<Body>, space:ISpace, num:Int = 0, complexCol:Bool = false )
 	{
 		//trace( num, list.length, a.shape.getHitArea( list[0].shape ) );
 		
@@ -235,16 +247,16 @@ class PlatformPhysicSystem
 		var b = list[0];
 		var pos = getPos( a, b );
 		
-		if ( applyReact( a, b, pos ) )
+		if ( applyReact( a, b, pos, complexCol ) )
 		{
 			list = space.hitTestActive( a );
 			BodyContact.classBodiesByContactArea( a.shape, list );
-			updatePosBody( a, list, space, num + 1 );
+			updatePosBody( a, list, space, num + 1, complexCol );
 		}
 		else
 		{
 			list.shift();
-			updatePosBody( a, list, space, num + 1 );
+			updatePosBody( a, list, space, num + 1, complexCol );
 		}
 	}
 	

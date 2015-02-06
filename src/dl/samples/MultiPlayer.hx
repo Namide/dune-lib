@@ -99,7 +99,7 @@ class MultiPlayer extends Sprite
 		var s = new ShapeRect( USER_SCALE * TILE_SIZE, USER_SCALE * TILE_SIZE );
 		var b = new Body( s, TILE_SIZE, TILE_SIZE );
 		var p = new Player( b, id );
-		//b.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.wall );
+		b.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.drivable );
 		physic.addBody( b );
 		space.addBody( b );
 		STAGE.addChild( p );
@@ -211,7 +211,7 @@ class MultiPlayer extends Sprite
 			jumpTileWidthMin: 3,
 			jumpTileWidthMax: 6,
 			posTile: {x:1,y:1},
-			contacts: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity,
+			contacts: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity | BodyContactsFlags.drivable,
 			size:{x:USER_SCALE,y:USER_SCALE},
 			graphic:function(b:Body, c:PlatformPlayerController)
 			{

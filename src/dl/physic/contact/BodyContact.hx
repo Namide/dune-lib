@@ -80,7 +80,18 @@ abstract BodyContactsFlags(Int)
 	* It's usable for life, ennemy, ammo...
 	*/
 	var item = 128;
+	
+	/**
+	 * Never move (like wall or floor)
+	 */
 	var fix = 256;
+	
+	/**
+	 * Can be push by an active object.
+	 * Must be added with passive flag.
+	 */
+	var drivable = 512;
+	
 	
 	inline function new( i:Int ) { this = i; }
 	
@@ -134,7 +145,7 @@ class BodyContact
 		list.sort( function( a:Body, b:Body ):Int {
 			if ( parent.shape.getHitArea( a.shape ) < parent.shape.getHitArea( b.shape ) )
 				return 1;
-			return -1;			
+			return -1;
 		} );
 		//return list;
 	}
