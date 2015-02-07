@@ -26,7 +26,7 @@ typedef LevelDatas = {
 
 typedef TileData = {
 	var id:UInt;
-	var contacts:BodyContactsFlags; // BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop
+	var contacts:BodyContactsFlags;
 	@:optional var graphic:Body->Void;
 }
 
@@ -37,7 +37,8 @@ typedef PlayerData = {
 	var jumpTileWidthMin:Float;
 	var jumpTileWidthMax:Float;
 	var posTile:Pos;
-	var contacts:BodyPhysicFlags; // BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity 
+	var contacts:BodyContactsFlags;
+	var physic:BodyPhysicFlags;
 	var size:Pos;
 	//@:optional var graphic:Dynamic;
 	@:optional var graphic:Body->PlatformPlayerController->Void;
@@ -72,10 +73,10 @@ class PlatformLevelGen
 	
 	public function genPlayer( playerData:PlayerData, gravity:Float, tileSize:Float )
 	{
-		var shape = new ShapeRect( playerData.size.x * tileSize, playerData.size.y * tileSize );
+		var shape = new ShapeRect( playerData.size.x, playerData.size.y );
 		var body = new Body( shape, playerData.posTile.x * tileSize, playerData.posTile.y * tileSize);
-		body.addBodyPhysic( playerData.contacts );
-		body.addBodyContact( BodyContactsFlags.active );
+		body.addBodyPhysic( playerData.physic );
+		body.addBodyContact( playerData.contacts );
 		
 		var playerControl = new PlatformPlayerController( body );
 		playerControl.init( playerData.runTileSec * tileSize,

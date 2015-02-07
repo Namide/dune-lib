@@ -5,9 +5,9 @@ import dl.physic.body.Body;
 abstract BodyPhysicFlags(Int)
 {
 	/**
-	 * Your body never move
+	 * Not active physic (like an IA) but an other body can interract with this 
 	 */
-	//var fix = 1;
+	var none = 0;
 	
 	/**
 	* Your solid reacts with passives bodies (platform, wall, ladder)

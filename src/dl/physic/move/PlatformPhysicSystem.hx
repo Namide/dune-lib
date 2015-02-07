@@ -29,10 +29,10 @@ class PlatformPhysicSystem
 		if ( all.indexOf( body ) > 0 )
 			removeBody( body );
 		
-		if ( body.physic != null &&
+		if ( body.physic != null /*&&
 			 ( body.physic.flags & BodyPhysicFlags.dependant != 0 ||
 			   body.physic.flags & BodyPhysicFlags.gravity != 0 ||
-			   body.physic.flags & BodyPhysicFlags.velocity != 0 ) )
+			   body.physic.flags & BodyPhysicFlags.velocity != 0 )*/ )
 		{
 			all.push( body );
 		}
@@ -50,7 +50,7 @@ class PlatformPhysicSystem
 				p.vY += gY;
 			}
 			
-			if ( p.flags & BodyPhysicFlags.dependant != 0 )
+			if ( p.flags & BodyPhysicFlags.velocity != 0 )
 			{
 				b.addPos( p.vX, p.vY );
 			}
@@ -59,25 +59,37 @@ class PlatformPhysicSystem
 	
 	public function updatePositions( space:ISpace )
 	{
-		for ( b in all )
+		var physDep = all.filter(function(b:Body) { return b.physic.flags & BodyPhysicFlags.dependant != 0; } );
+		
+		for ( b in physDep )
 		{
-			if ( b.physic.flags & BodyPhysicFlags.dependant != 0 )
-			{
+			/*if ( b.contacts.flags & BodyContactsFlags.drivable == 0 )
+			{*/
 				b.contacts.fixedLimits = BodyLimitFlags.none;
 				b.contacts.classByArea();
-				updatePosBody( b, /*b.contacts.list*/b.contacts.list.filter(function(b:Body) { return b.contacts.flags & BodyContactsFlags.drivable == 0; } ), space );
-			}
+				updatePosBody( b, /*b.contacts.list*/ b.contacts.list, space );
+			//}
 		}
 		
-		for ( b in all )
+		for ( b in physDep )
 		{
-			if ( b.physic.flags & BodyPhysicFlags.dependant != 0 )
-			{
+			/*if ( b.contacts.flags & BodyContactsFlags.drivable != 0 )
+			{*/
 				//b.contacts.fixedLimits = BodyLimitFlags.none;
 				//b.contacts.classByArea();
-				updatePosBody( b, /*b.contacts.list*/b.contacts.list.filter(function(b:Body) { return b.contacts.flags & BodyContactsFlags.drivable != 0; } ), space, 0, true );
-			}
+				updatePosBody( b, /*b.contacts.list*/ b.contacts.list, space, true );
+			//}
 		}
+	}
+	
+	inline function filterDrivable( list:Array<Body> )
+	{
+		return list.filter(function(b:Body) { return b.contacts.flags & BodyContactsFlags.drivable != 0; } );
+	}
+	
+	inline function filterUndrivable( list:Array<Body> )
+	{
+		return list.filter(function(b:Body) { return b.contacts.flags & BodyContactsFlags.drivable == 0; } );
 	}
 	
 	function getPos( a:Body, b:Body ):BodyLimitFlags
@@ -168,12 +180,80 @@ class PlatformPhysicSystem
 		return pos;
 	}
 	
-	function applyReact( a:Body, b:Body, pos:BodyLimitFlags, reactBody:Bool ):Bool
+	function applyVertMobilesReact( top:Body, bottom:Body )
 	{
-		throw "to do (react body)";
+		var m = 0.5;
+		var topLimit = top.contacts.fixedLimits & BodyLimitFlags.top != 0;
+		var botLimit = bottom.contacts.fixedLimits & BodyLimitFlags.bottom != 0;
+		
+		top.contacts.fixedLimits |= BodyLimitFlags.bottom;
+		bottom.contacts.fixedLimits |= BodyLimitFlags.top;
+		
+		if ( topLimit && botLimit )
+			return false;
+		
+		if ( topLimit )
+			m = 0;
+		else if ( botLimit )
+			m = 1;
+		else if ( top.physic != null && bottom.physic != null )
+			m = top.physic.mass / (bottom.physic.mass + top.physic.mass);
+		
+		var y = (bottom.shape.aabbYMin - top.shape.aabbYMax) * m + top.shape.aabbYMax;
+		bottom.setY( y );
+		top.setY( y - top.shape.getH() );
+		
+		if ( top.physic.vY > 0 )
+			top.physic.vX = 0;
+			
+		if ( bottom.physic.vY < 0 )
+			bottom.physic.vX = 0;
+		
+		return true;
+	}
+	
+	function applyHorMobilesReact( left:Body, right:Body )
+	{
+		var m = 0.5;
+		var lefLimit = left.contacts.fixedLimits & BodyLimitFlags.left != 0;
+		var rigLimit = right.contacts.fixedLimits & BodyLimitFlags.right != 0;
+		
+		left.contacts.fixedLimits |= BodyLimitFlags.right;
+		right.contacts.fixedLimits |= BodyLimitFlags.left;
+		
+		if ( lefLimit && rigLimit )
+			return false;
+			
+		if ( lefLimit )
+			m = 0;
+		else if ( rigLimit )
+			m = 1;
+		else if ( left.physic != null && right.physic != null )
+			m = left.physic.mass / (right.physic.mass + left.physic.mass);
+		
+		var x = (right.shape.aabbXMin - left.shape.aabbXMax) * m + left.shape.aabbXMax;
+		right.setX( x );
+		left.setX( x - left.shape.getW() );
+		
+		if ( left.physic.vY > 0 )
+			left.physic.vX = 0;
+			
+		if ( right.physic.vY < 0 )
+			right.physic.vX = 0;
+		
+		return true;
+	}
+	
+	function applyReact( a:Body, b:Body,/* pos:BodyLimitFlags,*/ reactBody:Bool ):Bool
+	{
+		//throw "to do (react body)";
 		// TODO
 		// b.contacts.fixedLimits & BodyLimitFlags.bottom != 0
 		
+		var pos = getPos( a, b );
+		
+		//if ( reactBody )
+		//	trace( b.contacts.fixedLimits );
 		
 		// update position and velocity
 		switch( pos )
@@ -183,11 +263,18 @@ class PlatformPhysicSystem
 				if ( (b.contacts.flags & BodyContactsFlags.platformBottom != 0 ||
 					b.contacts.flags & BodyContactsFlags.wall != 0) )
 				{
-					a.contacts.fixedLimits |= BodyLimitFlags.top;
-					a.setY( b.shape.aabbYMax );
-					if ( a.physic.vY < 0 )
-						a.physic.vY = 0;
-					return true;
+					if ( !reactBody )
+					{
+						a.contacts.fixedLimits |= BodyLimitFlags.top;
+						a.setY( b.shape.aabbYMax );
+						if ( a.physic.vY < 0 )
+							a.physic.vY = 0;
+						return true;
+					}
+					else
+					{
+						return applyVertMobilesReact( b, a );
+					}
 				}
 				
 			case BodyLimitFlags.bottom:
@@ -195,11 +282,18 @@ class PlatformPhysicSystem
 				if ( (b.contacts.flags & BodyContactsFlags.platformTop != 0 ||
 					b.contacts.flags & BodyContactsFlags.wall != 0) )
 				{
-					a.contacts.fixedLimits |= BodyLimitFlags.bottom;
-					a.setY( b.shape.aabbYMin - a.shape.getH() );
-					if ( a.physic.vY > 0 )
-						a.physic.vY = 0;
-					return true;
+					if ( !reactBody )
+					{
+						a.contacts.fixedLimits |= BodyLimitFlags.bottom;
+						a.setY( b.shape.aabbYMin - a.shape.getH() );
+						if ( a.physic.vY > 0 )
+							a.physic.vY = 0;
+						return true;
+					}
+					else
+					{
+						return applyVertMobilesReact( a, b );
+					}
 				}
 				
 			case BodyLimitFlags.left:
@@ -207,11 +301,18 @@ class PlatformPhysicSystem
 				if ( (b.contacts.flags & BodyContactsFlags.platformRight != 0 ||
 					b.contacts.flags & BodyContactsFlags.wall != 0) )
 				{
-					a.contacts.fixedLimits |= BodyLimitFlags.left;
-					a.setX( b.shape.aabbXMax );
-					if ( a.physic.vX < 0 )
-						a.physic.vX = 0;
-					return true;
+					if ( !reactBody )
+					{
+						a.contacts.fixedLimits |= BodyLimitFlags.left;
+						a.setX( b.shape.aabbXMax );
+						if ( a.physic.vX < 0 )
+							a.physic.vX = 0;
+						return true;
+					}
+					else
+					{
+						return applyHorMobilesReact( b, a );
+					}
 				}
 				
 			case BodyLimitFlags.right:
@@ -219,11 +320,18 @@ class PlatformPhysicSystem
 				if ( (b.contacts.flags & BodyContactsFlags.platformLeft != 0 ||
 					b.contacts.flags & BodyContactsFlags.wall != 0) )
 				{
-					a.contacts.fixedLimits |= BodyLimitFlags.right;
-					a.setX( b.shape.aabbXMin - a.shape.getW() );
-					if ( a.physic.vX > 0 )
-						a.physic.vX = 0;
-					return true;
+					if ( !reactBody )
+					{
+						a.contacts.fixedLimits |= BodyLimitFlags.right;
+						a.setX( b.shape.aabbXMin - a.shape.getW() );
+						if ( a.physic.vX > 0 )
+							a.physic.vX = 0;
+						return true;
+					}
+					else
+					{
+						return applyHorMobilesReact( a, b );
+					}
 				}
 				
 			default:
@@ -236,27 +344,33 @@ class PlatformPhysicSystem
 		return false;
 	}
 	
-	function updatePosBody( a:Body, list:Array<Body>, space:ISpace, num:Int = 0, complexCol:Bool = false )
+	function updatePosBody( a:Body, list:Array<Body>, space:ISpace, complexCol:Bool = false, num:Int = 0 )
 	{
 		//trace( num, list.length, a.shape.getHitArea( list[0].shape ) );
+		
+		/*if ( complexCol )
+			trace( list.length );
+		*/
+			
+		list = (complexCol) ? filterDrivable(list) : filterUndrivable(list);
+		
 		
 		if ( list.length < 1 || a.shape.getHitArea( list[0].shape ) <= 0 || num > MAX_RECURSIVE )
 			return;
 		
 		// calculate last position
 		var b = list[0];
-		var pos = getPos( a, b );
 		
-		if ( applyReact( a, b, pos, complexCol ) )
+		if ( applyReact( a, b, complexCol ) )
 		{
 			list = space.hitTestActive( a );
 			BodyContact.classBodiesByContactArea( a.shape, list );
-			updatePosBody( a, list, space, num + 1, complexCol );
+			updatePosBody( a, list, space, complexCol, num + 1 );
 		}
 		else
 		{
 			list.shift();
-			updatePosBody( a, list, space, num + 1, complexCol );
+			updatePosBody( a, list, space, complexCol, num + 1 );
 		}
 	}
 	

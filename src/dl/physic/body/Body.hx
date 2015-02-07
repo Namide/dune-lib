@@ -9,6 +9,8 @@ import dl.physic.move.BodyPhysic;
  */
 class Body
 {
+	public var name:String;
+	
 	/**
 	* Delimit the shape of this body
 	*/
@@ -131,8 +133,10 @@ class Body
 			
 		#end
 		
+		/*trace( this, updatePrint, moved );
+		
 		if ( !moved )
-			return;
+			return;*/
 		
 		if ( updatePrint )
 		{
@@ -154,7 +158,7 @@ class Body
 		contacts.flags = flags;
 	}
 	
-	public inline function addBodyPhysic( flags:BodyPhysicFlags = 0 ):Void
+	public inline function addBodyPhysic( flags:BodyPhysicFlags = BodyPhysicFlags.none ):Void
 	{
 		if ( physic == null )
 			physic = new BodyPhysic(this);
@@ -163,6 +167,8 @@ class Body
 	}
 	
 	public function toString() {
+		if ( name != null )
+			return "[Body "+name+" x:" + x + " y:" + y + " ]";
 		return "[Body x:" + x + " y:" + y + " " + shape +"]";
 	}
 	

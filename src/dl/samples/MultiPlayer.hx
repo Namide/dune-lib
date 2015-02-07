@@ -96,11 +96,13 @@ class MultiPlayer extends Sprite
 	
 	public function addPlayer( id:Int )
 	{
-		var s = new ShapeRect( USER_SCALE * TILE_SIZE, USER_SCALE * TILE_SIZE );
+		var s = new ShapeRect( Math.round(USER_SCALE * TILE_SIZE), Math.round(USER_SCALE * TILE_SIZE) );
 		var b = new Body( s, TILE_SIZE, TILE_SIZE );
 		var p = new Player( b, id );
 		
-		b.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.drivable );
+		b.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.drivable | BodyContactsFlags.wall );
+		b.addBodyPhysic( /*BodyPhysicFlags.gravity | BodyPhysicFlags.dependant BodyPhysicFlags.dependant*/ BodyPhysicFlags.none );
+		b.name = "other";
 		physic.addBody( b );
 		space.addBody( b );
 		STAGE.addChild( p );
@@ -173,6 +175,11 @@ class MultiPlayer extends Sprite
 				p.x = o.x;
 				p.y = o.y;
 				
+				p.body.contacts.fixedLimits = o.lim;
+				//trace( p.body.physic.flags );
+				
+				//trace( p.body.contacts.fixedLimits );
+				//lim:playerMe.body.contacts.fixedLimits
 				//sockets.transfertData( "pos:" + playerMe.x + ";" + playerMe.y );
 			}
 		}
@@ -211,11 +218,13 @@ class MultiPlayer extends Sprite
 			jumpTileHeightMax: 3,
 			jumpTileWidthMin: 3,
 			jumpTileWidthMax: 6,
-			posTile: {x:1,y:1},
-			contacts: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity | BodyContactsFlags.drivable,
-			size:{x:USER_SCALE,y:USER_SCALE},
+			posTile: { x:1, y:1 },
+			physic: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity,
+			contacts: BodyContactsFlags.drivable | BodyContactsFlags.active,
+			size:{x:Math.round(USER_SCALE * TILE_SIZE),y:Math.round(USER_SCALE * TILE_SIZE)},
 			graphic:function(b:Body, c:PlatformPlayerController)
 			{
+				b.name = "me";
 				playerMe = new Player( b );
 				playerControl = c;
 				physic.addBody( b );
@@ -252,14 +261,7 @@ class MultiPlayer extends Sprite
 		
 		var levelData:LevelDatas = { levelGrid:levelGrid, playerDatas:playerDatas, tilesDatas:tilesDatas, tileSize:32 };
 		
-		
 		PlatformLevelGen.getInstance().generate( levelData, physic );
-		
-		
-		
-		
-		
-		
 		
 		/*runPxSec:Float = 12 * 32, 
 		jumpHeightMin:Float = 1.5 * 32,
@@ -285,7 +287,7 @@ class MultiPlayer extends Sprite
 			playerMe.refresh();
 			
 			if ( playerMe.id > -1 )
-				sockets.transfertData( {type:"pos", "x":playerMe.x, "y":playerMe.y} );
+				sockets.transfertData( {type:"pos", "x":playerMe.x, "y":playerMe.y, lim:playerMe.body.contacts.fixedLimits} );
 		}
 		
 		//trace( (haxe.Timer.stamp() - t) + "s" );
