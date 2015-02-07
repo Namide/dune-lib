@@ -63,22 +63,15 @@ class PlatformPhysicSystem
 		
 		for ( b in physDep )
 		{
-			/*if ( b.contacts.flags & BodyContactsFlags.drivable == 0 )
-			{*/
-				b.contacts.fixedLimits = BodyLimitFlags.none;
-				b.contacts.classByArea();
-				updatePosBody( b, /*b.contacts.list*/ b.contacts.list, space );
-			//}
+			b.contacts.fixedLimits = BodyLimitFlags.none;
+			b.contacts.classByArea();
+			updatePosBody( b, /*b.contacts.list*/ b.contacts.list, space );
+			//trace( b.contacts.fixedLimits );
 		}
 		
 		for ( b in physDep )
 		{
-			/*if ( b.contacts.flags & BodyContactsFlags.drivable != 0 )
-			{*/
-				//b.contacts.fixedLimits = BodyLimitFlags.none;
-				//b.contacts.classByArea();
-				updatePosBody( b, /*b.contacts.list*/ b.contacts.list, space, true );
-			//}
+			updatePosBody( b, /*b.contacts.list*/ b.contacts.list, space, true );
 		}
 	}
 	
@@ -220,6 +213,9 @@ class PlatformPhysicSystem
 		
 		left.contacts.fixedLimits |= BodyLimitFlags.right;
 		right.contacts.fixedLimits |= BodyLimitFlags.left;
+		
+		trace(left, right);
+		trace(lefLimit, rigLimit);
 		
 		if ( lefLimit && rigLimit )
 			return false;

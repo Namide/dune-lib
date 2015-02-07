@@ -132,7 +132,7 @@ class MultiPlayer extends Sprite
 		{
 			for ( po in playerOther )
 			{
-				if ( Lambda.exists( list, function(c:SockClientUser) { return c.id == po.id; } ) )
+				if ( !Lambda.exists( list, function(c:SockClientUser) { return c.id == po.id; } ) )
 					removePlayer( po );
 			}
 			

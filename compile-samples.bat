@@ -1,5 +1,6 @@
 @echo off
 
+RD bin-all /S /Q
 MD bin-all
 MD bin-all\server
 

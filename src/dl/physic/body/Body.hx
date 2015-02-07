@@ -59,8 +59,7 @@ class Body
 			
 		#end
 		
-		var m = (x != this.x || y != this.y);
-		if ( m )
+		if (x != this.x || y != this.y)
 		{
 			this.x = x;
 			this.y = y;
@@ -147,7 +146,6 @@ class Body
 		}
 		
 		shape.updateAABB( x, y );
-		
 	}
 	
 	public inline function addBodyContact( flags:BodyContactsFlags = 0 ):Void
