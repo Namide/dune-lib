@@ -270,8 +270,8 @@ class PlatformPhysicSystem
 		left.contacts.fixedLimits |= BodyLimitFlags.right;
 		right.contacts.fixedLimits |= BodyLimitFlags.left;
 		
-		trace(left, right);
-		trace(lefLimit, rigLimit);
+		//trace(left, right);
+		//trace(lefLimit, rigLimit);
 		
 		if ( lefLimit && rigLimit )
 			return false;

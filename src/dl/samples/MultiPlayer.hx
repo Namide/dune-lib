@@ -97,9 +97,7 @@ class MultiPlayer extends Sprite
 	
 	public function addPlayer( id:Int, datas:Dynamic )
 	{
-		//playerMe.body.physic.mass = sockets.me.datas.m;
-		trace("add ->", id, datas);
-		var s = new ShapeRect( datas.w, datas.h );//Math.round(USER_SCALE * TILE_SIZE), Math.round(USER_SCALE * TILE_SIZE) );
+		var s = new ShapeRect( datas.w, datas.h );
 		var b = new Body( s, TILE_SIZE, TILE_SIZE );
 		var p = new Player( b, datas.rgb, id );
 		
@@ -115,7 +113,6 @@ class MultiPlayer extends Sprite
 	
 	public function removePlayer( player:Player )
 	{
-		trace("rmv ->", player.id);
 		var b = player.body;
 		physic.removeBody( b );
 		space.removeBody( b );
