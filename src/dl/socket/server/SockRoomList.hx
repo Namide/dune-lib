@@ -61,7 +61,7 @@ class SockRoomList
 		
 		// Send to all users in the room
 		//var nu:UserData = { i:ci.id, n:ci.name, r:ri.name };
-		ci.server.broadcast( new SockMsg( Cmd.setUserData, ci.getUserData( true, true, true ) ), ri.clients );
+		ci.server.broadcast( new SockMsg( Cmd.setUserData, ci.getUserData( true, true, true, true ) ), ri.clients );
 		
 		return true;
 	}
@@ -81,7 +81,7 @@ class SockRoomList
 		else if ( dispatchMsg )
 		{
 			//var nu:UserData = { i:ci.id, n:ci.name/*, r:"?"*/ };
-			ci.server.broadcast( new SockMsg( Cmd.setUserData, ci.getUserData( true, true, false )/*nu*/ ), ri.clients );
+			ci.server.broadcast( new SockMsg( Cmd.setUserData, ci.getUserData( true, true, false, false )/*nu*/ ), ri.clients );
 		}
 	}
 	

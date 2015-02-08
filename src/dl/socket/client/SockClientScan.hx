@@ -49,6 +49,9 @@ class SockClientScan
 	{
 		var u:UserData = { };
 		
+		if ( me.datas != null )
+			u.d = me.datas;
+		
 		try
 		{
 			var so = flash.net.SharedObject.getLocal( "chat" );
@@ -223,9 +226,7 @@ class SockClientScan
 		if ( lastName != _room )
 		{
 			if ( onRoom != null )
-			{
 				onRoom( _room, others );
-			}
 		}
 		else if ( onOthers != null )
 			onOthers( others );
@@ -342,6 +343,7 @@ class SockClientScan
 			user = new SockClientUser();
 			user.id = o.i;
 			user.name = o.n;
+			user.datas = o.d;
 			
 			others.push( user );
 			

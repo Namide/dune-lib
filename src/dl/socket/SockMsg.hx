@@ -165,7 +165,7 @@ typedef UserData = {
 	@:optional var i: Int;					// user id
 	@:optional var n: String;				// user name
 	@:optional var r: RoomData;				// room name of user
-	//@:optional var rp: String;				// room pass of user
+	@:optional var d: Dynamic;				// additionnal data
 }
 
 typedef UserID = {

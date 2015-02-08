@@ -50,7 +50,7 @@ class SockServerScan
 	public inline static function getBrutUserData( user:SockServerUser ):SockMsg
 	{
 		//var u:UserData = { i:user.id, n:user.name, r:user.room.name };
-		return new SockMsg( Cmd.setUserData, user.getUserData( true, true, true ) );
+		return new SockMsg( Cmd.setUserData, user.getUserData( true, true, true, true ) );
 	}
 	
 	public inline static function testWord( s:String ):Bool
@@ -102,7 +102,7 @@ class SockServerScan
 		
 		if ( cl.room != null )
 		{
-			sv.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData(true, true, false) ), cl.room.clients );
+			sv.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData(true, true, false, false) ), cl.room.clients );
 		}
 	}
 	
@@ -178,6 +178,9 @@ class SockServerScan
 			//newUser.r = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT;
 			//newUser.rp = ( cl.room != null ) ? cl.room.pass : "";
 		}
+		
+		if ( newUser.d != null )
+			cl.datas = newUser.d;
 		
 		return newUser;
 	}
@@ -312,7 +315,6 @@ class SockServerScan
 						sv.clients.push(cl);
 						
 						var u:UserData = o.d;
-						
 						if ( u.n != null || u.r != null )
 							u = updateUser( cl, u );
 						
@@ -322,7 +324,7 @@ class SockServerScan
 						if ( cl.room == null )
 							sv.rooms.add( cl, SockConfig.ROOM_DEFAULT, "" );
 						
-						u = cl.getUserData( true, true );
+						u = cl.getUserData( true, true, false, false );
 						u.r = cl.room.getRoomData( true, false );
 						
 						//u.r = cl.room.name;

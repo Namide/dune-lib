@@ -14,6 +14,7 @@ class SockServerUser
 	public var name:String;
 	public var id:Int;
 	public var room:SockRoom;
+	public var datas:Dynamic;
 	
 	public var socket:Socket;
 	public var server:SocketServer;
@@ -43,7 +44,9 @@ class SockServerUser
 		if ( !dispatch )
 			return;
 		
-		//trace( "send:", brut );
+		/*if ( brut.cmd != Cmd.transferDatasServer )
+			trace( "send:", brut );*/
+		
 		try
 		{
 			socket.output.writeString( brut.getString() + '\n' );
@@ -117,7 +120,7 @@ class SockServerUser
 		*/
 	}
 	
-	public function getUserData( id:Bool = true, name:Bool = true, roomData:Bool = false ):UserData
+	public function getUserData( id:Bool = true, name:Bool = true, roomData:Bool = false, datas:Bool = false ):UserData
 	{
 		var ud:UserData = { };
 		
@@ -129,6 +132,9 @@ class SockServerUser
 			
 		if ( roomData )
 			ud.r = room.getRoomData( false, false );
+		
+		if ( datas )
+			ud.d = this.datas;
 		
 		return ud;
 	}

@@ -29,7 +29,7 @@ class SockRoom
 		{
 			rd.u = [];
 			for ( u in clients )
-				rd.u.push( u.getUserData( true, true, false ) );
+				rd.u.push( u.getUserData( true, true, false, true ) );
 		}
 		
 		return rd;
