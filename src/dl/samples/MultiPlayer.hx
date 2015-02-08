@@ -30,7 +30,7 @@ class Floor extends Sprite
 		this.y = body.y;
 		
 		graphics.beginFill( 0xCC0000 );
-		graphics.drawRect( 0, 0, body.shape.getW(), body.shape.getH() );
+		graphics.drawRect( 0, 0, body.shape[0].getW(), body.shape[0].getH() );
 		graphics.endFill();
 	}	
 }
@@ -48,7 +48,7 @@ class Player extends Floor
 		
 		graphics.clear();
 		graphics.beginFill( 0x00CC00 );
-		graphics.drawRect( 0, 0, body.shape.getW(), body.shape.getH() );
+		graphics.drawRect( 0, 0, body.shape[0].getW(), body.shape[0].getH() );
 		graphics.endFill();
 	}
 	
@@ -128,7 +128,7 @@ class MultiPlayer extends Sprite
 		// SOCKETS
 		
 		sockets = new SockClientScan();
-		sockets.onUsers = function( list:Array<SockClientUser> )
+		sockets.onOthers = function( list:Array<SockClientUser> )
 		{
 			for ( po in playerOther )
 			{

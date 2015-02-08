@@ -4,10 +4,40 @@
 #-D resourcesPath=../res
 #-D source-map-content
 
+
+
+# --------------------------------
+# 			TCHAT SERVER (NEKO)
+# --------------------------------
+
+--macro Sys.println('Compile: t\'chat server')
+-cp src
+-main dl.samples.SocketServer
+-neko bin-all/server/SocketServer.n
+-dce full
+
+
+# --------------------------------
+# 			TCHAT CLIENT (SWF)
+# --------------------------------
+
+--next
+--macro Sys.println('Compile: t\'chat client')
+-cp src
+-main dl.samples.SocketClientTchat
+-swf bin-all/SocketClientTchat.swf
+-swf-header 1280:720:60:FFFFFF
+-swf-version 11.8
+-dce full
+--macro Sys.println('To use the t\'chat, starts by run the server with bin-all/server/run-server.bat')
+
+
+
 # --------------------------------
 # 			STRESS TEST
 # --------------------------------
 
+--next
 --macro Sys.println('Compile: stress test space grid')
 -cp src
 -main dl.samples.StressTestSpaces
@@ -29,33 +59,6 @@
 -swf-header 1280:720:60:FFFFFF
 -swf-version 11.8
 -dce full
-
-
-# --------------------------------
-# 			TCHAT SERVER (NEKO)
-# --------------------------------
-
---next
---macro Sys.println('Compile: t\'chat server')
--cp src
--main dl.samples.SocketServer
--neko bin-all/server/SocketServer.n
--dce full
-
-
-# --------------------------------
-# 			TCHAT CLIENT (SWF)
-# --------------------------------
-
---next
---macro Sys.println('Compile: t\'chat client')
--cp src
--main dl.samples.SocketClientTchat
--swf bin-all/SocketClientTchat.swf
--swf-header 1280:720:60:FFFFFF
--swf-version 11.8
--dce full
---macro Sys.println('To use the t\'chat, starts by run the server with bin-all/server/run-server.bat')
 
 
 # --------------------------------

@@ -192,9 +192,9 @@ class PlatformPhysicSystem
 		else if ( top.physic != null && bottom.physic != null )
 			m = top.physic.mass / (bottom.physic.mass + top.physic.mass);
 		
-		var y = (bottom.shape.aabbYMin - top.shape.aabbYMax) * m + top.shape.aabbYMax;
+		var y = (bottom.shape[0].aabbYMin - top.shape[0].aabbYMax) * m + top.shape[0].aabbYMax;
 		bottom.setY( y );
-		top.setY( y - top.shape.getH() );
+		top.setY( y - top.shape[0].getH() );
 		
 		if ( top.physic.vY > 0 )
 			top.physic.vX = 0;
@@ -227,9 +227,9 @@ class PlatformPhysicSystem
 		else if ( left.physic != null && right.physic != null )
 			m = left.physic.mass / (right.physic.mass + left.physic.mass);
 		
-		var x = (right.shape.aabbXMin - left.shape.aabbXMax) * m + left.shape.aabbXMax;
+		var x = (right.shape[0].aabbXMin - left.shape[0].aabbXMax) * m + left.shape[0].aabbXMax;
 		right.setX( x );
-		left.setX( x - left.shape.getW() );
+		left.setX( x - left.shape[0].getW() );
 		
 		if ( left.physic.vY > 0 )
 			left.physic.vX = 0;
@@ -351,7 +351,7 @@ class PlatformPhysicSystem
 		list = (complexCol) ? filterDrivable(list) : filterUndrivable(list);
 		
 		
-		if ( list.length < 1 || a.shape.getHitArea( list[0].shape ) <= 0 || num > MAX_RECURSIVE )
+		if ( list.length < 1 || a.shape[0].getHitArea( list[0].shape[0] ) <= 0 || num > MAX_RECURSIVE )
 			return;
 		
 		// calculate last position

@@ -143,7 +143,7 @@ class BodyContact
 	public inline function classByArea():Void
 	{
 		list.sort( function( a:Body, b:Body ):Int {
-			if ( parent.shape.getHitArea( a.shape ) < parent.shape.getHitArea( b.shape ) )
+			if ( parent.shape[0].getHitArea( a.shape[0] ) < parent.shape[0].getHitArea( b.shape[0] ) )
 				return 1;
 			return -1;
 		} );
@@ -153,7 +153,7 @@ class BodyContact
 	public static inline function classBodiesByContactArea( shape:Shape, list:Array<Body> ):Void
 	{
 		list.sort( function( a:Body, b:Body ):Int {
-			if ( shape.getHitArea( a.shape ) < shape.getHitArea( b.shape ) )
+			if ( shape.getHitArea( a.shape[0] ) < shape.getHitArea( b.shape[0] ) )
 				return 1;
 			return -1;			
 		} );

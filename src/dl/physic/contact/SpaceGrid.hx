@@ -67,7 +67,7 @@ class Grid
 		for ( i in n.minTileX...n.maxTileX )
 			for ( j in n.minTileY...n.maxTileY )
 				for ( n2 in getNodes( i, j ) )
-					if ( !Lambda.has( c, n2.body ) && n.body.shape.hitTest( n2.body.shape ) )
+					if ( !Lambda.has( c, n2.body ) && n.body.shape[0].hitTest( n2.body.shape[0] ) )
 						c.push( n2.body );
 		
 		c.remove( n.body );
@@ -147,10 +147,10 @@ class Node
 		if ( body.contacts.flags & BodyContactsFlags.fix == 0 )
 			body.updateAABB(updatePrint);
 		
-		var nXMin:Int = (Math.floor(body.shape.aabbXMin) >> pitchExpX);
-		var nYMin:Int = (Math.floor(body.shape.aabbYMin) >> pitchExpY);
-		var nXMax:Int = (Math.ceil(body.shape.aabbXMax) >> pitchExpX) + 1;
-		var nYMax:Int = (Math.ceil(body.shape.aabbYMax) >> pitchExpY) + 1;
+		var nXMin:Int = (Math.floor(body.shape[0].aabbXMin) >> pitchExpX);
+		var nYMin:Int = (Math.floor(body.shape[0].aabbYMin) >> pitchExpY);
+		var nXMax:Int = (Math.ceil(body.shape[0].aabbXMax) >> pitchExpX) + 1;
+		var nYMax:Int = (Math.ceil(body.shape[0].aabbYMax) >> pitchExpY) + 1;
 		
 		if ( 	nXMin != minTileX ||
 				nYMin != minTileY ||
@@ -312,7 +312,7 @@ class SpaceGrid implements ISpace
 		
 		if ( autoLimits )
 		{
-			var sh = body.shape;
+			var sh = body.shape[0];
 			if ( sh.aabbXMin < xMin ) {
 				xMin = Math.floor(sh.aabbXMin / _pitchX) * _pitchX;
 				_grid.outdated = true;

@@ -1,5 +1,6 @@
 package dl.socket.client ;
 
+import dl.socket.SockMsg.UserData;
 import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.display.Stage;
@@ -17,13 +18,17 @@ import flash.ui.Keyboard;
  * ...
  * @author Namide
  */
-class SockClientUI extends Sprite
+class SockClientTchatUI extends Sprite
 {
 	public static var MARG_EXT:Int = 32;
 	public static var MARG_INT:Int = 16;
 	public static var LIST_LARG:Int = 256;
 	
 	public var sendMsg:String->Void;
+	
+	var _me:SockClientUser;
+	var _others:Array<SockClientUser>;
+	var _room:String;
 	
 	var _input:TextField;
 	var _output:TextField;
@@ -32,6 +37,9 @@ class SockClientUI extends Sprite
 	public function new() 
 	{
 		super();
+		
+		_others = [];
+		_room = "";
 		
 		var s:Stage = flash.Lib.current.stage;
 		s.addEventListener( Event.RESIZE, resize );
@@ -69,8 +77,6 @@ class SockClientUI extends Sprite
 		addEventListener( KeyboardEvent.KEY_UP, onKeyUp );
 	}
 	
-	
-	
 	function onKeyUp(e:KeyboardEvent):Void 
 	{
 		if ( e.charCode == Keyboard.ENTER )
@@ -80,7 +86,52 @@ class SockClientUI extends Sprite
 		}
 	}
 	
-	public inline function clear()
+	public function connect( me:SockClientUser )
+	{
+		_me = me.clone();
+		
+		appendText( '<p align="left"><i>Welcome on this Tchat!</i></p>' );
+		appendText( '<p align="left"><i>Your name is <b>' + _me.name + '</b></i></p>' );
+		//appendText( '<p align="left"><i>You joined the room <b>' + _room + '</b></i></p>' );
+		
+	}
+	
+	public function refreshMe( me:SockClientUser )
+	{
+		if ( me.name != _me.name )
+			appendText( '<p align="left"><i>Your name is now <b>' + me.name + '</b></i></p>' );
+		
+		_me = me.clone();
+		
+		//appendText( '<p align="left"><i>Welcome on this Tchat!</i></p>' );
+		//appendText( '<p align="left"><i>You joined the room <b>' + _room + '</b></i></p>' );
+		
+	}
+	
+	public inline function changeRoom( room:String, userList:Array<SockClientUser> )
+	{
+		if ( room == _room )
+			return;
+		
+		if ( _room != "" )
+			clear();
+		
+		_room = room;
+		appendText( '<p align="left"><i>You joined <b>' + _room + '</b> (' + (userList.length+1) + ")</i></p>" );
+		
+		_others = cloneList(userList);
+		refreshRight();
+	}
+	
+	inline function cloneList( list:Array<SockClientUser> ):Array<SockClientUser>
+	{
+		var c:Array<SockClientUser> = [];
+		for ( u in list )
+			c.push( u.clone() );
+		return c;
+	}
+	
+	inline function clear()
 	{
 		_output.text = '';
 		_list.htmlText = "";
@@ -92,11 +143,52 @@ class SockClientUI extends Sprite
 		refreshText();
 	}
 	
-	public inline function refreshUsers( list:Array<SockClientUser> )
+	public inline function refreshOthers( list:Array<SockClientUser> )
 	{
-		list.sort( function(a:SockClientUser, b:SockClientUser) { return (a.name > b.name)?1:-1; } );
-		//var t = '<p align="center"><b>' + _room + "</b> (" + list.length + ")</p><br/>";
-		var t = '';
+		trace( list.length, _room );
+		if ( _room != "" )
+		{
+			for ( newUser in list )
+			{
+				var oldUser = Lambda.find( _others, function(user:SockClientUser) {
+					return user.id == newUser.id;
+				} );
+				
+				if ( oldUser == null )
+				{
+					appendText( '<p align="left"><i>' + newUser.name + ' join the room ' + _room + ' ('+(list.length+1)+')</i></p>' );
+				}
+				else
+				{
+					if ( newUser.name != oldUser.name )
+						appendText( '<p align="left"><i>' + oldUser.name + ' is now known as <b>' + newUser.name + '</b></i></p>' );
+				}
+			}
+			
+			for ( oldUser in _others )
+			{
+				var newUser = Lambda.find( list, function(user:SockClientUser) {
+					return user.id == oldUser.id;
+				} );
+				
+				if ( newUser == null )
+				{
+					appendText( '<p align="left"><i>' + oldUser.name + " leaves the room " + _room + "</i></p>" );
+				}
+			}
+		}
+		
+		
+		_others = cloneList( list );
+		refreshRight();
+	}
+	
+	function refreshRight()
+	{
+		var list = _others.concat([_me]);
+		list.sort( function(a:SockClientUser, b:SockClientUser) { return (a.name > b.name)?1: -1; } );
+		
+		var t = '<p align="center"><b>' + _room + "</b> (" + list.length + ")</p><br/>";
 		for ( u in list )
 		{
 			if ( u.name != null )

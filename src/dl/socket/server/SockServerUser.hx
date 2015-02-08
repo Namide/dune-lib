@@ -1,5 +1,6 @@
 package dl.socket.server ;
 import dl.samples.SocketServer;
+import dl.socket.SockMsg.UserData;
 import haxe.CallStack;
 import haxe.io.Eof;
 import sys.net.Socket;
@@ -18,6 +19,8 @@ class SockServerUser
 	public var server:SocketServer;
 	public var active:Bool;
 	
+	public var dispatch:Bool;
+	
 	public function new(sv:SocketServer, skt:Socket)
 	{
 		id = ++sv.clientN;
@@ -25,6 +28,7 @@ class SockServerUser
 		server = sv;
 		socket = skt;
 		active = true;
+		dispatch = true;
 	}
 	
 	public function toString():String
@@ -36,6 +40,10 @@ class SockServerUser
 	
 	public function send(brut:SockMsg/*msg:DSocketMsg*/)
 	{
+		if ( !dispatch )
+			return;
+		
+		//trace( "send:", brut );
 		try
 		{
 			socket.output.writeString( brut.getString() + '\n' );
@@ -107,5 +115,21 @@ class SockServerUser
 				socket.close();
 			} catch ( e:Eof ) { trace( haxe.CallStack.toString(haxe.CallStack.exceptionStack()) ); active = false; }
 		*/
+	}
+	
+	public function getUserData( id:Bool = true, name:Bool = true, roomData:Bool = false ):UserData
+	{
+		var ud:UserData = { };
+		
+		if ( id )
+			ud.i = this.id;
+			
+		if ( name )
+			ud.n = this.name;
+			
+		if ( roomData )
+			ud.r = room.getRoomData( false, false );
+		
+		return ud;
 	}
 }

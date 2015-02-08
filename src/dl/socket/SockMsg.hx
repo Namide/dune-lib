@@ -59,10 +59,19 @@ class SockMsgGen
 	public static function getUserData( userName:String = null, userId:Int = -1, userRoomName:String = null, userRoomPass:String = null ):SockMsg
 	{
 		var o:UserData = { };
-		if ( userName != null ) 	o.n = userName;
-		if ( userId > -1 ) 			o.i = userId;
-		if ( userRoomName != null ) o.r = userRoomName;
-		if ( userRoomPass != null ) o.rp = userRoomPass;
+		if ( userName != null )
+			o.n = userName;
+		
+		if ( userId > -1 )
+			o.i = userId;
+		
+		if ( userRoomName != null )
+		{
+			o.r = { n:userRoomName, p:"" };
+			if ( userRoomPass != null )
+				o.r.p = userRoomPass;
+		}
+		
 		return new SockMsg( Cmd.setUserData, o );
 	}
 	
@@ -155,8 +164,8 @@ class SockMsg
 typedef UserData = {
 	@:optional var i: Int;					// user id
 	@:optional var n: String;				// user name
-	@:optional var r: String;				// room name of user
-	@:optional var rp: String;				// room pass of user
+	@:optional var r: RoomData;				// room name of user
+	//@:optional var rp: String;				// room pass of user
 }
 
 typedef UserID = {

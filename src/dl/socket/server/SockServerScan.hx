@@ -49,8 +49,8 @@ class SockServerScan
 	
 	public inline static function getBrutUserData( user:SockServerUser ):SockMsg
 	{
-		var u:UserData = { i:user.id, n:user.name, r:user.room.name };
-		return new SockMsg( Cmd.setUserData, u );
+		//var u:UserData = { i:user.id, n:user.name, r:user.room.name };
+		return new SockMsg( Cmd.setUserData, user.getUserData( true, true, true ) );
 	}
 	
 	public inline static function testWord( s:String ):Bool
@@ -96,13 +96,13 @@ class SockServerScan
 		
 		cl.name = name;
 		
-		var u:UserData = { };
+		/*var u:UserData = { };
 		u.n = name;
-		u.i = cl.id;
+		u.i = cl.id;*/
 		
 		if ( cl.room != null )
 		{
-			sv.broadcast( new SockMsg( Cmd.setUserData, u ), cl.room.clients );
+			sv.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData(true, true, false) ), cl.room.clients );
 		}
 	}
 	
@@ -114,7 +114,13 @@ class SockServerScan
 	
 	function updateUserRoom( cl:SockServerUser, newUser:UserData )
 	{
-		var newRoomName = newUser.r;
+		var newRoomName = newUser.r.n;
+		
+		if ( newRoomName == null )
+		{
+			newRoomName = newUser.r.n = SockConfig.ROOM_DEFAULT;
+			newUser.r.p = "";
+		}
 		
 		if (  	newRoomName.length < SockConfig.USER_NAME_LENGTH_MIN ||
 				newRoomName.length > SockConfig.USER_NAME_LENGTH_MAX )
@@ -135,7 +141,7 @@ class SockServerScan
 												newRoomName + ' is not a valid room name' ) );
 		}
 		var name = newRoomName;
-		var pass = (newUser.rp == null) ? "" : newUser.rp;
+		var pass = (newUser.r.p == null) ? "" : newUser.r.p;
 		
 		if ( name == SockConfig.ROOM_DEFAULT && pass != "" )
 			cl.send( SockMsgGen.getSend( 	SendSubject.errorSystem, 
@@ -150,7 +156,6 @@ class SockServerScan
 			cl.send( SockMsgGen.getSend( 	SendSubject.errorSystem, 
 											name + ' is private, you must have a password' ) );
 		}
-		
 	}
 	
 	inline function updateUser( cl:SockServerUser, newUser:UserData )
@@ -168,8 +173,10 @@ class SockServerScan
 		{
 			updateUserRoom( cl, newUser );
 			// check the room name to avoid errors
-			newUser.r = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT;
-			newUser.rp = ( cl.room != null ) ? cl.room.pass : "";
+			newUser.r.n = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT;
+			newUser.r.p = ( cl.room != null ) ? cl.room.pass : "";
+			//newUser.r = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT;
+			//newUser.rp = ( cl.room != null ) ? cl.room.pass : "";
 		}
 		
 		return newUser;
@@ -288,8 +295,10 @@ class SockServerScan
 			return;
 		}
 		
+		
 		// CLIENTS COMMANDS
 		var brut = SockMsg.fromString( chars );
+		//trace( "receive:", brut );
 		switch ( brut.cmd )
 		{
 			case Cmd.send:
@@ -299,6 +308,7 @@ class SockServerScan
 				{
 					case SendSubject.connect:
 						
+						cl.dispatch = false;
 						sv.clients.push(cl);
 						
 						var u:UserData = o.d;
@@ -306,13 +316,19 @@ class SockServerScan
 						if ( u.n != null || u.r != null )
 							u = updateUser( cl, u );
 						
-						u.i = cl.id;
-						u.n = cl.name;
-						
-						cl.send( SockMsgGen.getSend( SendSubject.connect, u ) );
+						//u.i = cl.id;
+						//u.n = cl.name;
 						
 						if ( cl.room == null )
 							sv.rooms.add( cl, SockConfig.ROOM_DEFAULT, "" );
+						
+						u = cl.getUserData( true, true );
+						u.r = cl.room.getRoomData( true, false );
+						
+						//u.r = cl.room.name;
+						
+						cl.dispatch = true;
+						cl.send( SockMsgGen.getSend( SendSubject.connect, u ) );
 						
 						return;
 						
@@ -355,7 +371,8 @@ class SockServerScan
 						
 						var rl:Array<RoomData> = [];
 						for ( r in sv.rooms.all() )
-							rl.push( { n:r.name, l:r.clients.length, p:(r.pass=="")?"":"1" } );
+							rl.push( r.getRoomData( false, true ) );
+							//rl.push( { n:r.name, l:r.clients.length, p:(r.pass=="")?"":"1" } );
 						
 						cl.send( SockMsgGen.getSend( SendSubject.roomList, rl ) );
 						return;

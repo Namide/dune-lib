@@ -1,4 +1,5 @@
 package dl.socket.server ;
+import dl.socket.SockMsg.RoomData;
 
 /**
  * ...
@@ -16,4 +17,22 @@ class SockRoom
 		this.pass = (pass != null) ? pass : "";
 		clients = [];
 	}
+	
+	public function getRoomData( userList:Bool = false, userNumber:Bool = true ):RoomData
+	{
+		var rd:RoomData = { n:name, p:(pass == "") ? "" : "1" };
+		
+		if ( userNumber )
+			rd.l = clients.length;
+		
+		if ( userList )
+		{
+			rd.u = [];
+			for ( u in clients )
+				rd.u.push( u.getUserData( true, true, false ) );
+		}
+		
+		return rd;
+	}
+	
 }

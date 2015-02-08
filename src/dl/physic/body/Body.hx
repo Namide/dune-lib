@@ -9,13 +9,18 @@ import dl.physic.move.BodyPhysic;
  */
 class Body
 {
+	/**
+	 * Historic of positioning (number of memory)
+	 */
+	public static inline var SHAPE_PRINT_NUM:Int = 4;
+	
 	public var name:String;
 	
 	/**
 	* Delimit the shape of this body
 	*/
-	public var shape(default, default):Shape;
-	public var print(default, default):Shape;
+	public var shape(default, default):Array<Shape>;
+	//public var print(default, default):Shape;
 	
 	/**
 	* Other body in contact with this one
@@ -39,13 +44,16 @@ class Body
 	public function new( shape:Shape, x:Float = 0, y:Float = 0 ) 
 	{
 		//colliderType = 0 | BodyContactsFlags.passive;
-		this.shape = shape;
+		this.shape = [shape];
 		this.contacts = new BodyContact( this );
 		
 		this.x = x;
 		this.y = y;
 		shape.updateAABB( x, y );
-		this.print = shape.clone();
+		//this.print = shape.clone();
+		for ( i in 0...(SHAPE_PRINT_NUM-1) )
+			this.shape.push( shape.clone() );
+		
 		moved = true;
 	}
 	
@@ -139,13 +147,15 @@ class Body
 		
 		if ( updatePrint )
 		{
-			var t = print;
-			print = shape;
-			shape = t;
+			var t = shape.pop();
+			shape.unshift( t );
+			
+			/*print = shape;
+			shape = t;*/
 			moved = false;
 		}
 		
-		shape.updateAABB( x, y );
+		shape[0].updateAABB( x, y );
 	}
 	
 	public inline function addBodyContact( flags:BodyContactsFlags = 0 ):Void

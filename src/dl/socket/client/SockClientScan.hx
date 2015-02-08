@@ -16,12 +16,15 @@ import dl.socket.SockMsg.UserID;
 class SockClientScan
 {
 	public var me:SockClientUser;
-	public var other:Array<SockClientUser>;
+	public var others:Array<SockClientUser>;
+	
+	public var onMe:SockClientUser->Void;
+	public var onOthers:Array<SockClientUser>->Void;
+	public var onConnected:SockClientUser->Void;
+	public var onRoom:String->Array<SockClientUser>->Void;
+	//public var onClear:Void->Void;
 	
 	public var onChat:String->Void;
-	public var onUsers:Array<SockClientUser>->Void;
-	public var onClear:Void->Void;
-	public var onConnected:SockClientUser->Void;
 	public var onGame:TransferDatasServer->Void;
 	
 	var _room:String;
@@ -34,9 +37,9 @@ class SockClientScan
 		_connected = false;
 		
 		this.me = ( me == null ) ? new SockClientUser() : me;
-		other = [];
+		others = [];
 		
-		_room = SockConfig.ROOM_DEFAULT;
+		_room = "";//SockConfig.ROOM_DEFAULT;
 		_socket = new SockPipe();
 		_socket.onConnected = _onConnected;
 		_socket.onReceive = appliServer;
@@ -121,10 +124,10 @@ class SockClientScan
 				case "users":
 					
 					onChat('<p align="center"><b>____________</b>');
-					onChat("<b>" + _room + "</b> <i>(" + (other.length+1) + ")</i>");
+					onChat("<b>" + _room + "</b> <i>(" + (others.length+1) + ")</i>");
 					onChat("<b>¯¯¯¯¯¯¯¯¯¯¯¯</b>");
 					onChat('<i>'+me.name+"</i>");
-					for ( u in other )
+					for ( u in others )
 						onChat(" <i>"+u.name+"</i>");
 					onChat("");
 					onChat('<b>____________</b></p>');
@@ -176,7 +179,7 @@ class SockClientScan
 					}
 					
 					var name2:String = rx2.matched(1);
-					var rcs = Lambda.find( other, function(c2:SockClientUser) { return c2.name.toLowerCase() == name2.toLowerCase(); } );//findClientsByName( rx2.matched(1), cl.room.clients );
+					var rcs = Lambda.find( others, function(c2:SockClientUser) { return c2.name.toLowerCase() == name2.toLowerCase(); } );//findClientsByName( rx2.matched(1), cl.room.clients );
 					if (rcs == null)
 					{
 						return onChat( '<p align="left"><i><b>' + name2 + '</b> not found</i></p>' );
@@ -195,55 +198,91 @@ class SockClientScan
 	
 	public inline function getUserById(id:Int):Null<SockClientUser>
 	{
-		return Lambda.find( other, function(u) { return u.id == id; } );
+		return Lambda.find( others, function(u) { return u.id == id; } );
 	}
 	
 	function setRoom( o:RoomData )
 	{
-		other = [];
+		//trace(o, _room);
+		//if ( o.n == _room )
+		//	return;
+		
+		var lastName = _room;
+		
+		others = [];
 		_room = o.n;
 		
-		for ( u in o.u )
-			setUser( u, true );
+		if( o.u != null )
+			for ( u in o.u )
+				setUser( u, true );
 		
-		if ( _connected )
+		/*if ( onRoom != null )
+			onRoom( _room, other );*/
+		
+		
+		if ( lastName != _room )
 		{
-			if( onClear != null)
-				onClear();
+			if ( onRoom != null )
+			{
+				onRoom( _room, others );
+			}
+		}
+		else if ( onOthers != null )
+			onOthers( others );
 		
-			onChat( '<p align="left"><i>You joined <b>' + _room + "</b></i></p>" );
+		
+		/*if ( _connected )
+		{
+			
 		}
 		else
 		{
+			if ( onRoom != null )
+				onRoom( _room, others );
+			
 			_connected = true;
-		}
+		}*/
+		
+		
 	}
 	
-	function initUser( o:UserData, avoidMsg:Bool = false )
+	function initUser( o:UserData )
 	{
 		if ( o.i != null )
 		{
+			// to avoid error (others already initialized)
 			var u = getUserById( o.i );
 			if ( u != null )
-				other.remove( u );
+				others.remove( u );
 			
 			me.id = o.i;
-			
-			if ( onConnected != null )
-				onConnected( me );
 		}
 		
 		if ( o.n != null )
 		{
 			me.name = o.n;
-			onChat( '<p align="left"><i>Your name is <b>' + me.name + '</b></i></p>' );
+			//onChat( '<p align="left"><i>Your name is <b>' + me.name + '</b></i></p>' );
 		}
+		
+		_connected = true;
+		if ( onConnected != null )
+			onConnected( me );
 		
 		if ( o.r != null )
 		{
-			_room = o.r;
-			onChat( '<p align="left"><i>You joined the room <b>' + _room + '</b></i></p>' );
+			setRoom( o.r );
+			//_room = o.r.n;
+			//onChat( '<p align="left"><i>You joined the room <b>' + _room + '</b></i></p>' );
+			
+			
+			
+			/*if ( onRoom != null )
+				onRoom( _room, ()?o.r.u:[] );*/
 		}
+		
+		
+		
+		
 	}
 	
 	function setUser( o:UserData, avoidMsg:Bool = false )
@@ -257,43 +296,60 @@ class SockClientScan
 			var lastName:String = user.name;
 			var lastRoom:String = _room;
 			user.name = (o.n != null) ? o.n : user.name;
-			var newRoom = (o.r != null) ? o.r : _room;
+			var newRoom = (o.r != null) ? o.r.n : _room;
 			
-			if ( me == user && newRoom != lastRoom )
+			if ( me == user /*&& newRoom != lastRoom*/ )
 			{
-				if ( o.r != null )
+				if ( newRoom != lastRoom )
+					setRoom( o.r );
+					
+				if ( user.name != lastName )
+					if ( onMe != null )
+						onMe( user );
+				/*if ( o.r != null )
 				{
-					_room = o.r;
-					if( onClear != null)
-						onClear();
+					_room = o.r.n;
 					other = [];
-				}
+					
+					if ( onRoom != null )
+						onRoom( _room, other );
+				}*/
 			}
 			else
 			{
 				if ( newRoom != lastRoom  )
 				{
-					other.remove( user );
-					if (!avoidMsg)
-						onChat( '<p align="left"><i>' + user.name + " leaves the room " + _room + "</i></p>" );
+					others.remove( user );
+					
+					//if (!avoidMsg)
+					//	onChat( '<p align="left"><i>' + user.name + " leaves the room " + _room + "</i></p>" );
+					
+					if ( !avoidMsg && onOthers != null )
+						onOthers( others );
 				}
 				else if ( user.name != lastName  )
 				{
-					if (!avoidMsg)
-						onChat( '<p align="left"><i>' + lastName + ' is now known as ' + user.name + "</i></p>" );
+					//if (!avoidMsg)
+					//	onChat( '<p align="left"><i>' + lastName + ' is now known as ' + user.name + "</i></p>" );
+					
+					if ( !avoidMsg && onOthers != null )
+						onOthers( others );
 				}
 			}
 		}
-		else if ( o.r == _room || o.r == null )
+		else if ( o.r == null || o.r.n == _room )
 		{
 			user = new SockClientUser();
 			user.id = o.i;
 			user.name = o.n;
 			
-			other.push( user );
+			others.push( user );
 			
-			if (!avoidMsg)
-				onChat( '<p align="left"><i>' + user.name + " join the room " + _room + "</i></p>" );
+			//if (!avoidMsg)
+			//	onChat( '<p align="left"><i>' + user.name + " join the room " + _room + "</i></p>" );
+			
+			if ( !avoidMsg && onOthers != null )
+				onOthers( others );
 		}
 		
 		// Save the datas in cookie file
@@ -318,8 +374,8 @@ class SockClientScan
 		}
 		
 		// Print user list
-		var list = (me.id > -1) ? other.concat([me]) : other.concat([]);
-		onUsers(list);
+		//var list = (me.id > -1) ? other.concat([me]) : other.concat([]);
+		//onUsers(list);
 	}
 	
 	function onChatMsg( o:Chat )
@@ -333,7 +389,7 @@ class SockClientScan
 		{
 			if ( o.t != null )
 			{
-				var u:SockClientUser = Lambda.find( other, function(u:SockClientUser) { return u.id == o.t; } );
+				var u:SockClientUser = Lambda.find( others, function(u:SockClientUser) { return u.id == o.t; } );
 				return onChat( '<p align="left"><b>' + me.name + ">" + u.name + "</b>: " + o.m + "</p>" );
 			}
 			return onChat( '<p align="left"><b>' + me.name + "</b>: " + o.m + "</p>" );
@@ -363,6 +419,7 @@ class SockClientScan
 	
 	public function appliServer( brut:SockMsg ):Void
 	{
+		//trace(brut.cmd, brut.struct);
 		switch ( brut.cmd )
 		{
 			case Cmd.setUserData:

@@ -15,8 +15,8 @@ class SockConfig
 	public static inline var MSG_LENGTH_MIN:UInt = 1;
 	public static inline var MSG_LENGTH_MAX:UInt = 512;
 	
-	public static inline var ROOM_DEFAULT = "home";
-	public static inline var USER_NAME = "Guest";
+	public static inline var ROOM_DEFAULT = "~home";
+	public static inline var USER_NAME = "~Guest";
 	
 	/**
 	 * Null to disable user registered
