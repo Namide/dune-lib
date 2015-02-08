@@ -1,5 +1,6 @@
 package dl.physic.move;
 import dl.physic.body.Body;
+import dl.physic.body.Shape;
 import dl.physic.contact.BodyContact;
 import dl.physic.contact.BodyContact.BodyLimitFlags;
 import dl.physic.contact.ISpace;
@@ -87,6 +88,34 @@ class PlatformPhysicSystem
 	
 	function getPos( a:Body, b:Body ):BodyLimitFlags
 	{
+		var i = 1;
+		var ba0 = (i < a.shape.length) ? a.shape[i] : a.shape[0];
+		var bb0 = (i < b.shape.length) ? b.shape[i] : b.shape[0];
+		
+		var pos:BodyLimitFlags = 0;
+		var corner:Int = 0;
+		/*if ( ba0.aabbXMin >= bb0.aabbXMax ) { pos |= BodyLimitFlags.left; corner++; }
+		if ( ba0.aabbXMax <= bb0.aabbXMin ) { pos |= BodyLimitFlags.right; corner++; }
+		if ( ba0.aabbYMin >= bb0.aabbYMax ) { pos |= BodyLimitFlags.top; corner++; }
+		if ( ba0.aabbYMax <= bb0.aabbYMin ) { pos |= BodyLimitFlags.bottom; corner++; }*/
+		
+		
+		while ( pos == BodyLimitFlags.none && i < Body.SHAPE_PRINT_NUM )
+		{
+			ba0 = (i < a.shape.length) ? a.shape[i] : a.shape[0];
+			bb0 = (i < b.shape.length) ? b.shape[i] : b.shape[0];
+			
+			pos = 0;
+			corner = 0;
+			if ( ba0.aabbXMin >= bb0.aabbXMax ) { pos |= BodyLimitFlags.left; corner++; }
+			if ( ba0.aabbXMax <= bb0.aabbXMin ) { pos |= BodyLimitFlags.right; corner++; }
+			if ( ba0.aabbYMin >= bb0.aabbYMax ) { pos |= BodyLimitFlags.top; corner++; }
+			if ( ba0.aabbYMax <= bb0.aabbYMin ) { pos |= BodyLimitFlags.bottom; corner++; }
+			
+			i++;
+		}
+		
+		/*
 		var ba0 = ( a.print != null ) ? a.print : a.shape;
 		var bb0 = ( b.print != null ) ? b.print : b.shape;
 		
@@ -96,15 +125,42 @@ class PlatformPhysicSystem
 		if ( ba0.aabbXMax <= bb0.aabbXMin ) { pos |= BodyLimitFlags.right; corner++; }
 		if ( ba0.aabbYMin >= bb0.aabbYMax ) { pos |= BodyLimitFlags.top; corner++; }
 		if ( ba0.aabbYMax <= bb0.aabbYMin ) { pos |= BodyLimitFlags.bottom; corner++; }
+		*/
+		
+		/*
+		var i:Int = 1;
+		var pos:BodyLimitFlags = 0;
+		var corner:Int = 0;
+		var ba0:Shape;
+		var bb0:Shape;
+		do
+		{
+			//var ba0 = ( a.print != null ) ? a.print : a.shape;
+			//var bb0 = ( b.print != null ) ? b.print : b.shape;
+			ba0 = ( a.shape.length < i ) ? a.shape[i] : a.shape[0];
+			bb0 = ( b.shape.length < i ) ? b.shape[i] : b.shape[0];
+			
+			pos = 0;
+			corner = 0;
+			
+			if ( ba0.aabbXMin >= bb0.aabbXMax ) { pos |= BodyLimitFlags.left; corner++; }
+			if ( ba0.aabbXMax <= bb0.aabbXMin ) { pos |= BodyLimitFlags.right; corner++; }
+			if ( ba0.aabbYMin >= bb0.aabbYMax ) { pos |= BodyLimitFlags.top; corner++; }
+			if ( ba0.aabbYMax <= bb0.aabbYMin ) { pos |= BodyLimitFlags.bottom; corner++; }
+		
+		}
+		while ( corner<0 && i<Body.SHAPE_PRINT_NUM );
+		*/
+		
 		
 		// determine the contact border by the previous position
 		if ( corner > 1 )
 		{
-			var ba1 = a.shape;
-			var bb1 = b.shape;
+			var ba1 = a.shape[0];
+			var bb1 = b.shape[0];
 			
-			var Vx = ba1.aabbXMin - ( ( a.print != null ) ? a.print.aabbXMin : 0 );
-			var Vy = ba1.aabbYMin - ( ( a.print != null ) ? a.print.aabbYMin : 0 );
+			var Vx = ba1.aabbXMin - ba0.aabbXMin;
+			var Vy = ba1.aabbYMin - ba0.aabbYMin;
 			
 			if ( Vx == 0 && Vy == 0 )
 				Vx = Vy = 1;
@@ -262,7 +318,7 @@ class PlatformPhysicSystem
 					if ( !reactBody )
 					{
 						a.contacts.fixedLimits |= BodyLimitFlags.top;
-						a.setY( b.shape.aabbYMax );
+						a.setY( b.shape[0].aabbYMax );
 						if ( a.physic.vY < 0 )
 							a.physic.vY = 0;
 						return true;
@@ -281,7 +337,7 @@ class PlatformPhysicSystem
 					if ( !reactBody )
 					{
 						a.contacts.fixedLimits |= BodyLimitFlags.bottom;
-						a.setY( b.shape.aabbYMin - a.shape.getH() );
+						a.setY( b.shape[0].aabbYMin - a.shape[0].getH() );
 						if ( a.physic.vY > 0 )
 							a.physic.vY = 0;
 						return true;
@@ -300,7 +356,7 @@ class PlatformPhysicSystem
 					if ( !reactBody )
 					{
 						a.contacts.fixedLimits |= BodyLimitFlags.left;
-						a.setX( b.shape.aabbXMax );
+						a.setX( b.shape[0].aabbXMax );
 						if ( a.physic.vX < 0 )
 							a.physic.vX = 0;
 						return true;
@@ -319,7 +375,7 @@ class PlatformPhysicSystem
 					if ( !reactBody )
 					{
 						a.contacts.fixedLimits |= BodyLimitFlags.right;
-						a.setX( b.shape.aabbXMin - a.shape.getW() );
+						a.setX( b.shape[0].aabbXMin - a.shape[0].getW() );
 						if ( a.physic.vX > 0 )
 							a.physic.vX = 0;
 						return true;
@@ -360,7 +416,7 @@ class PlatformPhysicSystem
 		if ( applyReact( a, b, complexCol ) )
 		{
 			list = space.hitTestActive( a );
-			BodyContact.classBodiesByContactArea( a.shape, list );
+			BodyContact.classBodiesByContactArea( a.shape[0], list );
 			updatePosBody( a, list, space, complexCol, num + 1 );
 		}
 		else

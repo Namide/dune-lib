@@ -30,7 +30,7 @@ class SpaceSimple implements ISpace
 			b.updateAABB(false);
 		
 		for ( b2 in _passive )
-			if ( b.shape.hitTest( b2.shape ) )
+			if ( b.shape[0].hitTest( b2.shape[0] ) )
 				c.push( b2 );
 
 		c.state = BodyContactState.contacts;
@@ -54,7 +54,7 @@ class SpaceSimple implements ISpace
 				if ( b2.contacts.flags & BodyContactsFlags.fix == 0 )
 					b2.updateAABB();
 				
-				if ( 	b.shape.hitTest( b2.shape ) /*&&
+				if ( 	b.shape[0].hitTest( b2.shape[0] ) /*&&
 						b.contacts.list.indexOf( b2 ) < 0*/ )
 				{
 					c.push( b2 );

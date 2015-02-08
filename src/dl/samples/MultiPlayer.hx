@@ -149,13 +149,19 @@ class MultiPlayer extends Sprite
 		}
 		
 		sockets.onChat = flash.Lib.trace;
-		sockets.onClear = function() { trace("socket clear!"); };
+		//sockets.onClear = function() { trace("socket clear!"); };
 		//sockets.sendMsg = 
+		
+		sockets.onRoom = function( name:String, others:Array<SockClientUser> )
+		{
+			sockets.onOthers( others );
+		}
+		
 		sockets.onConnected = function(me:SockClientUser)
 		{
-			var p:Player = Lambda.find( playerOther, function(pl:Player) { return pl.id == me.id; } );
+			/*var p:Player = Lambda.find( playerOther, function(pl:Player) { return pl.id == me.id; } );
 			if ( p != null )
-				removePlayer( p );
+				removePlayer( p );*/
 			
 			playerMe.id = me.id;
 		}

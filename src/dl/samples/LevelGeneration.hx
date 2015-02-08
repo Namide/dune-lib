@@ -31,7 +31,7 @@ import haxe.Constraints.Function;
 		this.y = body.y;
 		
 		graphics.beginFill( 0xCC0000 );
-		graphics.drawRect( 0, 0, body.shape.getW(), body.shape.getH() );
+		graphics.drawRect( 0, 0, body.shape[0].getW(), body.shape[0].getH() );
 		graphics.endFill();
 	}	
 }
@@ -47,7 +47,7 @@ class Player extends Floor
 		
 		graphics.clear();
 		graphics.beginFill( 0x00CC00 );
-		graphics.drawRect( 0, 0, body.shape.getW(), body.shape.getH() );
+		graphics.drawRect( 0, 0, body.shape[0].getW(), body.shape[0].getH() );
 		graphics.endFill();
 	}
 	
@@ -122,7 +122,8 @@ class LevelGeneration extends Sprite
 			jumpTileWidthMin: 3,
 			jumpTileWidthMax: 6,
 			posTile: {x:1,y:1},
-			contacts: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity,
+			contacts: BodyContactsFlags.active,
+			physic: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity,
 			size:{x:0.8,y:0.8},
 			graphic:function(b:Body, c:PlatformPlayerController)
 			{

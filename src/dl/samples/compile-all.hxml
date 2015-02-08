@@ -65,14 +65,14 @@
 # 			LEVEL GENERATION
 # --------------------------------
 
---next
---macro Sys.println('Compile: level generation')
--cp src
--main dl.samples.LevelGeneration
--swf bin-all/LevelGeneration.swf
--swf-header 1280:720:60:FFFFFF
--swf-version 11.8
--dce full
+#--next
+#--macro Sys.println('Compile: level generation')
+#-cp src
+#-main dl.samples.LevelGeneration
+#-swf bin-all/LevelGeneration.swf
+#-swf-header 1280:720:60:FFFFFF
+#-swf-version 11.8
+#-dce full
 
 
 # --------------------------------

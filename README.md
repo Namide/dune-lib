@@ -13,9 +13,6 @@ Objectives
 Roadmap
 ---
 
-next step: array for last positions (print...)
-
-
 * sockets
 	* 80% client (only flash)
 	* 80% server (only neko)
@@ -25,11 +22,11 @@ next step: array for last positions (print...)
 	* collisions
 		* 70% squares
 		* 100% space grid
-		* 25% multi-player
+		* 50% multi-player
 	* reaction
-		* 0% mass (body)
+		* 25% mass (body)
 		* 0% velocity (body)
-		* 0% priority
+		* 50% priority
 			1. movables (with velocity and mass)
 			2. fixes (by area)
 * input
