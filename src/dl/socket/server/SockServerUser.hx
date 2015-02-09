@@ -1,6 +1,7 @@
 package dl.socket.server ;
 import dl.samples.SocketServer;
 import dl.socket.SockMsg.Role;
+import dl.socket.SockMsg.RoomData;
 import dl.socket.SockMsg.UserData;
 import haxe.CallStack;
 import haxe.io.Eof;
@@ -134,7 +135,10 @@ class SockServerUser
 			ud.n = this.name;
 			
 		if ( roomData )
-			ud.r = room.getRoomData( false, false );
+		{
+			var rdEmpty:RoomData = { n:"~?", p:"" };
+			ud.r = (room == null) ? rdEmpty : room.getRoomData( false, false, false );
+		}
 		
 		if ( role )
 			ud.m = this.role;

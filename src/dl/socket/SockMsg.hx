@@ -4,11 +4,11 @@ package dl.socket ;
 abstract Cmd(Int)
 {
 	var other = 0;					// send policy
-	var setUserData = 1;			// both > calcul
+	//var setUserData = 1;			// both > calcul
 	var transferDatasClient = 2;	// client->server > calcul
 	var transferDatasServer = 3;	// server->client > calcul
 	var send = 4;					// server->client > calcul
-	var returnRoomData = 5;			// server->client
+	//var returnRoomData = 5;		// server->client
 	
 	inline function new( i:Int ){ this = i; }
 
@@ -39,6 +39,9 @@ abstract SendSubject(Int)
 	var register = 6;
 	var login = 7;
 	var kick = 8;
+	var user = 9;
+	var room = 10;
+	
 	
 	inline function new(s: Int){ this = s; }
 
@@ -88,7 +91,7 @@ class SockMsgGen
 {
 	function new() { throw "static class"; }
 	
-	public static function getUserData( userName:String = null, userId:Int = -1, userRoomName:String = null, userRoomPass:String = null ):SockMsg
+	/*public static function getUserData( userName:String = null, userId:Int = -1, userRoomName:String = null, userRoomPass:String = null ):SockMsg
 	{
 		var o:UserData = { };
 		if ( userName != null )
@@ -105,7 +108,7 @@ class SockMsgGen
 		}
 		
 		return new SockMsg( Cmd.setUserData, o );
-	}
+	}*/
 	
 	public static function getSend( subject:SendSubject, ?content:Dynamic = null ):SockMsg
 	{
@@ -114,13 +117,13 @@ class SockMsgGen
 		return new SockMsg( Cmd.send, o );
 	}
 	
-	public static function getReturnRoomData( roomName:String, roomPass:String, userList:Array<UserData> = null, userNumber:Int = -1 ):SockMsg
+	/*public static function getReturnRoomData( roomName:String, roomPass:String, userList:Array<UserData> = null, userNumber:Int = -1 ):SockMsg
 	{		
 		var o:RoomData = { n:roomName, p:(roomPass!="")?"1":"" };
 		if ( userNumber > -1 ) 	o.l = userNumber;
 		if ( userList != null ) o.u = userList;
 		return new SockMsg( Cmd.returnRoomData, o );
-	}
+	}*/
 	
 	public static function getTransferDatasServer( data:String, userId:Int ):SockMsg
 	{		
@@ -159,17 +162,17 @@ class SockMsg
 		
 		switch( brut.cmd )
 		{
-			case Cmd.setUserData :
+			/*case Cmd.setUserData :
 				var d:UserData = haxe.Json.parse( text );
-				brut.struct = d;
+				brut.struct = d;*/
 			
 			case Cmd.send :
 				var d:Send = haxe.Json.parse( text );
 				brut.struct = d;
 			
-			case Cmd.returnRoomData :
+			/*case Cmd.returnRoomData :
 				var d:RoomData = haxe.Json.parse( text );
-				brut.struct = d;
+				brut.struct = d;*/
 				
 			case Cmd.transferDatasClient :
 				//var d:TransferDatas = haxe.Json.parse( text );
@@ -222,6 +225,7 @@ typedef RoomData = {
 	var p: String; 							// password (only for private room)
 	@:optional var u: Array<UserData>;		// list of users in the room
 	@:optional var l: Int;					// number of users in the room
+	@:optional var d: Int;					// room datas
 }
 
 typedef RoomList = {

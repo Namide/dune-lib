@@ -102,7 +102,9 @@ class SockClientScan
 			{
 				case "name":
 					
-					return _socket.send( SockMsgGen.getUserData(rx.matched(2)) );
+					var ud:UserData = { n:rx.matched(2) };
+					return _socket.send( SockMsgGen.getSend( SendSubject.user, ud ));
+					//return _socket.send( SockMsgGen.getUserData(rx.matched(2)) );
 					
 				case "help":
 					
@@ -174,7 +176,9 @@ class SockClientScan
 				case "join":
 					
 					var roomData = rx.matched(2).split(" ");
-					return _socket.send( SockMsgGen.getUserData( null, -1, roomData[0], (roomData.length>1)?roomData[1]:"" ) );
+					//return _socket.send( SockMsgGen.getUserData( null, -1, roomData[0], (roomData.length>1)?roomData[1]:"" ) );
+					var ud:UserData = { r:{ n:roomData[0], p:((roomData.length>1)?roomData[1]:"") } };
+					return _socket.send( SockMsgGen.getSend( SendSubject.user, ud ) );
 					
 				case "kick":
 					
@@ -376,9 +380,7 @@ class SockClientScan
 		}
 		
 		if ( o.t == me.id )
-		{
 			return onChat( '<p align="left"><b>' + user.fullName() + ">" + me.fullName() + "</b>: " + o.m + '</p>' );
-		}
 		
 		return onChat( '<p align="left"><b>' + user.fullName() + "</b>: " + o.m + '</p>' );
 	}
@@ -390,8 +392,10 @@ class SockClientScan
 		onChat("¯¯¯¯¯¯¯¯¯¯¯¯");
 		for ( r in rl )
 		{
-			if ( r.l != null ) 		onChat(" <i>" + r.n + " (" + r.l + ") " + ((r.p == "")?"":"(private)") + "</i>");
-			else if ( r.u != null ) onChat(" <i>" + r.n + " (" + r.u.length + ") " + ((r.p == "")?"":"(private)") + "</i>");
+			if ( r.l != null )
+				onChat(" <i>" + r.n + " (" + r.l + ") " + ((r.p == "")?"":"(private)") + "</i>");
+			else if ( r.u != null )
+				onChat(" <i>" + r.n + " (" + r.u.length + ") " + ((r.p == "")?"":"(private)") + "</i>");
 		}
 		onChat('____________</p>');
 		onChat(' ');
@@ -402,10 +406,10 @@ class SockClientScan
 		//trace(brut.cmd, brut.struct);
 		switch ( brut.cmd )
 		{
-			case Cmd.setUserData:
+			/*case Cmd.setUserData:
 				
 				var user:UserData = brut.struct;
-				setUser( user );
+				setUser( user );*/
 				
 			case Cmd.transferDatasServer:
 				
@@ -417,6 +421,16 @@ class SockClientScan
 				var o:Send = brut.struct;
 				switch ( o.s )
 				{
+					case SendSubject.room:
+						
+						var room:RoomData = o.d;
+						setRoom( room );
+					
+					case SendSubject.user:
+						
+						var user:UserData = o.d;
+						return setUser( user );
+					
 					case SendSubject.chat:
 						
 						var o2:Chat = o.d;
@@ -446,11 +460,11 @@ class SockClientScan
 						
 				}
 				
-			case Cmd.returnRoomData:
+			/*case Cmd.returnRoomData:
 				
 				// onClear
 				var room:RoomData = brut.struct;
-				setRoom( room );
+				setRoom( room );*/
 			
 			case Cmd.other | Cmd.transferDatasClient:
 				

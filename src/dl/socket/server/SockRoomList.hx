@@ -1,4 +1,5 @@
 package dl.socket.server ;
+import dl.socket.SockMsg.SendSubject;
 import haxe.Json;
 import dl.socket.SockMsg.Cmd;
 import dl.socket.SockMsg.SockMsgGen;
@@ -53,14 +54,16 @@ class SockRoomList
 		//cl.room = ro;
 		
 		// send to the new user
-		var ul:Array<UserData> = [];
-		for ( u in ro.getCls()/*.clients*/ )
-			ul.push( u.getUserData(true, true, false, true, true )/*{ n:u.name, i:u.id }*/ );
-		cl.send( SockMsgGen.getReturnRoomData( ro.name, (ro.pass=="")?"":"1", ul ) );
+		//var ul:Array<UserData> = [];
+		//for ( u in ro.getCls()/*.clients*/ )
+		//	ul.push( u.getUserData(true, true, false, true, true )/*{ n:u.name, i:u.id }*/ );
+		//cl.send( SockMsgGen.getReturnRoomData( ro.name, (ro.pass=="")?"":"1", ul ) );
+		cl.send( SockMsgGen.getSend( SendSubject.room, ro.getRoomData( true, false, true ) /*ro.name, (ro.pass=="")?"":"1", ul*/ ) );
 		
 		
 		// Send to all users in the room
-		cl.server.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData( true, true, true, true, true ) ), ro.getCls()/*.clients*/ );
+		//cl.server.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData( true, true, true, true, true ) ), ro.getCls()/*.clients*/ );
+		cl.server.broadcast( SockMsgGen.getSend( SendSubject.user, cl.getUserData(true, true, false, true, true ) ), ro.getCls() );
 		
 		return true;
 	}
@@ -79,8 +82,9 @@ class SockRoomList
 		}
 		else if ( dispatchMsg )
 		{
-			//var nu:UserData = { i:cl.id, n:cl.name/*, r:"?"*/ };
-			cl.server.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData( true, true, false, false, false )/*nu*/ ), ro.getCls() );
+			//var ud:UserData = { i:cl.id, n:cl.name/*, r:"?"*/ };
+			//cl.server.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData( true, true, false, false, false )/*nu*/ ), ro.getCls() );
+			cl.server.broadcast( SockMsgGen.getSend( SendSubject.user, cl.getUserData( true, false, true, false, false )/*nu*/ ), ro.getCls() );
 		}
 	}
 	

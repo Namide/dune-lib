@@ -10,6 +10,7 @@ class SockRoom
 {
 	public var name:String;
 	public var pass:String;
+	public var datas:Dynamic;
 	var _clients:Array<SockServerUser>;
 	
 	public function new(name:String, pass:String = null)
@@ -23,7 +24,7 @@ class SockRoom
 	{
 		if ( cl.room == this )
 		{
-			if ( clLength() == 1 && cl.role == Role.basic )
+			if ( clLength() == 1 && cl.role < Role.roomMaster && name != SockConfig.ROOM_DEFAULT )
 				cl.role = Role.roomMaster;
 		}
 		else if ( cl.room == null )
@@ -58,7 +59,7 @@ class SockRoom
 		return _clients;
 	}
 	
-	public function getRoomData( userList:Bool = false, userNumber:Bool = true ):RoomData
+	public function getRoomData( userList:Bool = false, userNumber:Bool = true, datas:Bool = false ):RoomData
 	{
 		var rd:RoomData = { n:name, p:(pass == "") ? "" : "1" };
 		
@@ -69,8 +70,11 @@ class SockRoom
 		{
 			rd.u = [];
 			for ( u in _clients )
-				rd.u.push( u.getUserData( true, true, false, true ) );
+				rd.u.push( u.getUserData( true, true, false, true, datas ) );
 		}
+		
+		if ( datas )
+			rd.d = this.datas;
 		
 		return rd;
 	}
