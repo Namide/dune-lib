@@ -29,8 +29,13 @@ class SockClientUser
 		return s;
 	}
 	
-	public function getAllName():String
+	/*public function getAllName():String
 	{
 		return ( role.toInt() > Role.basic.toInt() ) ? ("@" + name) : name;
+	}*/
+	
+	public inline function fullName()
+	{
+		return ( ( role > Role.roomMaster ) ? "!" : ( role == Role.roomMaster ) ? "@" : "" ) + name;
 	}
 }

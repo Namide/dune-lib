@@ -36,7 +36,6 @@ class SocketClientTchat
 		_process.onChat = _graphic.appendText;
 		_process.onOthers = _graphic.refreshOthers;
 		_process.onMe = _graphic.refreshMe;
-		//_process.onClear = _graphic.clear;
 		_process.onRoom = _graphic.changeRoom;
 		_process.onConnected = _graphic.connect;
 		

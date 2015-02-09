@@ -144,4 +144,9 @@ class SockServerUser
 		
 		return ud;
 	}
+	
+	public inline function fullName()
+	{
+		return ( ( role > Role.roomMaster ) ? "!" : ( role == Role.roomMaster ) ? "@" : "" ) + name;
+	}
 }

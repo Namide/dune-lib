@@ -38,6 +38,7 @@ abstract SendSubject(Int)
 	var chat = 5;
 	var register = 6;
 	var login = 7;
+	var kick = 8;
 	
 	inline function new(s: Int){ this = s; }
 
@@ -68,6 +69,18 @@ abstract Role(Int)
 	@:to
 	public function toInt():Int {
 	    return this;
+	}
+	
+	@:op(A > B)
+	public function sup(r: Int): Bool
+	{
+		return this > r;
+	}
+	
+	@:op(A < B)
+	public function inf(r: Int): Bool
+	{
+		return this < r;
 	}
 }
 
@@ -115,9 +128,8 @@ class SockMsgGen
 		return new SockMsg( Cmd.transferDatasServer, o );
 	}
 	
-	public static function getTransferDatasClient( data:Dynamic ):SockMsg
+	public inline static function getTransferDatasClient( data:Dynamic ):SockMsg
 	{		
-		//var o:TransferDatasClient = { d:data, i:userId };
 		return new SockMsg( Cmd.transferDatasClient, data );
 	}
 }

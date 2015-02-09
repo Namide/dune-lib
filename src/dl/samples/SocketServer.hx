@@ -51,7 +51,7 @@ class SocketServer
 	public var users:Null<SockUserDB>;
 	
 	public var console:SockConsole;
-	public var info:SockUserAdmin;
+	public var admin:SockUserAdmin;
 	
 	public function close()
 	{
@@ -63,7 +63,6 @@ class SocketServer
 		Sys.exit(0);
 	}
 	
-	/** Sends given text to all active clients */
 	public function broadcast( brut:SockMsg, list:Array<SockServerUser> )
 	{
 		for (cl in list)
@@ -71,13 +70,11 @@ class SocketServer
 				cl.send( brut );
 	}
 	
-	/** Chat message handler */
 	public function onChat( chars:String, cl:SockServerUser )
 	{
 		process.appli( chars, cl );
 	}
 	
-	/** Accepts new sockets and spawns new threads for them */
 	function threadAccept()
 	{
 		while (true)
@@ -93,7 +90,6 @@ class SocketServer
 		}
 	}
 	
-	/** Creates a new thread function to handle given ClientInfo */
 	function getThreadListen(cl:SockServerUser)
 	{
 		return function()
@@ -118,19 +114,21 @@ class SocketServer
 				}
 			}
 			
-			console.write( Std.string(cl) +  " disconected" );
+			console.write( Std.string(cl) +  " disconnected" );
 			
-			if ( cl.room != null )
+			var ro = cl.room;
+			/*if ( ro != null )
 			{
 				//var list = cl.room.clients;
-				rooms.rm( cl, false );
-				broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + ' disconnected' ), cl.room.getCls()/*list*/ );
-			}
+				ro.rm( cl, false );
+				broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + ' disconnected' ), ro.getCls() );
+			}*/
+			rooms.rm( cl, false );
+			if ( ro != null )
+				broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + ' disconnected' ), ro.getCls() );
 			
 			if ( Lambda.has( clients, cl ) )
 				clients.remove( cl );
-			
-			rooms.rm( cl );
 			
 			try
 			{
@@ -246,10 +244,10 @@ class SocketServer
 		
 		clients = [];
 		rooms = new SockRoomList();
-		info = new SockUserAdmin(this);
+		admin = new SockUserAdmin(this);
 		console.onSend = function(t:String)
 		{
-			onChat(t, info);
+			onChat(t, admin);
 			return true;
 		};
 		

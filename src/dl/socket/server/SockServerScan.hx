@@ -185,6 +185,49 @@ class SockServerScan
 		return newUser;
 	}
 	
+	function kickUser( cl:SockServerUser, UserKikedId:Int )
+	{
+		if ( cl.room == null )
+		{
+			cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'User not found' ) );
+			return false;
+		}
+		
+		// GET USER KICKED
+		var kd:SockServerUser = Lambda.find( cl.room.getCls(), function( k:SockServerUser ) { return k.id == UserKikedId; } );
+		
+		//NOT FOUND
+		if ( kd == null )
+		{
+			cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'User not found' ) );
+			return false;
+		}
+		
+		var ud = kd.getUserData( true, false, true, false, false );
+		
+		var ro = kd.room;
+		appliKick( kd, cl );
+		if ( ro != null )
+		{
+			sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, kd.fullName() + ' has been kicked by ' + cl.fullName() ), ro.getCls() );
+			ud.r.n = "~ ?";
+			sv.broadcast( new SockMsg( Cmd.setUserData, ud ), ro.getCls() );
+		}
+		
+		//updateUser( kd, newUser );
+		
+		return true;
+	}
+	
+	function appliKick( cl:SockServerUser, kiker:SockServerUser )
+	{
+		cl.send( SockMsgGen.getSend( SendSubject.messageSystem, 'You are kicked by ' + kiker.fullName() ) );
+		//sv.rooms.rm( cl );
+		sv.rooms.rm( cl );
+		sv.clients.remove( cl );
+		cl.active = false;
+	}
+	
 	function serverCommands( chars:String, cl:SockServerUser )
 	{
 		var a = chars.split(" ");
@@ -210,10 +253,8 @@ class SockServerScan
 				
 				for ( c in sv.clients )
 				{
-					c.send( SockMsgGen.getSend( SendSubject.messageSystem, c.name + ' has been kicked by admins' ) );
-					sv.rooms.rm( c );
-					sv.clients.remove( c );
-					c.active = false;
+					appliKick( c, sv.admin );
+					//c.send( SockMsgGen.getSend( SendSubject.messageSystem, c.fullName() + ' has been kicked by ' + cl.fullName() ) );
 				}
 				sv.console.write( "\n  all clients kicked!\n" );
 				
@@ -267,11 +308,20 @@ class SockServerScan
 				
 				if ( a.length > 1 )
 				{
-					var c = Lambda.find( sv.clients, function(c0:SockServerUser) { return (c0.id == Std.parseInt( a[1] ) ); } );
+					if ( kickUser( sv.admin, Std.parseInt( a[1] ) ) )
+					{
+						sv.console.write( "\n  " + Std.parseInt( a[1] ) + " kicked!\n" );
+					}
+					else
+					{
+						sv.console.write( "\n  client: " + a[1] + " not found (must be an ID)\n" );
+					}
+					
+					/*var c = Lambda.find( sv.clients, function(c0:SockServerUser) { return (c0.id == Std.parseInt( a[1] ) ); } );
 					if ( c != null )
 					{
-						for ( c2 in c.room.getCls()/*.clients*/ )
-							c2.send( SockMsgGen.getSend( SendSubject.messageSystem, c.name + ' has been kicked by admins' ) );
+						for ( c2 in c.room.getCls() )
+							c2.send( SockMsgGen.getSend( SendSubject.messageSystem, c.fullName() + ' has been kicked by ' + sv.admin.fullName() ) );
 						
 						sv.rooms.rm( c );
 						sv.clients.remove( c );
@@ -282,7 +332,7 @@ class SockServerScan
 					else
 					{
 						sv.console.write( "\n  client: " + a[1] + " not found (must be an ID)\n" );
-					}
+					}*/
 				}
 				
 				
@@ -292,7 +342,7 @@ class SockServerScan
 	public function appli( chars:String, cl:SockServerUser )
 	{
 		// SERVER COMMANDS
-		if ( cl == sv.info )
+		if ( cl == sv.admin )
 		{
 			serverCommands( chars, cl );
 			return;
@@ -318,20 +368,21 @@ class SockServerScan
 						if ( u.n != null || u.r != null )
 							u = updateUser( cl, u );
 						
-						//u.i = cl.id;
-						//u.n = cl.name;
-						
 						if ( cl.room == null )
 							sv.rooms.add( cl, SockConfig.ROOM_DEFAULT, "" );
 						
 						u = cl.getUserData( true, true, false, true, false );
 						u.r = cl.room.getRoomData( true, false );
 						
-						//u.r = cl.room.name;
-						
 						cl.dispatch = true;
 						cl.send( SockMsgGen.getSend( SendSubject.connect, u ) );
 						
+						return;
+						
+					case SendSubject.kick:
+						
+						var newUser:UserData = o.d;
+						kickUser( cl, newUser.i );
 						return;
 						
 					case SendSubject.errorSystem:
@@ -374,7 +425,6 @@ class SockServerScan
 						var rl:Array<RoomData> = [];
 						for ( r in sv.rooms.all() )
 							rl.push( r.getRoomData( false, true ) );
-							//rl.push( { n:r.name, l:r.clients.length, p:(r.pass=="")?"":"1" } );
 						
 						cl.send( SockMsgGen.getSend( SendSubject.roomList, rl ) );
 						return;
@@ -436,9 +486,8 @@ class SockServerScan
 			case Cmd.transferDatasClient :
 			
 				var msg = SockMsgGen.getTransferDatasServer( brut.struct, cl.id );
-				for ( c in cl.room.getCls()/*.clients*/ )
-					//if ( c != cl )
-						c.send( msg );
+				for ( c in cl.room.getCls() )
+					c.send( msg );
 				return;
 			
 			case Cmd.transferDatasServer :
