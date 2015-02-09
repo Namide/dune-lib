@@ -1,5 +1,6 @@
 package dl.socket.server ;
 import dl.samples.SocketServer;
+import dl.socket.SockMsg.Role;
 import dl.socket.SockMsg.UserData;
 import haxe.CallStack;
 import haxe.io.Eof;
@@ -14,6 +15,7 @@ class SockServerUser
 	public var name:String;
 	public var id:Int;
 	public var room:SockRoom;
+	public var role:Role;
 	public var datas:Dynamic;
 	
 	public var socket:Socket;
@@ -26,6 +28,7 @@ class SockServerUser
 	{
 		id = ++sv.clientN;
 		name = SockConfig.USER_NAME + Std.string( id );
+		role = Role.basic;
 		server = sv;
 		socket = skt;
 		active = true;
@@ -120,7 +123,7 @@ class SockServerUser
 		*/
 	}
 	
-	public function getUserData( id:Bool = true, name:Bool = true, roomData:Bool = false, datas:Bool = false ):UserData
+	public function getUserData( id:Bool = true, name:Bool = true, roomData:Bool = false, role:Bool, datas:Bool = false ):UserData
 	{
 		var ud:UserData = { };
 		
@@ -132,6 +135,9 @@ class SockServerUser
 			
 		if ( roomData )
 			ud.r = room.getRoomData( false, false );
+		
+		if ( role )
+			ud.m = this.role;
 		
 		if ( datas )
 			ud.d = this.datas;

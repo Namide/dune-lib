@@ -21,14 +21,14 @@ class SockRoomList
 	
 	public function set( roomName:String, roomPass:String ):SockRoom
 	{
-		var ri:SockRoom = Lambda.find (_list, function(tmp:SockRoom):Bool { return tmp.name.toLowerCase() == roomName.toLowerCase(); } );
-		if ( ri == null )
+		var ro:SockRoom = Lambda.find (_list, function(tmp:SockRoom):Bool { return tmp.name.toLowerCase() == roomName.toLowerCase(); } );
+		if ( ro == null )
 		{
-			ri = new SockRoom( roomName, roomPass );
-			_list.push( ri );
+			ro = new SockRoom( roomName, roomPass );
+			_list.push( ro );
 		}
 		
-		return ri;
+		return ro;
 	}
 	
 	public function all():Array<SockRoom>
@@ -36,52 +36,51 @@ class SockRoomList
 		return _list;
 	}
 	
-	public inline function change( ci:SockServerUser, roomName:String, roomPass:String ):Bool
+	public inline function change( cl:SockServerUser, roomName:String, roomPass:String ):Bool
 	{
-		return add( ci, roomName, roomPass );
+		return add( cl, roomName, roomPass );
 	}
 	
-	public function add( ci:SockServerUser, roomName:String, roomPass:String ):Bool
+	public function add( cl:SockServerUser, roomName:String, roomPass:String ):Bool
 	{
-		var ri:SockRoom = set( roomName, roomPass );
-		if ( ri == null )
+		var ro:SockRoom = set( roomName, roomPass );
+		if ( ro == null )
 			return false;
 		
-		remove( ci );
+		rm( cl );
 		
-		ri.clients.push(ci);
-		ci.room = ri;
+		ro.addCl( cl );//.clients.push(cl);
+		//cl.room = ro;
 		
 		// send to the new user
 		var ul:Array<UserData> = [];
-		for ( u in ri.clients )
-			ul.push( { n:u.name, i:u.id } );
+		for ( u in ro.getCls()/*.clients*/ )
+			ul.push( u.getUserData(true, true, false, true, true )/*{ n:u.name, i:u.id }*/ );
+		cl.send( SockMsgGen.getReturnRoomData( ro.name, (ro.pass=="")?"":"1", ul ) );
 		
-		ci.send( SockMsgGen.getReturnRoomData( ri.name, ri.pass, ul ) );
 		
 		// Send to all users in the room
-		//var nu:UserData = { i:ci.id, n:ci.name, r:ri.name };
-		ci.server.broadcast( new SockMsg( Cmd.setUserData, ci.getUserData( true, true, true, true ) ), ri.clients );
+		cl.server.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData( true, true, true, true, true ) ), ro.getCls()/*.clients*/ );
 		
 		return true;
 	}
 	
-	public function remove( ci:SockServerUser, dispatchMsg:Bool = true )
+	public function rm( cl:SockServerUser, dispatchMsg:Bool = true )
 	{
-		var ri:SockRoom = ci.room;
-		if ( ri == null )
+		var ro:SockRoom = cl.room;
+		if ( ro == null )
 			return;
 		
-		ri.clients.remove( ci );
+		ro.rmCl( cl );//.clients.remove( cl );
 		
-		if ( ri.clients.length < 1 )
+		if ( ro.clLength() < 1 )//ro.clients.length < 1 )
 		{
-			_list.remove( ri );
+			_list.remove( ro );
 		}
 		else if ( dispatchMsg )
 		{
-			//var nu:UserData = { i:ci.id, n:ci.name/*, r:"?"*/ };
-			ci.server.broadcast( new SockMsg( Cmd.setUserData, ci.getUserData( true, true, false, false )/*nu*/ ), ri.clients );
+			//var nu:UserData = { i:cl.id, n:cl.name/*, r:"?"*/ };
+			cl.server.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData( true, true, false, false, false )/*nu*/ ), ro.getCls() );
 		}
 	}
 	

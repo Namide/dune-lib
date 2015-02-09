@@ -52,6 +52,25 @@ abstract SendSubject(Int)
 	}
 }
 
+@:enum
+abstract Role(Int)
+{
+	var basic = 0;
+	var roomMaster = 1;
+	
+	inline function new(s: Int){ this = s; }
+
+	@:from
+	public static function fromInt(i:Int):Role {
+	    return new Role(i);
+	}
+
+	@:to
+	public function toInt():Int {
+	    return this;
+	}
+}
+
 class SockMsgGen
 {
 	function new() { throw "static class"; }
@@ -165,6 +184,7 @@ typedef UserData = {
 	@:optional var i: Int;					// user id
 	@:optional var n: String;				// user name
 	@:optional var r: RoomData;				// room name of user
+	@:optional var m: Role;					// moderator, role
 	@:optional var d: Dynamic;				// additionnal data
 }
 

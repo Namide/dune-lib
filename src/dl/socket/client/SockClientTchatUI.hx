@@ -7,7 +7,6 @@ import flash.display.Stage;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.Lib;
-import flash.text.StyleSheet;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.text.TextFieldType;
@@ -91,7 +90,7 @@ class SockClientTchatUI extends Sprite
 		_me = me.clone();
 		
 		appendText( '<p align="left"><i>Welcome on this Tchat!</i></p>' );
-		appendText( '<p align="left"><i>Your name is <b>' + _me.name + '</b></i></p>' );
+		appendText( '<p align="left"><i>Your name is <b>' + _me.getAllName() + '</b></i></p>' );
 		//appendText( '<p align="left"><i>You joined the room <b>' + _room + '</b></i></p>' );
 		
 	}
@@ -99,13 +98,13 @@ class SockClientTchatUI extends Sprite
 	public function refreshMe( me:SockClientUser )
 	{
 		if ( me.name != _me.name )
-			appendText( '<p align="left"><i>Your name is now <b>' + me.name + '</b></i></p>' );
+			appendText( '<p align="left"><i>Your name is now <b>' + me.getAllName() + '</b></i></p>' );
 		
 		_me = me.clone();
+		refreshRight();
 		
 		//appendText( '<p align="left"><i>Welcome on this Tchat!</i></p>' );
 		//appendText( '<p align="left"><i>You joined the room <b>' + _room + '</b></i></p>' );
-		
 	}
 	
 	public inline function changeRoom( room:String, userList:Array<SockClientUser> )
@@ -156,12 +155,12 @@ class SockClientTchatUI extends Sprite
 				
 				if ( oldUser == null )
 				{
-					appendText( '<p align="left"><i>' + newUser.name + ' join the room ' + _room + ' ('+(list.length+1)+')</i></p>' );
+					appendText( '<p align="left"><i>' + newUser.getAllName() + ' join the room ' + _room + ' ('+(list.length+1)+')</i></p>' );
 				}
 				else
 				{
 					if ( newUser.name != oldUser.name )
-						appendText( '<p align="left"><i>' + oldUser.name + ' is now known as <b>' + newUser.name + '</b></i></p>' );
+						appendText( '<p align="left"><i>' + oldUser.getAllName() + ' is now known as <b>' + newUser.getAllName() + '</b></i></p>' );
 				}
 			}
 			
@@ -173,7 +172,7 @@ class SockClientTchatUI extends Sprite
 				
 				if ( newUser == null )
 				{
-					appendText( '<p align="left"><i>' + oldUser.name + " leaves the room " + _room + "</i></p>" );
+					appendText( '<p align="left"><i>' + oldUser.getAllName() + " leaves the room " + _room + "</i></p>" );
 				}
 			}
 		}
@@ -186,13 +185,13 @@ class SockClientTchatUI extends Sprite
 	function refreshRight()
 	{
 		var list = _others.concat([_me]);
-		list.sort( function(a:SockClientUser, b:SockClientUser) { return (a.name > b.name)?1: -1; } );
+		list.sort( function(a:SockClientUser, b:SockClientUser) { return (a.getAllName() > b.getAllName())?1: -1; } );
 		
 		var t = '<p align="center"><b>' + _room + "</b> (" + list.length + ")</p><br/>";
 		for ( u in list )
 		{
 			if ( u.name != null )
-				t += " <i>"+u.name+"</i><br/>";
+				t += " <i>"+u.getAllName()+"</i><br/>";
 		}
 		t += "<br/><br/><i>List of commands:<br/>/help</i>";
 		

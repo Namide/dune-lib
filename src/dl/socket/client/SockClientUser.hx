@@ -1,4 +1,5 @@
 package dl.socket.client ;
+import dl.socket.SockMsg.Role;
 import dl.utils.Obj;
 
 /**
@@ -10,6 +11,7 @@ class SockClientUser
 	public var name:String;
 	public var id:Int;
 	public var datas:Dynamic;
+	public var role:Role;
 	//public var onChange:SockClientUser->Void;
 	
 	public function new() 
@@ -23,6 +25,12 @@ class SockClientUser
 		s.name = name;
 		s.id = id;
 		s.datas = Obj.deepCopy( datas );
+		s.role = role;
 		return s;
+	}
+	
+	public function getAllName():String
+	{
+		return ( role.toInt() > Role.basic.toInt() ) ? ("@" + name) : name;
 	}
 }

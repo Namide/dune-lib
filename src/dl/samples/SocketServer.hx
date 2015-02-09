@@ -122,15 +122,15 @@ class SocketServer
 			
 			if ( cl.room != null )
 			{
-				var list = cl.room.clients;
-				rooms.remove( cl, false );
-				broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + ' disconnected' ), list );
+				//var list = cl.room.clients;
+				rooms.rm( cl, false );
+				broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + ' disconnected' ), cl.room.getCls()/*list*/ );
 			}
 			
 			if ( Lambda.has( clients, cl ) )
 				clients.remove( cl );
 			
-			rooms.remove( cl );
+			rooms.rm( cl );
 			
 			try
 			{

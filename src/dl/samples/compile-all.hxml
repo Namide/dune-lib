@@ -1,4 +1,5 @@
 
+# commands example
 #--cwd src
 #-lib heaps
 #-D resourcesPath=../res
@@ -11,6 +12,7 @@
 # --------------------------------
 
 --macro Sys.println('Compile: t\'chat server')
+--no-inline
 -cp src
 -main dl.samples.SocketServer
 -neko bin-all/server/SocketServer.n
@@ -29,7 +31,7 @@
 -swf-header 1280:720:60:FFFFFF
 -swf-version 11.8
 -dce full
---macro Sys.println('To use the t\'chat, starts by run the server with bin-all/server/run-server.bat')
+#--macro Sys.println('To use the t\'chat, starts by run the server with bin-all/server/run-server.bat')
 
 
 
@@ -88,30 +90,3 @@
 -swf-version 11.8
 -dce full
 
-
-
-#--macro Sys.println('2d')
-#--cwd 2d
-#2d_swf.hxml
-#--next
-#2d_swf.hxml
-
-#--next
-#--macro Sys.println('basic')
-#--cwd ../basic
-#basic_swf.hxml
-#--next
-#basic_wgl.hxml
-
-#--next
-#--macro Sys.println('bounds')
-#--cwd ../bounds
-#bounds.hxml
-
-#--next
-#--macro Sys.println('done')
-
-
-
-#-main dl.samples.StressTestSpaces
-#2d_swf.hxml

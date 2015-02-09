@@ -6,7 +6,7 @@
 	<meta title="test" package="test" version="1.0.0" company="Namide" />
 	
 	<!-- output -->
-	<app main="dl.samples.MultiPlayer" file="MultiPlayer" path="bin" />
+	<app main="dl.samples.SocketClientTchat" file="SocketClientTchat" path="bin" />
 	
 	<window background="#000000" fps="60" />
 	<window width="1280" height="720" unless="mobile" />
