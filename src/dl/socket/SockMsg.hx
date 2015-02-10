@@ -4,11 +4,9 @@ package dl.socket ;
 abstract Cmd(Int)
 {
 	var other = 0;					// send policy
-	//var setUserData = 1;			// both > calcul
-	var transferDatasClient = 2;	// client->server > calcul
-	var transferDatasServer = 3;	// server->client > calcul
-	var send = 4;					// server->client > calcul
-	//var returnRoomData = 5;		// server->client
+	var transferDatasClient = 1;	// client->server -> calcul
+	var transferDatasServer = 2;	// server->client -> calcul
+	var send = 3;					// both -> calcul
 	
 	inline function new( i:Int ){ this = i; }
 

@@ -67,14 +67,14 @@
 # 			LEVEL GENERATION
 # --------------------------------
 
-#--next
-#--macro Sys.println('Compile: level generation')
-#-cp src
-#-main dl.samples.LevelGeneration
-#-swf bin-all/LevelGeneration.swf
-#-swf-header 1280:720:60:FFFFFF
-#-swf-version 11.8
-#-dce full
+--next
+--macro Sys.println('Compile: level generation')
+-cp src
+-main dl.samples.LevelGeneration
+-swf bin-all/LevelGeneration.swf
+-swf-header 512:640:60:000000
+-swf-version 11.8
+-dce full
 
 
 # --------------------------------
@@ -86,7 +86,7 @@
 -cp src
 -main dl.samples.MultiPlayer
 -swf bin-all/MultiPlayer.swf
--swf-header 1280:720:60:FFFFFF
+-swf-header 512:640:60:000000
 -swf-version 11.8
 -dce full
 

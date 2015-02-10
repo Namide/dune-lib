@@ -73,7 +73,7 @@ class PlatformLevelGen
 	
 	public function genPlayer( playerData:PlayerData, gravity:Float, tileSize:Float )
 	{
-		var shape = new ShapeRect( playerData.size.x, playerData.size.y );
+		var shape = new ShapeRect( playerData.size.x * tileSize, playerData.size.y * tileSize );
 		var body = new Body( shape, playerData.posTile.x * tileSize, playerData.posTile.y * tileSize);
 		body.addBodyPhysic( playerData.physic );
 		body.addBodyContact( playerData.contacts );

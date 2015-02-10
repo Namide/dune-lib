@@ -1,6 +1,8 @@
 package dl.socket.server ;
 import dl.socket.SockMsg.Role;
 import dl.socket.SockMsg.RoomData;
+import dl.socket.SockMsg.SendSubject;
+import dl.socket.SockMsg.SockMsgGen;
 
 /**
  * ...
@@ -43,9 +45,15 @@ class SockRoom
 	
 	public function rmCl( cl:SockServerUser ):SockServerUser
 	{
+		var r = cl.room;
+		
 		_clients.remove( cl );
 		cl.room = null;
 		testCls( cl );
+		
+		if ( r != null )
+			cl.server.broadcast( SockMsgGen.getSend( SendSubject.user, cl.getUserData( true, false, true, false, false ) ), r.getCls() );
+		
 		return cl;
 	}
 	

@@ -124,7 +124,7 @@ class SockServerUser
 		*/
 	}
 	
-	public function getUserData( id:Bool = true, name:Bool = true, roomData:Bool = false, role:Bool, datas:Bool = false ):UserData
+	public function getUserData( id:Bool = true, name:Bool = true, roomData:Bool = false, role:Bool = false, datas:Bool = false ):UserData
 	{
 		var ud:UserData = { };
 		

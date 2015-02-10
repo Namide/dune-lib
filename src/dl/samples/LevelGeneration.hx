@@ -21,43 +21,47 @@ import haxe.Constraints.Function;
  * @author Namide
  */
 
- class Floor extends Sprite
+/**
+ * Sprite of walls and floors (fix)
+ */
+class Floor extends Sprite
 {
-	public function new( body:Body )
+	public function new( body:Body, color:UInt )
 	{
 		super();
 		
 		this.x = body.x;
 		this.y = body.y;
 		
-		graphics.beginFill( 0xCC0000 );
+		graphics.beginFill( color );
 		graphics.drawRect( 0, 0, body.shape[0].getW(), body.shape[0].getH() );
 		graphics.endFill();
 	}	
 }
 
+/**
+ * Graphic sprite for player (movable)
+ */
 class Player extends Floor
 {
 	public var body:Body;
 	
-	public function new( body:Body )
+	public function new( body:Body, color:UInt )
 	{
-		super( body );
+		super( body, color );
 		this.body = body;
-		
-		graphics.clear();
-		graphics.beginFill( 0x00CC00 );
-		graphics.drawRect( 0, 0, body.shape[0].getW(), body.shape[0].getH() );
-		graphics.endFill();
 	}
 	
 	public function refresh()
 	{
-		this.x = body.x;
-		this.y = body.y;
+		this.x = Math.round(body.x);
+		this.y = Math.round(body.y);
 	}
 }
 
+/**
+ * Main class
+ */
 class LevelGeneration extends Sprite
 {
 	public static inline var TILE_SIZE:Int = 32;
@@ -91,85 +95,73 @@ class LevelGeneration extends Sprite
 		physic = new PlatformPhysicSystem( 2.0 );
 		time = new Timer(50, 0);
 		
-		// ENUM GENERATION
-		var levelGrid:Array<Array<UInt>> = [
-			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2],
-			[2, 0, 0, 0, 0, 1, 1, 1, 0, 0, 2, 0, 0, 0, 1, 2],
-			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 2],
-			[2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 1, 1, 0, 0, 2],
-			[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 0, 2],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-		];
-		
-		var playerDatas:PlayerData = {
-			runTileSec: 12,
-			jumpTileHeightMin: 1.5,
-			jumpTileHeightMax: 3,
-			jumpTileWidthMin: 3,
-			jumpTileWidthMax: 6,
-			posTile: {x:1,y:1},
-			contacts: BodyContactsFlags.active,
-			physic: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity,
-			size:{x:0.8,y:0.8},
-			graphic:function(b:Body, c:PlatformPlayerController)
-			{
-				player = new Player( b );
-				playerControl = c;
-				physic.addBody( b );
-				space.addBody( b );
-				STAGE.addChild( player );
-			}
-		}
-		
-		var tilesDatas:Array<TileData> = [
-			{
-				id: 1,
-				contacts: BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop,
-				graphic:function(b:Body)
-				{
-					var floor = new Floor( b );
+		var levelData:LevelDatas = {
+			tileSize: TILE_SIZE,
+			levelGrid: [
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 1, 1, 1, 0, 0, 2, 0, 0, 0, 1, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2],
+				[2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 1, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 2, 1, 1, 2],
+				[2, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+			],
+			playerDatas: {
+				runTileSec: 12,
+				jumpTileHeightMin: 1.5,
+				jumpTileHeightMax: 3,
+				jumpTileWidthMin: 3,
+				jumpTileWidthMax: 6,
+				posTile: {x:1, y:1},
+				contacts: BodyContactsFlags.active,
+				physic: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity,
+				size:{x:0.75, y:0.75},
+				graphic:function(b:Body, c:PlatformPlayerController) {
+					player = new Player( b, 0x53f852 );
+					playerControl = c;
 					physic.addBody( b );
 					space.addBody( b );
-					STAGE.addChild( floor );
+					STAGE.addChild( player );
 				}
 			},
-			{
-				id: 2,
-				contacts: BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.wall,
-				graphic:function(b:Body)
+			tilesDatas: [ {
+					id: 1,
+					contacts: BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop,
+					graphic:function(b:Body) {
+						var floor = new Floor( b, 0x2dbe1f );
+						physic.addBody( b );
+						space.addBody( b );
+						STAGE.addChild( floor );
+					}
+				},
 				{
-					var floor = new Floor( b );
-					physic.addBody( b );
-					space.addBody( b );
-					STAGE.addChild( floor );
+					id: 2,
+					contacts: BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.wall,
+					graphic:function(b:Body) {
+						var floor = new Floor( b, 0x3bdf2b );
+						physic.addBody( b );
+						space.addBody( b );
+						STAGE.addChild( floor );
+					}
 				}
-			}
-		
-		];
-		
-		var levelData:LevelDatas = { levelGrid:levelGrid, playerDatas:playerDatas, tilesDatas:tilesDatas, tileSize:32 };
-		
+			]
+		}
 		
 		PlatformLevelGen.getInstance().generate( levelData, physic );
 		
-		
-		
-		
-		//STAGE.addEventListener( Event.ENTER_FRAME, function(e:Dynamic) { time.update(); } );
 		time.onFrameUpdate = refresh;
 	}
 	
@@ -181,16 +173,14 @@ class LevelGeneration extends Sprite
 		physic.updatePositions(space);
 		
 		if ( lastUpdateForFrame )
+		{
 			player.refresh();
+			if ( player.body.y > 1024 )
+			{
+				player.body.setPos( TILE_SIZE, TILE_SIZE );
+				player.body.physic.vX =
+				player.body.physic.vY = 0;
+			}
+		}
 	}
-	
-	/*public function addFloor( x:Int, y:Int)
-	{
-		var f = new Floor( x, y );
-		STAGE.addChild( f );
-		physic.addBody( f.body );
-		space.addBody( f.body );
-		return f;
-	}*/
-	
 }

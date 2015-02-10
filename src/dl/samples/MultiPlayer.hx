@@ -46,11 +46,6 @@ class Player extends Floor
 		
 		this.body = body;
 		this.id = id;
-		
-		/*graphics.clear();
-		graphics.beginFill( color );
-		graphics.drawRect( 0, 0, body.shape[0].getW(), body.shape[0].getH() );
-		graphics.endFill();*/
 	}
 	
 	public function refresh()
@@ -68,6 +63,7 @@ class MultiPlayer extends Sprite
 {
 	public static inline var TILE_SIZE:Int = 32;
 	public static inline var USER_SCALE:Float = 0.8;
+	
 	static var STAGE:Stage;
 	
 	var time:Timer;
@@ -95,7 +91,7 @@ class MultiPlayer extends Sprite
 		init();
 	}
 	
-	public function addPlayer( id:Int, datas:Dynamic )
+	function addPlayer( id:Int, datas:Dynamic )
 	{
 		var s = new ShapeRect( datas.w, datas.h );
 		var b = new Body( s, TILE_SIZE, TILE_SIZE );
@@ -111,7 +107,7 @@ class MultiPlayer extends Sprite
 		playerOther.push( p );
 	}
 	
-	public function removePlayer( player:Player )
+	function removePlayer( player:Player )
 	{
 		var b = player.body;
 		physic.removeBody( b );
@@ -127,13 +123,19 @@ class MultiPlayer extends Sprite
 		time = new Timer(50, 0);
 		playerOther = [];
 		
-		// SOCKETS
+		initSockets();
+		initLevel();
 		
+		time.onFrameUpdate = refresh;
+	}
+	
+	function initSockets()
+	{
 		var scu = new SockClientUser();
 		var o = {
 			rgb:Math.round(Math.random() * 0xFFFFFF),
-			w:Math.round(USER_SCALE * TILE_SIZE * (Math.random() * 0.8 + 0.5)),
-			h:Math.round(USER_SCALE * TILE_SIZE * (Math.random() * 0.8 + 0.5)),
+			w:Math.round( TILE_SIZE * (Math.random() * USER_SCALE * 0.5 + USER_SCALE * 0.5)),
+			h:Math.round( TILE_SIZE * (Math.random() * USER_SCALE * 0.5 + USER_SCALE * 0.5)),
 			m:Math.round( (Math.random() * 0.8 + 0.2) * 100 ) / 100
 		};
 		scu.datas = o;
@@ -155,17 +157,12 @@ class MultiPlayer extends Sprite
 					addPlayer( scu.id, scu.datas );
 				}
 			}
-			
-			//trace("me:"+playerMe.id, "otherLength:"+playerOther.length);
 		}
 		
 		sockets.onOthers = updatePlayersFct;
 		sockets.onRoom = function( s:String, other:Array<SockClientUser> ) { updatePlayersFct(other); }
 		sockets.onConnected = function(me:SockClientUser)
 		{
-			/*var p:Player = Lambda.find( playerOther, function(pl:Player) { return pl.id == me.id; } );
-			if ( p != null )
-				removePlayer( p );*/
 			playerMe.id = me.id;
 		}
 		
@@ -180,29 +177,21 @@ class MultiPlayer extends Sprite
 			if ( p == null )
 				return;
 			
-			// {type:"pos", "x":playerMe.x, "y":playerMe.y}
-			if ( o.type == "pos" )
+			if ( o.type == "upd" )
 			{
 				p.body.setPos( o.x, o.y );
 				p.x = o.x;
 				p.y = o.y;
 				
 				p.body.contacts.fixedLimits = o.lim;
-				//trace( p.body.physic.flags );
-				
-				//trace( p.body.contacts.fixedLimits );
-				//lim:playerMe.body.contacts.fixedLimits
-				//sockets.transfertData( "pos:" + playerMe.x + ";" + playerMe.y );
 			}
 		}
 		
 		sockets.onChat = flash.Lib.trace;
-		
-		
-		
-		
-		// ENUM GENERATION
-		
+	}
+	
+	function initLevel()
+	{
 		var levelGrid:Array<Array<UInt>> = [
 			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
 			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
@@ -210,20 +199,20 @@ class MultiPlayer extends Sprite
 			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
 			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2],
 			[2, 0, 0, 0, 0, 1, 1, 1, 0, 0, 2, 0, 0, 0, 1, 2],
-			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 2],
-			[2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 1, 1, 0, 0, 2],
-			[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 0, 2],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2],
+			[2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 1, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+			[2, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 2, 1, 1, 2],
+			[2, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2],
+			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+			[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
 		];
 		
 		var playerDatas:PlayerData = {
@@ -235,7 +224,7 @@ class MultiPlayer extends Sprite
 			posTile: { x:1, y:1 },
 			physic: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity,
 			contacts: BodyContactsFlags.drivable | BodyContactsFlags.active,
-			size:{x:sockets.me.datas.w,y:sockets.me.datas.h},//{x:Math.round(USER_SCALE * TILE_SIZE),y:Math.round(USER_SCALE * TILE_SIZE)},
+			size:{x:sockets.me.datas.w / TILE_SIZE,y:sockets.me.datas.h / TILE_SIZE},
 			graphic:function(b:Body, c:PlatformPlayerController)
 			{
 				b.name = "me";
@@ -277,24 +266,10 @@ class MultiPlayer extends Sprite
 		
 		PlatformLevelGen.getInstance().generate( levelData, physic );
 		playerMe.body.physic.mass = sockets.me.datas.m;
-		
-		/*runPxSec:Float = 12 * 32, 
-		jumpHeightMin:Float = 1.5 * 32,
-		jumpHeightMax:Float = 3 * 32,
-		jumpLength:Float = 6 * 32*/
-		// BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity 
-		
-		time.onFrameUpdate = refresh;
-		
-		
-		// BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop
 	}
 	
-	public function refresh( dt:Float, lastUpdateForFrame:Bool )
+	function refresh( dt:Float, lastUpdateForFrame:Bool )
 	{
-		//if ( playerOther.length > 0 )
-		//	trace( playerOther[0].x, playerOther[0].y, playerOther[0].width );
-		
 		playerControl.update( dt );
 		physic.updateMoves();
 		space.hitTest();
@@ -305,19 +280,7 @@ class MultiPlayer extends Sprite
 			playerMe.refresh();
 			
 			if ( playerMe.id > -1 )
-				sockets.transfertData( {type:"pos", "x":playerMe.x, "y":playerMe.y, lim:playerMe.body.contacts.fixedLimits} );
+				sockets.transfertData( {type:"upd", x:playerMe.x, y:playerMe.y, lim:playerMe.body.contacts.fixedLimits} );
 		}
-		
-		//trace( (haxe.Timer.stamp() - t) + "s" );
 	}
-	
-	/*public function addFloor( x:Int, y:Int)
-	{
-		var f = new Floor( x, y );
-		STAGE.addChild( f );
-		physic.addBody( f.body );
-		space.addBody( f.body );
-		return f;
-	}*/
-	
 }

@@ -23,7 +23,6 @@ class SockClientScan
 	public var onOthers:Array<SockClientUser>->Void;
 	public var onConnected:SockClientUser->Void;
 	public var onRoom:String->Array<SockClientUser>->Void;
-	//public var onClear:Void->Void;
 	
 	public var onChat:String->Void;
 	public var onGame:TransferDatasServer->Void;
@@ -40,7 +39,7 @@ class SockClientScan
 		this.me = ( me == null ) ? new SockClientUser() : me;
 		others = [];
 		
-		_room = "";//SockConfig.ROOM_DEFAULT;
+		_room = "";
 		_socket = new SockPipe();
 		_socket.onConnected = _onConnected;
 		_socket.onReceive = appliServer;
@@ -104,7 +103,6 @@ class SockClientScan
 					
 					var ud:UserData = { n:rx.matched(2) };
 					return _socket.send( SockMsgGen.getSend( SendSubject.user, ud ));
-					//return _socket.send( SockMsgGen.getUserData(rx.matched(2)) );
 					
 				case "help":
 					
@@ -176,7 +174,6 @@ class SockClientScan
 				case "join":
 					
 					var roomData = rx.matched(2).split(" ");
-					//return _socket.send( SockMsgGen.getUserData( null, -1, roomData[0], (roomData.length>1)?roomData[1]:"" ) );
 					var ud:UserData = { r:{ n:roomData[0], p:((roomData.length>1)?roomData[1]:"") } };
 					return _socket.send( SockMsgGen.getSend( SendSubject.user, ud ) );
 					
@@ -230,7 +227,6 @@ class SockClientScan
 					return _socket.send( SockMsgGen.getSend( SendSubject.chat, c ) );
 				
 			}
-			
 		}
 		
 		return onChat( '<p align="left"><i>"' + text + '" is not a valid command format</i></p>' );
@@ -403,14 +399,9 @@ class SockClientScan
 	
 	public function appliServer( brut:SockMsg ):Void
 	{
-		//trace(brut.cmd, brut.struct);
+		
 		switch ( brut.cmd )
 		{
-			/*case Cmd.setUserData:
-				
-				var user:UserData = brut.struct;
-				setUser( user );*/
-				
 			case Cmd.transferDatasServer:
 				
 				var o:TransferDatasServer = brut.struct;
@@ -460,12 +451,6 @@ class SockClientScan
 						
 				}
 				
-			/*case Cmd.returnRoomData:
-				
-				// onClear
-				var room:RoomData = brut.struct;
-				setRoom( room );*/
-			
 			case Cmd.other | Cmd.transferDatasClient:
 				
 				// for server

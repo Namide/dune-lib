@@ -82,8 +82,6 @@ class SocketServer
 			var sk = socket.accept();
 			if (sk != null)
 			{
-				//trace(sk.input.readLine());
-				
 				var cl = new SockServerUser( this, sk );
 				Thread.create(getThreadListen(cl));
 			}
@@ -117,12 +115,6 @@ class SocketServer
 			console.write( Std.string(cl) +  " disconnected" );
 			
 			var ro = cl.room;
-			/*if ( ro != null )
-			{
-				//var list = cl.room.clients;
-				ro.rm( cl, false );
-				broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + ' disconnected' ), ro.getCls() );
-			}*/
 			rooms.rm( cl, false );
 			if ( ro != null )
 				broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + ' disconnected' ), ro.getCls() );
