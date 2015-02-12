@@ -11,7 +11,7 @@ lib for Haxe games development
 
 ## Compile the samples
 
-### MS Windows
+**MS Windows**
 
 1. Run the commands to compile it with the file `compile-samples.bat`
 2. All the compiled files are in the new directory: `bin-all/`
@@ -19,7 +19,7 @@ lib for Haxe games development
 ! For `bin-all/MultiPlayer.swf` and `bin-all/SocketClientTchat.swf` you must run a server
 
 
-### Linux
+**Linux**
 
 1. Go on this directory
 1. Run the commands to compile it: `haxe src/dl/samples/compile-all.hxml`
@@ -28,19 +28,20 @@ lib for Haxe games development
 ! For `bin-all/MultiPlayer.swf` and `bin-all/SocketClientTchat.swf` you must run a server
 
 
-## Run the server (with Neko 2.x)
+## Run the server
+width Neko 2.x
 
-### MS Windows
+**MS Windows**
 
 1. Compile the samples
 2. Run the file `bin-all/server/run-server.bat`
 
-### Linux
+**Linux**
 
 1. Compile the samples
 2. Run the command to start the server: `sudo neko bin-all/server/SocketServer.n`
 
-! sudo to use the port 843 (Flash Policy File distributor)
+! superuser (`sudo`) to use the port 843 (Flash Policy File distributor)
 
 
 ## Roadmap
