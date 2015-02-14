@@ -7,44 +7,50 @@ package dl.utils;
 class Obj
 {
 
-	public function new() 
-	{
+	public function new() {
 		throw "static class!";
 	}
 	
 	/**
 	 * deep copy of anything
 	 */
-	public static function deepCopy<T>( v:T ) : T
+	public static function deepCopy<T>( v:T ):T
 	{
-		if (!Reflect.isObject(v)) // simple type
-		{
+		// simple type
+		if (!Reflect.isObject(v)) {
 			return v;
 		}
-		else if( Std.is( v, Array ) ) // array
-		{
+		// array
+		else if( Std.is( v, Array ) ) {
 			var r = Type.createInstance(Type.getClass(v), []);
-			untyped
-			{
+			
+			untyped {
 				for( ii in 0...v.length )
 					r.push(deepCopy(v[ii]));
 			}
+			
 			return r;
 		}
-		else if( Type.getClass(v) == null ) // anonymous object
-		{
-			var obj : Dynamic = {};
+		// anonymous object
+		else if( Type.getClass(v) == null ) {
+			var obj : Dynamic = { };
+			
 			for( ff in Reflect.fields(v) )
 				Reflect.setField(obj, ff, deepCopy(Reflect.field(v, ff)));
+			
 			return obj;
 		}
-		else // class
+		// class
+		else
 		{
 			var obj = Type.createEmptyInstance(Type.getClass(v));
+			
 			for( ff in Reflect.fields(v) )
 				Reflect.setField(obj, ff, deepCopy(Reflect.field(v, ff)));
+			
 			return obj;
 		}
+		
 		return null;
 	} 
 	

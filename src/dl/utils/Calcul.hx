@@ -6,9 +6,7 @@ package dl.utils ;
  */
 class Calcul
 {
-
-	inline function new() 
-	{
+	inline function new() {
 		throw "static class";
 	}
 	

@@ -42,11 +42,8 @@ class PlatformPlayerController extends Keyboard
 	var _actionPressed:Bool;
 	var _landmark:Float = 0;
 	
-	//var _t:UInt;
 	var _body:Body;
 	
-	//public var wallBrake:Float = 1;
-
 	public function new( body:Body, frameDelaySec:Float = 1/50 ) 
 	{
 		super(0.08);
@@ -272,7 +269,10 @@ class PlatformPlayerController extends Keyboard
 		{
 			h += vY;
 			w += jumpVX;
-			if ( w > maxPxXJump ) return h;
+			
+			if ( w > maxPxXJump )
+				return h;
+			
 			vY += jumpVY - gravity;
 		}
 		
@@ -290,7 +290,10 @@ class PlatformPlayerController extends Keyboard
 		{
 			h += vY;
 			w += jumpVX;
-			if ( h > maxPxYJump ) return w;
+			
+			if ( h > maxPxYJump )
+				return w;
+			
 			vY += jumpVY - gravity;
 		}
 		

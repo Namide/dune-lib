@@ -22,35 +22,20 @@ abstract ShapeType(Int)
 }
 
 /**
- * ...
+ * Form of the body.
+ * 
  * @author Namide
  */
 class Shape
 {
-	//var _lastX:Float;
-	//var _lastY:Float;
-	
 	public var aabbXMin(default, null):Float;
 	public var aabbXMax(default, null):Float;
 	public var aabbYMin(default, null):Float;
 	public var aabbYMax(default, null):Float;
 	
-	//public var moved(default, null):Bool;
 	public var type(default, null):ShapeType;
 	
-	public function new() { /*moved = true;*/ }
-	
-	/*function move(x:Float, y:Float)
-	{
-		moved = (x != _lastX && y != _lastY);
-		
-		if ( fix )
-		{
-			_lastX = aabbXMin;
-			_lastY = aabbYMin;
-			
-		//}
-	}*/
+	public function new() { }
 	
 	public function clone():Shape
 	{
@@ -59,25 +44,21 @@ class Shape
 		c.aabbXMax = aabbXMax;
 		c.aabbYMin = aabbYMin;
 		c.aabbYMax = aabbYMax;
+		
 		return c;
 	}
 	
-	public function updateAABB( x:Float, y:Float )
-	{
+	public function updateAABB( x:Float, y:Float ) {
 		aabbXMin = x;
 		aabbYMin = y;
 	}
 	
-	public inline function getHitArea( s:Shape ):Float
-	{
+	public inline function getHitArea( s:Shape ):Float {
 		return _getHitArea( this, s );
 	}
 	
 	static inline function _getHitArea( a:Shape, b:Shape ):Float
 	{
-		/*var w = min( a.aabbXMax, b.aabbXMax ) - max( a.aabbXMin, b.aabbXMin );
-		var h = min( a.aabbYMax, b.aabbYMax ) - max( a.aabbYMin, b.aabbYMin );
-		return w * h;*/
 		return (_min( a.aabbXMax, b.aabbXMax ) - _max( a.aabbXMin, b.aabbXMin )) * (_min( a.aabbYMax, b.aabbYMax ) - _max( a.aabbYMin, b.aabbYMin ));
 	}
 	
@@ -90,13 +71,11 @@ class Shape
 	}
 	
 	
-	public inline function getH()
-	{
+	public inline function getH() {
 		return Shape._getH( this );
 	}
 	
-	public inline function getW()
-	{
+	public inline function getW() {
 		return Shape._getW( this );
 	}
 	
@@ -122,30 +101,25 @@ class Shape
 		return 0;
 	}
 	
-	public inline function hitTest( b:Shape ):Bool
-	{
+	public inline function hitTest( b:Shape ):Bool {
 		return Shape._hitTest( this, b );
 	}
 	
 	static function _hitTest( a:Shape, b:Shape ):Bool
 	{
-		if ( !hitTestAABB( a, b ) )
-		{
+		if ( !hitTestAABB( a, b ) ) {
 			return false;
 		}
 		else if ( 	a.type == ShapeType.circle &&
-					b.type == ShapeType.circle )
-		{
+					b.type == ShapeType.circle ) {
 			return hitTestCircles( cast( a, ShapeCircle ), cast( b, ShapeCircle ) );
 		}
 		else if ( a.type == ShapeType.circle &&
-				  b.type == ShapeType.point )
-		{
+				  b.type == ShapeType.point ) {
 			return hitTestPointCircle( cast( b, ShapePoint ), cast( a, ShapeCircle ) );
 		}
 		else if ( a.type == ShapeType.point &&
-				  b.type == ShapeType.circle )
-		{
+				  b.type == ShapeType.circle ) {
 			return hitTestPointCircle( cast( a, ShapePoint ), cast( b, ShapeCircle ) );
 		}
 		
@@ -177,10 +151,11 @@ class Shape
 		return ( d1 * d1 - d2 * d2 <= b.r * b.r );
 	}
 	
-	public function toString()
-	{
-		var t = (type == ShapeType.point)?"point":(type == ShapeType.circle)?"circle":(type == ShapeType.rect)?"rect":"";
-		return "[Shape " + t + " w:" + (aabbXMax - aabbXMin) + " h:" + (aabbYMax - aabbYMin) + "]";
-	}
-	
+	#if (debug)
+		public function toString()
+		{
+			var t = (type == ShapeType.point)?"point":(type == ShapeType.circle)?"circle":(type == ShapeType.rect)?"rect":"";
+			return "[Shape " + t + " w:" + (aabbXMax - aabbXMin) + " h:" + (aabbYMax - aabbYMin) + "]";
+		}
+	#end
 }

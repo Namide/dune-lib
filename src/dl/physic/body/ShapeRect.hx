@@ -26,6 +26,7 @@ class ShapeRect extends Shape
 		c.aabbXMax = aabbXMax;
 		c.aabbYMin = aabbYMin;
 		c.aabbYMax = aabbYMax;
+		
 		return c;
 	}
 	

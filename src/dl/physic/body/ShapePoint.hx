@@ -26,8 +26,6 @@ class ShapePoint extends Shape
 	
 	override public function updateAABB( x:Float, y:Float )
 	{
-		//move( x, y, fix );
-		
 		aabbXMin =
 		aabbXMax = x;
 		aabbYMin =

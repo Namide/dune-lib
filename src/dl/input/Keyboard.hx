@@ -6,14 +6,14 @@ import flash.events.KeyboardEvent;
 @:enum
 abstract Keys(UInt)
 {
-	var keyLeft = 37; //  flash.ui.Keyboard.LEFT;
-	var keyRight = 39; //flash.ui.Keyboard.RIGHT;
-	var keyTop = 38; //flash.ui.Keyboard.UP;
-	var keyBottom = 40; //flash.ui.Keyboard.DOWN;
-	var keyB1 = 32; //flash.ui.Keyboard.SPACE;
-	var keyB2 = 17; // Ctrl enter flash.ui.Keyboard.SHIFT;
-	var keyStart = 13; //flash.ui.Keyboard.ENTER;
-	var keySelect = 27; //flash.ui.Keyboard.DELETE;
+	var keyLeft = 37; 		// left arrow
+	var keyRight = 39; 		// right arrow
+	var keyTop = 38; 		// up arrow
+	var keyBottom = 40; 	// down arrow
+	var keyB1 = 32; 		// space
+	var keyB2 = 17; 		// ctrl
+	var keyStart = 13; 		// enter
+	var keySelect = 27; 	// escape
 	
 	inline function new( i:UInt ) { this = i; }
 	
@@ -29,20 +29,12 @@ abstract Keys(UInt)
 }
 
 /**
- * ...
+ * Intermediate for keyboard inputs
+ * 
  * @author Namide
  */
 class Keyboard
 {
-	/*public var keyLeft(default, default):UInt = 37; //  flash.ui.Keyboard.LEFT;
-	public var keyRight(default, default):UInt = 39; //flash.ui.Keyboard.RIGHT;
-	public var keyTop(default, default):UInt = 38; //flash.ui.Keyboard.UP;
-	public var keyBottom(default, default):UInt = 40; //flash.ui.Keyboard.DOWN;
-	public var keyB1(default, default):UInt = 32; //flash.ui.Keyboard.SPACE;
-	public var keyB2(default, default):UInt = 17; // Ctrl enter flash.ui.Keyboard.SHIFT;
-	public var keyStart(default, default):UInt = 13; //flash.ui.Keyboard.ENTER;
-	public var keySelect(default, default):UInt = 27; //flash.ui.Keyboard.DELETE;*/
-	
 	var _listKeyPressed:Array<UInt>;
 	var _listKeyPressedTime:Array<Float>;
 	var _accTime:Float = 0.08;
@@ -92,6 +84,19 @@ class Keyboard
 		return getFloat( Keys.keySelect ) != 0;
 	}
 	
+	public inline function getKeyPressed( keyCode:UInt ):Bool
+	{
+		return _listKeyPressed.indexOf( keyCode ) > -1;
+	}
+	
+	public function dispose():Void
+	{
+		flash.Lib.current.stage.removeEventListener( KeyboardEvent.KEY_DOWN, keyDown );
+		flash.Lib.current.stage.removeEventListener( KeyboardEvent.KEY_UP, keyUp );
+		
+		_listKeyPressed = [];
+		_listKeyPressedTime = [];
+	}
 	
 	function getFloat(key:UInt):Float
 	{
@@ -104,20 +109,6 @@ class Keyboard
 		return 0;
 	}
 	
-	public function getKeyPressed( keyCode:UInt ):Bool
-	{
-		return Lambda.has( _listKeyPressed, keyCode );
-	}
-	
-	public function dispose():Void
-	{
-		flash.Lib.current.stage.removeEventListener( KeyboardEvent.KEY_DOWN, keyDown );
-		flash.Lib.current.stage.removeEventListener( KeyboardEvent.KEY_UP, keyUp );
-		
-		_listKeyPressed = [];
-		_listKeyPressedTime = [];
-	}
-	
 	function keyDown( e:KeyboardEvent ):Void
 	{
 		_listKeyPressed.push( e.keyCode );
@@ -126,11 +117,12 @@ class Keyboard
 	
 	function keyUp( e:KeyboardEvent ):Void
 	{
-		while ( Lambda.has( _listKeyPressed, e.keyCode ) )
+		var i:Int = _listKeyPressed.indexOf( e.keyCode );
+		while ( i > -1 )
 		{
-			var i:Int = Lambda.indexOf( _listKeyPressed, e.keyCode );
 			_listKeyPressed.splice( i, 1 );
 			_listKeyPressedTime.splice( i, 1 );
+			i = _listKeyPressed.indexOf( e.keyCode );
 		}
 	}
 }

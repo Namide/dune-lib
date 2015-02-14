@@ -259,7 +259,7 @@ class SpaceGrid implements ISpace
 			return [];
 		
 		n.refresh( _pitchXExp, _pitchYExp, _grid, false );
-		return _grid.getContacts( n );//b.contacts.list;
+		return _grid.getContacts( n );
 	}
 	
 	public function hitTest():List<Body>
@@ -352,7 +352,6 @@ class SpaceGrid implements ISpace
 	 * Remove the body of the system
 	 * 
 	 * @param	body			Body to add
-	 * @param	rebuildGrid		Clear the grid and buid it
 	 */
 	public function removeBody( body:Body ):Void
 	{
@@ -378,7 +377,6 @@ class SpaceGrid implements ISpace
 			}
 		}
 		
-		
 		if ( body.contacts.flags & BodyContactsFlags.active != 0 )
 		{
 			var node:Node = Lambda.find( _active, function( n:Node ):Bool { return n.body == body; } );
@@ -391,10 +389,12 @@ class SpaceGrid implements ISpace
 		all.remove( body );
 	}
 	
-	#if(debug)
-	public function toString():String
-	{
-		return "[SpaceGrid x:"+xMin+" y:"+yMin+" w:"+xMax+" h:"+yMax+"]";
-	}
+	#if (debug)
+	
+		public function toString():String
+		{
+			return "[SpaceGrid x:"+xMin+" y:"+yMin+" w:"+xMax+" h:"+yMax+"]";
+		}
+		
 	#end
 }

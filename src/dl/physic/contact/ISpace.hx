@@ -4,7 +4,6 @@ import dl.physic.body.Body;
 /**
  * @author Namide
  */
-
 interface ISpace 
 {
 	public function addBody( body:Body ):Void;

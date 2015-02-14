@@ -17,10 +17,8 @@ class ShapeCircle extends Shape
 		r = 0.0;
 	}
 	
-	public override function updateAABB( x:Float, y:Float/*, fix:Bool*/ )
+	public override function updateAABB( x:Float, y:Float )
 	{
-		//move( x, y, fix );
-		
 		var rd = r + r;
 		aabbXMin = x;
 		aabbXMax = x + rd;
@@ -37,6 +35,7 @@ class ShapeCircle extends Shape
 		c.aabbYMin = aabbYMin;
 		c.aabbYMax = aabbYMax;
 		c.r = r;
+		
 		return c;
 	}
 }

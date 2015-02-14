@@ -175,7 +175,6 @@ class SocketServer
 			if ( req == "<policy-file-request/>" )
 			{
 				returnPolicy( c );
-				
 			}
 		}
     }

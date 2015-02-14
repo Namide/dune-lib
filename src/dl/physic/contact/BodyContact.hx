@@ -117,7 +117,6 @@ class BodyContact
 	public var state:BodyContactState;
 	
 	public var flags:BodyContactsFlags;
-	
 	public var fixedLimits:BodyLimitFlags;
 	
 	public function new( p:Body ) 
@@ -127,14 +126,6 @@ class BodyContact
 		state = BodyContactState.init;
 		fixedLimits = BodyLimitFlags.none;
 	}
-	
-	/*public inline function hasType( type:BodyContactsFlags ):Bool {
-		return hasTypeInA( type, list );
-	}
-	
-	public inline function getByType( type:BodyContactsFlags ):Array<Body> {
-		return list.filter( function( cb:Body ):Bool { return cb.colliderType & type == type; });
-	}*/
 	
 	public inline function push( body:Body ):Void { list.push( body ); }
 	public inline function change( bodies:Array<Body> ):Void { list = bodies; }
@@ -147,7 +138,6 @@ class BodyContact
 				return 1;
 			return -1;
 		} );
-		//return list;
 	}
 	
 	public static inline function classBodiesByContactArea( shape:Shape, list:Array<Body> ):Void
@@ -159,17 +149,8 @@ class BodyContact
 		} );
 	}
 	
-	
-	
 	public inline function clear() {
 		untyped list.length = 0;
 		state = BodyContactState.init;
-		//fixedLimits = BodyLimitFlags.none;
 	}
-
-	/*inline function hasTypeInA( type:BodyContactsFlags, a:Array<Body> ):Bool {
-		return Lambda.exists( a, function(cp:Body):Bool { return cp.colliderType & type == type; });
-	}*/
-	
-	
 }

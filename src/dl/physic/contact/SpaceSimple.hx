@@ -39,7 +39,6 @@ class SpaceSimple implements ISpace
 	
 	public function hitTest():List<Body>
 	{
-		
 		var affected:List<Body> = new List<Body>();
 		
 		for ( b in _active )
@@ -54,8 +53,7 @@ class SpaceSimple implements ISpace
 				if ( b2.contacts.flags & BodyContactsFlags.fix == 0 )
 					b2.updateAABB();
 				
-				if ( 	b.shape[0].hitTest( b2.shape[0] ) /*&&
-						b.contacts.list.indexOf( b2 ) < 0*/ )
+				if ( 	b.shape[0].hitTest( b2.shape[0] ) )
 				{
 					c.push( b2 );
 					if ( !af )
@@ -111,5 +109,4 @@ class SpaceSimple implements ISpace
 		
 		all.remove( body );
 	}
-	
 }

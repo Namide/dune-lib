@@ -43,7 +43,6 @@ abstract BodyPhysicFlags(Int)
  */
 class BodyPhysic
 {
-
 	var _parent:Body;
 	
 	public var vX:Float;
@@ -59,5 +58,4 @@ class BodyPhysic
 		vY = 0;
 		mass = 1;
 	}
-	
 }

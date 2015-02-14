@@ -27,6 +27,7 @@ typedef LevelDatas = {
 typedef TileData = {
 	var id:UInt;
 	var contacts:BodyContactsFlags;
+	
 	@:optional var graphic:Body->Void;
 }
 
@@ -40,12 +41,13 @@ typedef PlayerData = {
 	var contacts:BodyContactsFlags;
 	var physic:BodyPhysicFlags;
 	var size:Pos;
-	//@:optional var graphic:Dynamic;
+	
 	@:optional var graphic:Body->PlatformPlayerController->Void;
 }
 
 /**
- * ...
+ * Construct a platform level from a LevelDatas TypeDef
+ * 
  * @author Namide
  */
 class PlatformLevelGen
@@ -111,8 +113,7 @@ class PlatformLevelGen
 		}
 	}
 	
-	inline function getTileById( id:UInt, tilesData:Array<TileData> ):Null<TileData>
-	{
+	inline function getTileById( id:UInt, tilesData:Array<TileData> ):Null<TileData> {
 		return Lambda.find( tilesData, function(a:TileData) { return a.id == id; } );
 	}
 	

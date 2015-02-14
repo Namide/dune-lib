@@ -66,9 +66,6 @@ class Timer
 	
 	public function restart():Void { _realT = getRealSec(); dtSec = 0; frameRest = 0; };
 	
-	//public inline function getDtSec():Float { return dtMs * 0.001; }
-	//public inline function getSec():Float { return tMs * 0.001; }
-	
 	public static inline function getRealSec():Float
 	{
 		return haxe.Timer.stamp();

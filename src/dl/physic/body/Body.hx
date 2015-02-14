@@ -10,53 +10,71 @@ import dl.physic.move.BodyPhysic;
 class Body
 {
 	/**
-	 * Historic of positioning (number of memory)
+	 * Historic of positioning (number of memory). Minimal number is 2.
+	 * If you add intermediates positionning you must increment SHAPE_PRINT_NUM.
+	 * In example for multiplayer manipulation.
 	 */
-	public static inline var SHAPE_PRINT_NUM:Int = 4;
+	public static inline var SHAPE_PRINT_NUM:Int = 5;
 	
+	/**
+	 * Optional data
+	 */
 	public var name:String;
 	
 	/**
-	* Delimit the shape of this body
+	* Delimit the shape of this body.
+	* shape[0] is the current shape.
+	* shape[1] is the last shape...
 	*/
 	public var shape(default, default):Array<Shape>;
-	//public var print(default, default):Shape;
 	
 	/**
-	* Other body in contact with this one
-	*/
+	 * Other body in contact with this one
+	 */
 	public var contacts(default, null):BodyContact;
+	
+	/**
+	 * Physic datas (velocity, mass...).
+	 * Usable to calculate physic moves.
+	 */
 	public var physic(default, null):BodyPhysic;
 	
-	
-	//public var colliderType:BodyContactsFlags;
-	//public var physicType:BodyPhysicFlags;
-	
+	/**
+	 * Position in X-axis in pixel
+	 */
 	public var x(default, null):Float;
+	
+	/**
+	 * Position in Y-axis in pixel
+	 */
 	public var y(default, null):Float;
 	
-	/*public var vX(default, null):Float;
-	public var vY(default, null):Float;
-	public var mass(default, null):Float;*/
-	
+	/**
+	 * True if the body has moved since the last frame.
+	 */
 	public var moved(default, null):Bool;
 	
 	public function new( shape:Shape, x:Float = 0, y:Float = 0 ) 
 	{
-		//colliderType = 0 | BodyContactsFlags.passive;
 		this.shape = [shape];
 		this.contacts = new BodyContact( this );
 		
 		this.x = x;
 		this.y = y;
 		shape.updateAABB( x, y );
-		//this.print = shape.clone();
+		
 		for ( i in 0...(SHAPE_PRINT_NUM-1) )
 			this.shape.push( shape.clone() );
 		
 		moved = true;
 	}
 	
+	/**
+	 * Edits the position in pixel
+	 * 
+	 * @param	x		New X-axis position in pixel
+	 * @param	y		New Y-axis position in pixel
+	 */
 	public function setPos( x:Float, y:Float )
 	{
 		#if (debug)
@@ -75,6 +93,11 @@ class Body
 		}
 	}
 	
+	/**
+	 * Edits the X-axis in pixel
+	 * 
+	 * @param	x	New X-axis position in pixel
+	 */
 	public function setX( x:Float )
 	{
 		#if (debug)
@@ -93,6 +116,11 @@ class Body
 		}
 	}
 	
+	/**
+	 * Edits the Y-axis in pixel
+	 * 
+	 * @param	y	New Y-axis position in pixel
+	 */
 	public function setY( y:Float )
 	{
 		#if (debug)
@@ -111,6 +139,12 @@ class Body
 		}
 	}
 	
+	/**
+	 * Add numbers to actual position.
+	 * 
+	 * @param	x		Number to add to the X-axis position in pixel
+	 * @param	y		Number to add to the Y-axis position in pixel
+	 */
 	public function addPos( x:Float, y:Float )
 	{
 		#if (debug)
@@ -121,8 +155,7 @@ class Body
 			
 		#end
 		
-		var m = (x != 0 || y != 0);
-		if ( m )
+		if ( x != 0 || y != 0 )
 		{
 			this.x += x;
 			this.y += y;
@@ -130,6 +163,11 @@ class Body
 		}
 	}
 	
+	/**
+	 * Update the bounding box of this body.
+	 * 
+	 * @param	updatePrint		Force the saves of the datas
+	 */
 	public function updateAABB( updatePrint:Bool = true )
 	{
 		#if (debug)
@@ -140,24 +178,21 @@ class Body
 			
 		#end
 		
-		/*trace( this, updatePrint, moved );
-		
-		if ( !moved )
-			return;*/
-		
 		if ( updatePrint )
 		{
 			var t = shape.pop();
 			shape.unshift( t );
-			
-			/*print = shape;
-			shape = t;*/
 			moved = false;
 		}
 		
 		shape[0].updateAABB( x, y );
 	}
 	
+	/**
+	 * Initialize the BodyContacts property.
+	 * 
+	 * @param	flags		List of flags of the BodyContacts
+	 */
 	public inline function addBodyContact( flags:BodyContactsFlags = 0 ):Void
 	{
 		if ( contacts == null )
@@ -166,6 +201,11 @@ class Body
 		contacts.flags = flags;
 	}
 	
+	/**
+	 * Initialize the BodyPhysic property.
+	 * 
+	 * @param	flags		List of flags of the BodyPhysic
+	 */
 	public inline function addBodyPhysic( flags:BodyPhysicFlags = BodyPhysicFlags.none ):Void
 	{
 		if ( physic == null )
@@ -174,13 +214,11 @@ class Body
 		physic.flags = flags;
 	}
 	
-	public function toString() {
-		if ( name != null )
-			return "[Body "+name+" x:" + x + " y:" + y + " ]";
-		return "[Body x:" + x + " y:" + y + " " + shape +"]";
-	}
-	
-	
-	
-	
+	#if (debug)
+		public function toString() {
+			if ( name != null )
+				return "[Body "+name+" x:" + x + " y:" + y + " ]";
+			return "[Body x:" + x + " y:" + y + " " + shape +"]";
+		}
+	#end
 }
