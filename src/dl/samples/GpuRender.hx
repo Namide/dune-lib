@@ -59,7 +59,7 @@ class Player extends Floor
  * ...
  * @author Namide
  */
-class MultiPlayer extends Sprite
+class GpuRender extends Sprite
 {
 	public static inline var TILE_SIZE:Int = 32;
 	public static inline var USER_SCALE:Float = 0.8;
@@ -69,12 +69,9 @@ class MultiPlayer extends Sprite
 	var time:Timer;
 	var space:SpaceGrid;
 	var physic:PlatformPhysicSystem;
-	var sockets:SockClientScan;
 	
 	var playerMe:Player;
 	var playerControl:PlatformPlayerController;
-	
-	var playerOther:Array<Player>;
 	
 	static function main() 
 	{
@@ -82,7 +79,7 @@ class MultiPlayer extends Sprite
 		STAGE.scaleMode = StageScaleMode.NO_SCALE;
 		STAGE.align = StageAlign.TOP_LEFT;
 		
-		new MultiPlayer();
+		new GpuRender();
 	}
 	
 	public function new() 
@@ -91,103 +88,14 @@ class MultiPlayer extends Sprite
 		init();
 	}
 	
-	function addPlayer( id:Int, datas:Dynamic )
-	{
-		var s = new ShapeRect( datas.w, datas.h );
-		var b = new Body( s, TILE_SIZE, TILE_SIZE );
-		var p = new Player( b, datas.rgb, id );
-		
-		b.addBodyContact( BodyContactsFlags.passive | BodyContactsFlags.drivable | BodyContactsFlags.wall );
-		b.addBodyPhysic( BodyPhysicFlags.none );
-		b.name = "other";
-		physic.addBody( b );
-		b.physic.mass = datas.m;
-		space.addBody( b );
-		STAGE.addChild( p );
-		playerOther.push( p );
-	}
-	
-	function removePlayer( player:Player )
-	{
-		var b = player.body;
-		physic.removeBody( b );
-		space.removeBody( b );
-		STAGE.removeChild( player );
-		playerOther.remove( player );
-	}
-	
 	public function init()
 	{
 		space = new SpaceGrid( TILE_SIZE, TILE_SIZE );
 		physic = new PlatformPhysicSystem( 2.0 );
 		time = new Timer(50, 0);
-		playerOther = [];
 		
-		initSockets();
 		initLevel();
-		
 		time.onFrameUpdate = refresh;
-	}
-	
-	function initSockets()
-	{
-		var scu = new SockClientUser();
-		var o = {
-			rgb:Math.round(Math.random() * 0xFFFFFF),
-			w:Math.round( TILE_SIZE * (Math.random() * USER_SCALE * 0.5 + USER_SCALE * 0.5)),
-			h:Math.round( TILE_SIZE * (Math.random() * USER_SCALE * 0.5 + USER_SCALE * 0.5)),
-			m:Math.round( (Math.random() * 0.8 + 0.2) * 100 ) / 100
-		};
-		scu.datas = o;
-		sockets = new SockClientScan( scu );
-		
-		var updatePlayersFct = function( list:Array<SockClientUser> )
-		{
-			for ( po in playerOther )
-			{
-				if ( !Lambda.exists( list, function(c:SockClientUser) { return c.id == po.id; } ) )
-					removePlayer( po );
-			}
-			
-			for ( scu in list )
-			{
-				if ( 	scu.id != playerMe.id &&
-						!Lambda.exists( playerOther, function(c:Player) { return c.id == scu.id; } ) )
-				{
-					addPlayer( scu.id, scu.datas );
-				}
-			}
-		}
-		
-		sockets.onOthers = updatePlayersFct;
-		sockets.onRoom = function( s:String, other:Array<SockClientUser> ) { updatePlayersFct(other); }
-		sockets.onConnected = function(me:SockClientUser)
-		{
-			playerMe.id = me.id;
-		}
-		
-		sockets.onGame = function(tds:TransferDatasServer)
-		{
-			if ( tds.i == playerMe.id )
-				return;
-			
-			var p:Player = Lambda.find( playerOther, function(pl:Player) { return pl.id == tds.i; } );
-			var o:Dynamic = Json.parse( tds.d );
-			
-			if ( p == null )
-				return;
-			
-			if ( o.type == "upd" )
-			{
-				p.body.setPos( o.x, o.y );
-				p.x = o.x;
-				p.y = o.y;
-				
-				p.body.contacts.fixedLimits = o.lim;
-			}
-		}
-		
-		sockets.onChat = flash.Lib.trace;
 	}
 	
 	function initLevel()
@@ -224,11 +132,10 @@ class MultiPlayer extends Sprite
 			posTile: { x:1, y:1 },
 			physic: BodyPhysicFlags.gravity | BodyPhysicFlags.dependant | BodyPhysicFlags.velocity,
 			contacts: BodyContactsFlags.drivable | BodyContactsFlags.active,
-			size:{x:sockets.me.datas.w / TILE_SIZE,y:sockets.me.datas.h / TILE_SIZE},
+			size:{x:0.5,y:0.7},
 			graphic:function(b:Body, c:PlatformPlayerController)
 			{
-				b.name = "me";
-				playerMe = new Player( b, sockets.me.datas.rgb );
+				playerMe = new Player( b, 0x888800 );
 				playerControl = c;
 				physic.addBody( b );
 				space.addBody( b );
@@ -265,7 +172,6 @@ class MultiPlayer extends Sprite
 		var levelData:LevelDatas = { levelGrid:levelGrid, playerDatas:playerDatas, tilesDatas:tilesDatas, tileSize:32 };
 		
 		PlatformLevelFactory.getInstance().generate( levelData, physic );
-		playerMe.body.physic.mass = sockets.me.datas.m;
 	}
 	
 	function refresh( dt:Float, lastUpdateForFrame:Bool )
@@ -276,11 +182,6 @@ class MultiPlayer extends Sprite
 		physic.updatePositions(space);
 		
 		if ( lastUpdateForFrame )
-		{
 			playerMe.refresh();
-			
-			if ( playerMe.id > -1 )
-				sockets.transfertData( {type:"upd", x:playerMe.x, y:playerMe.y, lim:playerMe.body.contacts.fixedLimits} );
-		}
 	}
 }

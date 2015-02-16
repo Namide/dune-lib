@@ -87,8 +87,8 @@ abstract BodyContactsFlags(Int)
 	var fix = 256;
 	
 	/**
-	 * Can be push by an active object.
-	 * Must be added with passive flag.
+	 * Can be receive data moves out the physic engine.
+	 * In example it can be push by an active object.
 	 */
 	var drivable = 512;
 	

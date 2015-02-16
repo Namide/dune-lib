@@ -25,7 +25,7 @@ typedef LevelDatas = {
 }
 
 typedef TileData = {
-	var id:UInt;
+	var idFlag:UInt;						// must be a flag: 1, 2, 4, 8, 16, 32...
 	var contacts:BodyContactsFlags;
 	
 	@:optional var graphic:Body->Void;
@@ -50,16 +50,16 @@ typedef PlayerData = {
  * 
  * @author Namide
  */
-class PlatformLevelGen
+class PlatformLevelFactory
 {
-	static var _MAIN:PlatformLevelGen;
+	static var _MAIN:PlatformLevelFactory;
 	
 	private function new() { }
 	
-	public static function getInstance():PlatformLevelGen
+	public static function getInstance():PlatformLevelFactory
 	{
 		if (_MAIN == null)
-			_MAIN = new PlatformLevelGen();
+			_MAIN = new PlatformLevelFactory();
 		
 		return _MAIN;
 	}
@@ -114,7 +114,7 @@ class PlatformLevelGen
 	}
 	
 	inline function getTileById( id:UInt, tilesData:Array<TileData> ):Null<TileData> {
-		return Lambda.find( tilesData, function(a:TileData) { return a.id == id; } );
+		return Lambda.find( tilesData, function(a:TileData) { return a.idFlag & id != 0; } );
 	}
 	
 }

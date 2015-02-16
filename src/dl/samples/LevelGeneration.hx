@@ -1,6 +1,6 @@
 package dl.samples;
 import dl.samples.LevelGeneration.Player;
-import dl.utils.PlatformLevelGen;
+import dl.utils.PlatformLevelFactory;
 import dl.utils.Timer;
 import dl.physic.body.Body;
 import dl.physic.body.ShapeRect;
@@ -138,7 +138,7 @@ class LevelGeneration extends Sprite
 				}
 			},
 			tilesDatas: [ {
-					id: 1,
+					idFlag: 1,
 					contacts: BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop,
 					graphic:function(b:Body) {
 						var floor = new Floor( b, 0x2dbe1f );
@@ -148,7 +148,7 @@ class LevelGeneration extends Sprite
 					}
 				},
 				{
-					id: 2,
+					idFlag: 2,
 					contacts: BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.wall,
 					graphic:function(b:Body) {
 						var floor = new Floor( b, 0x3bdf2b );
@@ -160,7 +160,7 @@ class LevelGeneration extends Sprite
 			]
 		}
 		
-		PlatformLevelGen.getInstance().generate( levelData, physic );
+		PlatformLevelFactory.getInstance().generate( levelData, physic );
 		
 		time.onFrameUpdate = refresh;
 	}
