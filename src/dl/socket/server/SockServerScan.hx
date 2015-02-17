@@ -95,6 +95,7 @@ class SockServerScan
 	{
 		sv.console.write( Std.string(cl) + ' rename > ' + name );
 		
+		var oldName = cl.name;
 		cl.name = name;
 		
 		/*var u:UserData = { };
@@ -102,8 +103,11 @@ class SockServerScan
 		u.i = cl.id;*/
 		
 		if ( cl.room != null )
+		{
 			sv.broadcast( SockMsgGen.getSend( SendSubject.user, cl.getUserData( true, true, false, false, false ) ), cl.room.getCls() );
+			sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, oldName + " is now known as " + name ), cl.room.getCls() );
 			//sv.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData(true, true, false, false, false) ), cl.room.getCls()/*.clients*/ );
+		}
 	}
 	
 	inline function userExist( name:String ):Bool
@@ -122,15 +126,15 @@ class SockServerScan
 			rd.p = "";
 		}
 		
-		if (  	newRoomName.length < SockConfig.USER_NAME_LENGTH_MIN ||
-				newRoomName.length > SockConfig.USER_NAME_LENGTH_MAX )
+		if (  	newRoomName.length < SockConfig.ROOM_NAME_LENGTH_MIN ||
+				newRoomName.length > SockConfig.ROOM_NAME_LENGTH_MAX )
 		{
 			cl.send( SockMsgGen.getSend( SendSubject.errorSystem,
 											newRoomName +
 											' room name must have min:' +
-											SockConfig.USER_NAME_LENGTH_MIN +
+											SockConfig.ROOM_NAME_LENGTH_MIN +
 											' , max:' +
-											SockConfig.USER_NAME_LENGTH_MAX +
+											SockConfig.ROOM_NAME_LENGTH_MAX +
 											' character' ) );
 			return;
 		}
@@ -147,9 +151,15 @@ class SockServerScan
 		if ( name == SockConfig.ROOM_DEFAULT && pass != "" )
 			cl.send( SockMsgGen.getSend( SendSubject.errorSystem, name + ' can\'t be private' ) );
 		
+		var oldRoom = cl.room;
 		if ( sv.rooms.change( cl, name, pass ) )
 		{
 			sv.console.write( Std.string(cl) + ' change room > ' + name );
+			
+			if ( oldRoom != null && oldRoom.clLength() > 0 )
+				sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " leaves the room " ), oldRoom.getCls() );
+			
+			sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " join the room" ), cl.room.getCls() );
 		}
 		else
 		{

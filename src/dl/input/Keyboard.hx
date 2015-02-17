@@ -60,12 +60,7 @@ class Keyboard
 	
 	public function addListener( onPrev:Void->Void, onNext:Void->Void, onValid:Void->Void, onCancel:Void->Void )
 	{
-		#if debug
-			
-			if ( _menuEnabled )
-				throw "You can't add more than 1 listener";
-		
-		#end
+		//removeListener();
 		
 		_onMenuPrev = onPrev;
 		_onMenuNext = onNext;

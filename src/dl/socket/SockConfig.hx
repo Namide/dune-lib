@@ -12,6 +12,9 @@ class SockConfig
 	public static inline var USER_NAME_LENGTH_MIN:UInt = 2;
 	public static inline var USER_NAME_LENGTH_MAX:UInt = 10;
 	
+	public static inline var ROOM_NAME_LENGTH_MIN:UInt = 3;
+	public static inline var ROOM_NAME_LENGTH_MAX:UInt = 5;
+	
 	public static inline var MSG_LENGTH_MIN:UInt = 1;
 	public static inline var MSG_LENGTH_MAX:UInt = 512;
 	
@@ -25,7 +28,6 @@ class SockConfig
 	public static inline var SERVER_USERS_FILE:Null<String> = null;//"users.sqlite";
 	public static inline var SERVER_LOGS = false;
 	
-		
 	/**
 	 * Port 843 only for admin.
 	 * Required for Flash 10+

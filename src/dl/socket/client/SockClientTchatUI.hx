@@ -97,8 +97,8 @@ class SockClientTchatUI extends Sprite
 	
 	public function refreshMe( me:SockClientUser )
 	{
-		if ( me.name != _me.name )
-			appendText( '<p align="left"><i>Your name is now <b>' + me.fullName() + '</b></i></p>' );
+		//if ( me.name != _me.name )
+		//	appendText( '<p align="left"><i>Your name is now <b>' + me.fullName() + '</b></i></p>' );
 		
 		_me = me.clone();
 		refreshRight();
@@ -144,7 +144,7 @@ class SockClientTchatUI extends Sprite
 	
 	public inline function refreshOthers( list:Array<SockClientUser> )
 	{
-		trace( list.length, _room );
+		//trace( list.length, _room );
 		if ( _room != "" )
 		{
 			for ( newUser in list )
@@ -159,8 +159,8 @@ class SockClientTchatUI extends Sprite
 				}
 				else
 				{
-					if ( newUser.name != oldUser.name )
-						appendText( '<p align="left"><i>' + oldUser.fullName() + ' is now known as <b>' + newUser.fullName() + '</b></i></p>' );
+					//if ( newUser.name != oldUser.name )
+					//	appendText( '<p align="left"><i>' + oldUser.fullName() + ' is now known as <b>' + newUser.fullName() + '</b></i></p>' );
 				}
 			}
 			
