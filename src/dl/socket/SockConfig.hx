@@ -6,7 +6,7 @@ package dl.socket ;
  */
 class SockConfig
 {
-	public static inline var IP = '127.0.0.1';// '192.75.16.16';//'127.0.0.1';
+	public static inline var IP = '127.0.0.1';// '192.75.16.16';
 	public static inline var PORT:UInt = 8090;
 	
 	public static inline var USER_NAME_LENGTH_MIN:UInt = 2;

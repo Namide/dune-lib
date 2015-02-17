@@ -39,6 +39,12 @@ class Keyboard
 	var _listKeyPressedTime:Array<Float>;
 	var _accTime:Float = 0.08;
 	
+	var _menuEnabled:Bool;
+	var _onMenuPrev:Void->Void;
+	var _onMenuNext:Void->Void;
+	var _onMenuValid:Void->Void;
+	var _onMenuCancel:Void->Void;
+	
 	public function new( accTimeSec:Float = 0.08 )
 	{
 		_accTime = accTimeSec;
@@ -48,6 +54,30 @@ class Keyboard
 		
 		flash.Lib.current.stage.addEventListener( KeyboardEvent.KEY_DOWN, keyDown );
 		flash.Lib.current.stage.addEventListener( KeyboardEvent.KEY_UP, keyUp );
+		
+		_menuEnabled = false;
+	}
+	
+	public function addListener( onPrev:Void->Void, onNext:Void->Void, onValid:Void->Void, onCancel:Void->Void )
+	{
+		#if debug
+			
+			if ( _menuEnabled )
+				throw "You can't add more than 1 listener";
+		
+		#end
+		
+		_onMenuPrev = onPrev;
+		_onMenuNext = onNext;
+		_onMenuValid = onValid;
+		_onMenuCancel = onCancel;
+		_menuEnabled = true;
+	}
+	
+	public function removeListener()
+	{
+		_onMenuPrev = _onMenuNext = _onMenuValid = _onMenuCancel = null;
+		_menuEnabled = false;
 	}
 	
 	public inline function getAxisX():Float
@@ -117,12 +147,37 @@ class Keyboard
 	
 	function keyUp( e:KeyboardEvent ):Void
 	{
-		var i:Int = _listKeyPressed.indexOf( e.keyCode );
+		var key = e.keyCode;
+		var i:Int = _listKeyPressed.indexOf(key);
 		while ( i > -1 )
 		{
 			_listKeyPressed.splice( i, 1 );
 			_listKeyPressedTime.splice( i, 1 );
-			i = _listKeyPressed.indexOf( e.keyCode );
+			i = _listKeyPressed.indexOf(key);
+		}
+		
+		if ( _menuEnabled )
+		{
+			if ( key == Keys.keyRight || key == Keys.keyBottom )
+			{
+				if ( _onMenuNext != null )
+					_onMenuNext();
+			}
+			else if ( key == Keys.keyLeft || key == Keys.keyTop )
+			{
+				if ( _onMenuPrev != null )
+					_onMenuPrev();
+			}
+			else if ( key == Keys.keyB1 || key == Keys.keyStart )
+			{
+				if ( _onMenuValid != null )
+					_onMenuValid();
+			}
+			else if ( key == Keys.keyB2 || key == Keys.keySelect )
+			{
+				if ( _onMenuCancel != null )
+					_onMenuCancel();
+			}
 		}
 	}
 }
