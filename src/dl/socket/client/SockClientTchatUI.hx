@@ -153,7 +153,7 @@ class SockClientTchatUI extends Sprite
 					return user.id == newUser.id;
 				} );
 				
-				if ( oldUser == null )
+				/*if ( oldUser == null )
 				{
 					//appendText( '<p align="left"><i>' + newUser.fullName() + ' join the room ' + _room + ' ('+(list.length+1)+')</i></p>' );
 				}
@@ -161,7 +161,7 @@ class SockClientTchatUI extends Sprite
 				{
 					//if ( newUser.name != oldUser.name )
 					//	appendText( '<p align="left"><i>' + oldUser.fullName() + ' is now known as <b>' + newUser.fullName() + '</b></i></p>' );
-				}
+				}*/
 			}
 			
 			for ( oldUser in _others )
@@ -170,10 +170,10 @@ class SockClientTchatUI extends Sprite
 					return user.id == oldUser.id;
 				} );
 				
-				if ( newUser == null )
+				/*if ( newUser == null )
 				{
 					//appendText( '<p align="left"><i>' + oldUser.fullName() + " leaves the room " + _room + "</i></p>" );
-				}
+				}*/
 			}
 		}
 		
