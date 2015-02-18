@@ -10,6 +10,25 @@ import dl.socket.SockMsg.TransferDatasServer;
 import dl.socket.SockMsg.UserData;
 import dl.socket.SockMsg.UserID;
 
+@:enum
+abstract SystemMsg(Int)
+{
+	var error = 1;
+	var message = 2;
+	
+	inline function new(s: Int){ this = s; }
+
+	@:from
+	public static function fromInt(i:Int):SystemMsg {
+	    return new SystemMsg(i);
+	}
+
+	@:to
+	public function toInt():Int {
+	    return this;
+	}
+}
+
 /**
  * ...
  * @author Namide
@@ -23,6 +42,7 @@ class SockClientScan
 	public var onOthers:Array<SockClientUser>->Void;
 	public var onConnected:SockClientUser->Void;
 	public var onRoom:String->Array<SockClientUser>->Void;
+	public var onMsgSystem:String->SystemMsg->Void;
 	
 	public var onChat:String->Void;
 	public var onGame:TransferDatasServer->Void;
@@ -38,6 +58,7 @@ class SockClientScan
 	inline function _onRoom( r:String, a:Array<SockClientUser> ) 	{ if ( onRoom != null ) onRoom( r, a ); }
 	inline function _onChat( s:String ) 							{ if ( onChat != null ) onChat( s ); }
 	inline function _onGame( t:TransferDatasServer ) 				{ if ( onGame != null ) onGame( t ); }
+	inline function _onMsgSystem( msg:String, type:SystemMsg ) 		{ if ( onMsgSystem != null ) onMsgSystem( msg, type ); }
 	
 	public function new( ?me:SockClientUser = null ) 
 	{
@@ -71,7 +92,8 @@ class SockClientScan
 		}
 		catch (e:Dynamic)
 		{
-			_onChat( "Load name and room error (" + e + ")" );
+			_onMsgSystem( "Load name and room error (" + e + ")", SystemMsg.error );
+			//_onChat( "Load name and room error (" + e + ")" );
 		}
 		
 		var msg:SockMsg = SockMsgGen.getSend( SendSubject.connect, u );
@@ -99,7 +121,8 @@ class SockClientScan
 			var text2 = text.substr(1);
 			var rx = ~/^(\w+) *(.*)/g;
 			if (!rx.match(text2))
-				return _onChat( '<i>"' + text2 + '" is not a valid command format</i>' );
+				return _onMsgSystem( '"' + text2 + '" is not a valid command format', SystemMsg.error );
+				//return  _onChat( '<i>"' + text2 + '" is not a valid command format</i>' );
 			
 			switch ( rx.matched(1) )
 			{
@@ -110,7 +133,7 @@ class SockClientScan
 					
 				case "help":
 					
-					_onChat('<p align="center"><b>____________</b>');
+					_onChat('<b>____________</b>');
 					_onChat("<b>Commands</b>");
 					_onChat("<b>¯¯¯¯¯¯¯¯¯¯¯¯</b>");
 					_onChat('<i> <b>/help</b> to list the commands...</i>');
@@ -127,26 +150,26 @@ class SockClientScan
 						_onChat("<i> <b>/register [email] [password]</b> register your current name (1 per email)</i>");
 						_onChat("<i> <b>/login [email] [password]</b> load your last registered name</i>");
 					}
-					if ( me.role.toInt() > Role.basic.toInt() )
+					if ( me.role > Role.basic )
 					{
 						_onChat("<br/>");
 						_onChat("<i> <b>/kick [userName]</b> kick this user</i>");
 					}
-					_onChat('<b>____________</b></p>');
+					_onChat('<b>____________</b>');
 					_onChat(" ");
 					
 					return;
 				
 				case "users":
 					
-					_onChat('<p align="center"><b>____________</b>');
+					_onChat('<b>____________</b>');
 					_onChat("<b>" + _room + "</b> <i>(" + (others.length+1) + ")</i>");
 					_onChat("<b>¯¯¯¯¯¯¯¯¯¯¯¯</b>");
 					_onChat('<i>'+me.fullName()+"</i>");
 					for ( u in others )
 						_onChat(" <i>"+u.fullName()+"</i>");
 					_onChat("");
-					_onChat('<b>____________</b></p>');
+					_onChat('<b>____________</b>');
 					_onChat(" ");
 					
 					return;
@@ -155,7 +178,7 @@ class SockClientScan
 					
 					var a = rx.matched(2).split(" ");
 					if (a.length!=2 && a.length!=3)
-						return _onChat( '<p align="left"><i>Invalid command format</i></p>' );
+						return _onMsgSystem( 'Invalid command format', SystemMsg.error );//_onChat( '<p align="left"><i>Invalid command format</i></p>' );
 					
 					var ui:UserID = { m:a[0], p:a[1], n:((a.length<3)?me.name:a[2]) };
 					return _socket.send( SockMsgGen.getSend( SendSubject.register, ui ) );
@@ -164,7 +187,7 @@ class SockClientScan
 				
 					var a = rx.matched(2).split(" ");
 					if (a.length!=2)
-						return _onChat( '<p align="left"><i>Invalid format</i></p>' );
+						return _onMsgSystem( 'Invalid format', SystemMsg.error );//_onChat( '<p align="left"><i>Invalid format</i></p>' );
 					
 					var ui:UserID = { m:a[0], p:a[1], n:me.name };
 					return _socket.send( SockMsgGen.getSend( SendSubject.login, ui ) );
@@ -182,14 +205,14 @@ class SockClientScan
 					
 					var rx2 = ~/^(\w+) *(.+)/;
 					if (!rx2.match(name))
-						return _onChat( '<p align="left"><i>Invalid format</i></p>' );						
+						return _onMsgSystem( 'Invalid format', SystemMsg.error );//_onChat( '<p align="left"><i>Invalid format</i></p>' );						
 					
 					var u = Lambda.find( others, function(c2:SockClientUser) { return c2.name.toLowerCase() == name.toLowerCase(); } );
 					if (u == null)
-						return _onChat( '<p align="left"><i><b>' + name + '</b> not found</i></p>' );
+						return _onMsgSystem( name + ' not found', SystemMsg.error );//_onChat( '<p align="left"><i><b>' + name + '</b> not found</i></p>' );
 					
 					if (u.role.toInt() >= me.role.toInt())
-						return _onChat( '<p align="left"><i>You can not kick a user with a role superior or equal to you</p>' );
+						return _onMsgSystem( 'You can not kick a user with a role superior or equal to you', SystemMsg.error );// _onChat( '<p align="left"><i>You can not kick a user with a role superior or equal to you</p>' );
 					
 					var ui:UserData = { i:u.id, n:u.name };
 					return _socket.send( SockMsgGen.getSend( SendSubject.kick, ui ) );
@@ -205,12 +228,12 @@ class SockClientScan
 					
 					var rx2 = ~/^(\w+) *(.+)/;
 					if (!rx2.match(nameMsg))
-						return _onChat( '<p align="left"><i>Invalid format</i></p>' );
+						return _onMsgSystem( 'Invalid format', SystemMsg.error );//return _onChat( '<p align="left"><i>Invalid format</i></p>' );
 					
 					var name2:String = rx2.matched(1);
 					var rcs = Lambda.find( others, function(c2:SockClientUser) { return c2.name.toLowerCase() == name2.toLowerCase(); } );//findClientsByName( rx2.matched(1), cl.room.clients );
 					if (rcs == null)
-						return _onChat( '<p align="left"><i><b>' + name2 + '</b> not found</i></p>' );
+						return _onMsgSystem( '"' + name2 + '" not found', SystemMsg.error );//_onChat( '<p align="left"><i><b>' + name2 + '</b> not found</i></p>' );
 					
 					var msg = rx2.matched(2);
 					
@@ -220,7 +243,8 @@ class SockClientScan
 			}
 		}
 		
-		return _onChat( '<p align="left"><i>"' + text + '" is not a valid command format</i></p>' );
+		return _onMsgSystem( '"' + text + '" is not a valid command format', SystemMsg.error );
+		//return _onChat( '<p align="left"><i>"' + text + '" is not a valid command format</i></p>' );
 	}
 	
 	public inline function getUserById(id:Int):Null<SockClientUser>
@@ -339,7 +363,8 @@ class SockClientScan
 			}
 			catch (e:Dynamic)
 			{
-				_onChat( "Load name and room error (" + e + ")" );
+				return _onMsgSystem( "Load name and room error (" + e + ")", SystemMsg.error );
+				//_onChat( "Load name and room error (" + e + ")" );
 			}
 		}
 	}
@@ -356,20 +381,20 @@ class SockClientScan
 			if ( o.t != null )
 			{
 				var u:SockClientUser = Lambda.find( others, function(u:SockClientUser) { return u.id == o.t; } );
-				return _onChat( '<p align="left"><b>' + me.fullName() + ">" + u.fullName() + "</b>: " + o.m + "</p>" );
+				return _onChat( '<b>' + me.fullName() + ">" + u.fullName() + "</b>: " + o.m );
 			}
-			return _onChat( '<p align="left"><b>' + me.fullName() + "</b>: " + o.m + "</p>" );
+			return _onChat( '<b>' + me.fullName() + "</b>: " + o.m );
 		}
 		
 		if ( o.t == me.id )
-			return _onChat( '<p align="left"><b>' + user.fullName() + ">" + me.fullName() + "</b>: " + o.m + '</p>' );
+			return _onChat( '<b>' + user.fullName() + ">" + me.fullName() + "</b>: " + o.m );
 		
-		return _onChat( '<p align="left"><b>' + user.fullName() + "</b>: " + o.m + '</p>' );
+		return _onChat( '<b>' + user.fullName() + "</b>: " + o.m );
 	}
 	
 	function onRoomList( rl:Array<RoomData> )
 	{
-		_onChat('<p align="center">____________');
+		_onChat('____________');
 		_onChat("<b>Room list</b><br><i>(number of users)</i>");
 		_onChat("¯¯¯¯¯¯¯¯¯¯¯¯");
 		for ( r in rl )
@@ -379,7 +404,7 @@ class SockClientScan
 			else if ( r.u != null )
 				_onChat(" <i>" + r.n + " (" + r.u.length + ") " + ((r.p == "")?"":"(private)") + "</i>");
 		}
-		_onChat('____________</p>');
+		_onChat('____________');
 		_onChat(' ');
 	}
 	
@@ -420,11 +445,13 @@ class SockClientScan
 						
 					case SendSubject.errorSystem:
 						
-						return _onChat( '<p align="left"><i>' + o.d + "</i></p>" );
+						return _onMsgSystem( o.d, SystemMsg.error );
+						//return _onChat( '<p align="left"><i>' + o.d + "</i></p>" );
 						
 					case SendSubject.messageSystem:
 						
-						return _onChat( '<p align="left"><i>' + o.d + "</i></p>" );
+						return _onMsgSystem( o.d, SystemMsg.message );
+						//return _onChat( '<p align="left"><i>' + o.d + "</i></p>" );
 						
 					case SendSubject.roomList:
 						

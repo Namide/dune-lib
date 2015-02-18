@@ -89,8 +89,8 @@ class SockClientTchatUI extends Sprite
 	{
 		_me = me.clone();
 		
-		appendText( '<p align="left"><i>Welcome on this Tchat!</i></p>' );
-		appendText( '<p align="left"><i>Your name is <b>' + _me.fullName() + '</b></i></p>' );
+		appendText( '<i>Welcome on this Tchat!</i>' );
+		appendText( '<i>Your name is <b>' + _me.fullName() + '</b></i>' );
 		//appendText( '<p align="left"><i>You joined the room <b>' + _room + '</b></i></p>' );
 		
 	}
@@ -116,7 +116,7 @@ class SockClientTchatUI extends Sprite
 			clear();
 		
 		_room = room;
-		appendText( '<p align="left"><i>You joined <b>' + _room + '</b> (' + (userList.length+1) + ")</i></p>" );
+		appendText( '<i>You joined <b>' + _room + '</b> (' + (userList.length+1) + ")</i>" );
 		
 		_others = cloneList(userList);
 		refreshRight();
@@ -136,10 +136,15 @@ class SockClientTchatUI extends Sprite
 		_list.htmlText = "";
 	}
 	
+	public inline function appendTextAlign( t:String, ?align:String = "left" )
+	{
+		_output.htmlText += '<p align="'+align+'">' + t + '</p></br>';
+		refreshText();
+	}
+	
 	public inline function appendText( t:String )
 	{
-		_output.htmlText += t + "</br>";
-		refreshText();
+		appendTextAlign( t );
 	}
 	
 	public inline function refreshOthers( list:Array<SockClientUser> )

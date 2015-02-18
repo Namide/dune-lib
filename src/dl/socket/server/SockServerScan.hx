@@ -64,29 +64,23 @@ class SockServerScan
 	{
 		var newName = newUser.n;
 		
-		if (  	newName.length < SockConfig.USER_NAME_LENGTH_MIN ||
-				newName.length > SockConfig.USER_NAME_LENGTH_MAX )
+		if (  	newName.length < SockConfig.USER_NAME_LENGTH_MIN ||	newName.length > SockConfig.USER_NAME_LENGTH_MAX )
 		{
-			cl.send( SockMsgGen.getSend( SendSubject.errorSystem,
-											'your name must have min:' +
-											SockConfig.USER_NAME_LENGTH_MIN +
-											' , max:' +
-											SockConfig.USER_NAME_LENGTH_MAX +
-											' character' ) );
-			return;
+			return cl.send( SockMsgGen.getSend( SendSubject.errorSystem,
+												'your name must have min:' +
+												SockConfig.USER_NAME_LENGTH_MIN +
+												' , max:' +
+												SockConfig.USER_NAME_LENGTH_MAX +
+												' character' ) );
+			
 		}
 		
 		if ( !testWord(newName) )
-		{
-			cl.send( SockMsgGen.getSend( SendSubject.errorSystem, newName + ' is not a valid name' ) );
-			return;
-		}
+			return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, newName + ' is not a valid name' ) );
+		
 		var name = newName;
 		if ( userExist( name ) )
-		{
-			cl.send( SockMsgGen.getSend( SendSubject.errorSystem, newName + ' such name already exists' ) );
-			return;
-		}
+			return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, newName + ' such name already exists' ) );
 		
 		appliUserName( cl, name );
 	}
