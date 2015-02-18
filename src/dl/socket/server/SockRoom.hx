@@ -26,7 +26,7 @@ class SockRoom
 	{
 		if ( cl.room == this )
 		{
-			if ( clLength() == 1 && cl.role < Role.roomMaster && name != SockConfig.ROOM_DEFAULT )
+			if ( clLength() == 1 && cl.role < Role.roomMaster && name != SockConfig.ROOM_DEFAULT_NAME )
 				cl.role = Role.roomMaster;
 		}
 		else if ( cl.room == null )

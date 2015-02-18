@@ -116,24 +116,26 @@ class SockServerScan
 		
 		if ( newRoomName == null )
 		{
-			newRoomName = rd.n = SockConfig.ROOM_DEFAULT;
+			newRoomName = rd.n = SockConfig.ROOM_DEFAULT_NAME;
 			rd.p = "";
 		}
 		
-		if (  	newRoomName.length < SockConfig.ROOM_NAME_LENGTH_MIN ||
-				newRoomName.length > SockConfig.ROOM_NAME_LENGTH_MAX )
+		if ( newRoomName.toLowerCase() == SockConfig.ROOM_DEFAULT_NAME.toLowerCase() )
 		{
-			cl.send( SockMsgGen.getSend( SendSubject.errorSystem,
+			newRoomName = SockConfig.ROOM_DEFAULT_NAME;
+		}
+		else if (  	newRoomName.length < SockConfig.ROOM_NAME_LENGTH_MIN ||
+					newRoomName.length > SockConfig.ROOM_NAME_LENGTH_MAX )
+		{
+			return cl.send( SockMsgGen.getSend( SendSubject.errorSystem,
 											newRoomName +
 											' room name must have min:' +
 											SockConfig.ROOM_NAME_LENGTH_MIN +
 											' , max:' +
 											SockConfig.ROOM_NAME_LENGTH_MAX +
 											' character' ) );
-			return;
 		}
-		
-		if ( !testWord(newRoomName) )
+		else if ( !testWord(newRoomName) )
 		{
 			return cl.send( SockMsgGen.getSend( SendSubject.errorSystem,
 												newRoomName + ' is not a valid room name' ) );
@@ -142,7 +144,7 @@ class SockServerScan
 		var name = newRoomName;
 		var pass = (rd.p == null) ? "" : rd.p;
 		
-		if ( name == SockConfig.ROOM_DEFAULT && pass != "" )
+		if ( name == SockConfig.ROOM_DEFAULT_NAME && pass != "" )
 			cl.send( SockMsgGen.getSend( SendSubject.errorSystem, name + ' can\'t be private' ) );
 		
 		var oldRoom = cl.room;
@@ -185,7 +187,7 @@ class SockServerScan
 		{
 			updateUserRoom( cl, newUser.r );
 			// check the room name to avoid errors
-			newUser.r.n = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT;
+			newUser.r.n = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT_NAME;
 			newUser.r.p = ( cl.room != null ) ? cl.room.pass : "";
 			
 			//newUser.r = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT;
@@ -224,7 +226,7 @@ class SockServerScan
 	function appliKick( kicked:SockServerUser, kicker:SockServerUser )
 	{
 		var oldRoom = kicked.room;
-		sv.rooms.change( kicked, SockConfig.ROOM_DEFAULT, "" );
+		sv.rooms.change( kicked, SockConfig.ROOM_DEFAULT_NAME, "" );
 		kicked.send( SockMsgGen.getSend( SendSubject.messageSystem, 'You have been kicked by ' + kicker.fullName() + Std.string((oldRoom!=null)?(" from " + oldRoom.name):"" )) );
 		
 		if ( oldRoom != null )
@@ -365,7 +367,6 @@ class SockServerScan
 		
 		// CLIENTS COMMANDS
 		var brut = SockMsg.fromString( chars );
-		//trace( "receive:", brut );
 		switch ( brut.cmd )
 		{
 			case Cmd.send:
@@ -383,13 +384,18 @@ class SockServerScan
 							u = updateUser( cl, u );
 						
 						if ( cl.room == null )
-							sv.rooms.add( cl, SockConfig.ROOM_DEFAULT, "" );
+							sv.rooms.add( cl, SockConfig.ROOM_DEFAULT_NAME, "" );
 						
 						u = cl.getUserData( true, true, false, true, false );
 						u.r = cl.room.getRoomData( true, false, true );
 						
 						cl.dispatch = true;
 						cl.send( SockMsgGen.getSend( SendSubject.connect, u ) );
+						
+						if ( 	!SockConfig.ROOM_DEFAULT_IS_ROOM &&
+								cl.room != null &&
+								cl.room.name.toLowerCase() == SockConfig.ROOM_DEFAULT_NAME )
+							cl.send( SockMsgGen.getSend( SendSubject.roomList, sv.rooms.getRoomListData(sv) ) );
 						
 						return;
 						
@@ -448,11 +454,11 @@ class SockServerScan
 						
 					case SendSubject.roomList:
 						
-						var rl:Array<RoomData> = [];
+						/*var rl:Array<RoomData> = [];
 						for ( r in sv.rooms.all() )
-							rl.push( r.getRoomData( false, true ) );
+							rl.push( r.getRoomData( false, true ) );*/
 						
-						cl.send( SockMsgGen.getSend( SendSubject.roomList, rl ) );
+						cl.send( SockMsgGen.getSend( SendSubject.roomList, sv.rooms.getRoomListData( sv ) ) );
 						return;
 					
 					case SendSubject.register:

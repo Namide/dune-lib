@@ -43,6 +43,7 @@ class SockClientScan
 	public var onConnected:SockClientUser->Void;
 	public var onRoom:String->Array<SockClientUser>->Void;
 	public var onMsgSystem:String->SystemMsg->Void;
+	public var onRoomList:Array<RoomData>->Void;
 	
 	public var onChat:String->Void;
 	public var onGame:TransferDatasServer->Void;
@@ -56,6 +57,7 @@ class SockClientScan
 	inline function _onOthers( a:Array<SockClientUser> ) 			{ if ( onOthers != null ) onOthers( a ); }
 	inline function _onConnected( u:SockClientUser ) 				{ if ( onConnected != null ) onConnected( u ); }
 	inline function _onRoom( r:String, a:Array<SockClientUser> ) 	{ if ( onRoom != null ) onRoom( r, a ); }
+	inline function _onRoomList( a:Array<RoomData> ) 				{ if ( onRoomList != null ) onRoomList( a ); }
 	inline function _onChat( s:String ) 							{ if ( onChat != null ) onChat( s ); }
 	inline function _onGame( t:TransferDatasServer ) 				{ if ( onGame != null ) onGame( t ); }
 	inline function _onMsgSystem( msg:String, type:SystemMsg ) 		{ if ( onMsgSystem != null ) onMsgSystem( msg, type ); }
@@ -369,7 +371,7 @@ class SockClientScan
 		}
 	}
 	
-	function onChatMsg( o:Chat )
+	function printChatMsg( o:Chat )
 	{
 		var user = (o.f == me.id) ? me : getUserById( o.f );
 		
@@ -392,7 +394,7 @@ class SockClientScan
 		return _onChat( '<b>' + user.fullName() + "</b>: " + o.m );
 	}
 	
-	function onRoomList( rl:Array<RoomData> )
+	function printRoomList( rl:Array<RoomData> )
 	{
 		_onChat('____________');
 		_onChat("<b>Room list</b><br><i>(number of users)</i>");
@@ -436,7 +438,7 @@ class SockClientScan
 					case SendSubject.chat:
 						
 						var o2:Chat = o.d;
-						return onChatMsg( o2 );
+						return printChatMsg( o2 );
 						
 					case SendSubject.connect:
 						
@@ -456,7 +458,8 @@ class SockClientScan
 					case SendSubject.roomList:
 						
 						var o2:Array<RoomData> = o.d;
-						return onRoomList( o2 );
+						_onRoomList( o2 );
+						return printRoomList( o2 );
 						
 					case SendSubject.login | SendSubject.register | SendSubject.kick:
 						

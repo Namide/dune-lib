@@ -1,4 +1,6 @@
 package dl.socket.server ;
+import dl.socket.server.SockServer.SocketServer;
+import dl.socket.SockMsg.RoomData;
 import dl.socket.SockMsg.SendSubject;
 import haxe.Json;
 import dl.socket.SockMsg.Cmd;
@@ -44,26 +46,27 @@ class SockRoomList
 	
 	public function add( cl:SockServerUser, roomName:String, roomPass:String ):Bool
 	{
+		// CHECK OR CREATE THE ROOM
 		var ro:SockRoom = set( roomName, roomPass );
 		if ( ro == null )
 			return false;
 		
-		rm( cl );
 		
-		ro.addCl( cl );//.clients.push(cl);
-		//cl.room = ro;
-		
-		// send to the new user
-		//var ul:Array<UserData> = [];
-		//for ( u in ro.getCls()/*.clients*/ )
-		//	ul.push( u.getUserData(true, true, false, true, true )/*{ n:u.name, i:u.id }*/ );
-		//cl.send( SockMsgGen.getReturnRoomData( ro.name, (ro.pass=="")?"":"1", ul ) );
-		cl.send( SockMsgGen.getSend( SendSubject.room, ro.getRoomData( true, false, true ) /*ro.name, (ro.pass=="")?"":"1", ul*/ ) );
+		// REMOVE FROM THE LAST ROOM
+		var oldRoom = cl.room;
+		rm( cl, false );
+		if ( oldRoom != null )
+			cl.server.broadcast( SockMsgGen.getSend( SendSubject.user, cl.getUserData( true, false, true, false, false ) ), oldRoom.getCls() );
 		
 		
-		// Send to all users in the room
-		//cl.server.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData( true, true, true, true, true ) ), ro.getCls()/*.clients*/ );
+		// ADD ON THE NEW ROOM
+		ro.addCl( cl );
+		
+		// INFORM THE USERS IN THE NEW ROOM
+		cl.send( SockMsgGen.getSend( SendSubject.room, ro.getRoomData( true, false, true ) ) );
 		cl.server.broadcast( SockMsgGen.getSend( SendSubject.user, cl.getUserData(true, true, false, true, true ) ), ro.getCls() );
+		
+		informDefaultRoom( cl.server );
 		
 		return true;
 	}
@@ -74,18 +77,37 @@ class SockRoomList
 		if ( ro == null )
 			return;
 		
-		ro.rmCl( cl );//.clients.remove( cl );
+		ro.rmCl( cl );
 		
-		if ( ro.clLength() < 1 )//ro.clients.length < 1 )
+		if ( ro.clLength() < 1 )
 		{
 			_list.remove( ro );
 		}
 		else if ( dispatchMsg )
 		{
-			//var ud:UserData = { i:cl.id, n:cl.name/*, r:"?"*/ };
-			//cl.server.broadcast( new SockMsg( Cmd.setUserData, cl.getUserData( true, true, false, false, false )/*nu*/ ), ro.getCls() );
-			cl.server.broadcast( SockMsgGen.getSend( SendSubject.user, cl.getUserData( true, false, true, false, false )/*nu*/ ), ro.getCls() );
+			cl.server.broadcast( SockMsgGen.getSend( SendSubject.user, cl.getUserData( true, false, true, false, false ) ), ro.getCls() );
 		}
+		
+		if ( dispatchMsg )
+			informDefaultRoom( cl.server );
 	}
 	
+	public function getRoomListData( sv:SocketServer ):Array<RoomData>
+	{
+		var rl:Array<RoomData> = [];
+		for ( r in sv.rooms.all() )
+			if ( SockConfig.ROOM_DEFAULT_IS_ROOM || r.name.toLowerCase() != SockConfig.ROOM_DEFAULT_NAME.toLowerCase() )
+				rl.push( r.getRoomData( false, true ) );
+		return rl;
+	}
+	
+	function informDefaultRoom( sv:SocketServer )
+	{
+		if ( !SockConfig.ROOM_DEFAULT_IS_ROOM )
+		{
+			var ro:SockRoom = Lambda.find( _list, function(tmp:SockRoom):Bool { return tmp.name.toLowerCase() == SockConfig.ROOM_DEFAULT_NAME.toLowerCase(); } );
+			if ( ro != null )
+				sv.broadcast( SockMsgGen.getSend( SendSubject.roomList, getRoomListData(sv) ), ro.getCls() );
+		}
+	}
 }
