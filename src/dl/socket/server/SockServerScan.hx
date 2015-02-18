@@ -1,5 +1,5 @@
 package dl.socket.server ;
-import dl.samples.SocketServer;
+import dl.socket.server.SockServer.SocketServer;
 import dl.socket.SockMsg.Role;
 import haxe.format.JsonParser;
 import haxe.format.JsonPrinter;
@@ -206,7 +206,7 @@ class SockServerScan
 	
 	function kickUser( cl:SockServerUser, UserKikedId:Int )
 	{
-		if ( cl.room == null )
+		if ( cl.room == null && cl.role < Role.admin )
 		{
 			cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'User not found' ) );
 			return false;
@@ -222,27 +222,24 @@ class SockServerScan
 			return false;
 		}
 		
-		var ud = kd.getUserData( true, false, true, false, false );
-		
-		var ro = kd.room;
 		appliKick( kd, cl );
-		if ( ro != null )
-		{
-			sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, kd.fullName() + ' has been kicked by ' + cl.fullName() ), ro.getCls() );
-			ud.r.n = "~ ?";
-			//sv.broadcast( new SockMsg( Cmd.setUserData, ud ), ro.getCls() );
-			sv.broadcast( SockMsgGen.getSend( SendSubject.user, ud ), ro.getCls() );
-		}
-		
-		//updateUser( kd, newUser );
 		
 		return true;
 	}
 	
-	function appliKick( cl:SockServerUser, kiker:SockServerUser )
+	function appliKick( kicked:SockServerUser, kicker:SockServerUser )
 	{
-		cl.send( SockMsgGen.getSend( SendSubject.messageSystem, 'You are kicked by ' + kiker.fullName() ) );
-		//sv.rooms.rm( cl );
+		var oldRoom = kicked.room;
+		sv.rooms.change( kicked, SockConfig.ROOM_DEFAULT, "" );
+		kicked.send( SockMsgGen.getSend( SendSubject.messageSystem, 'You have been kicked by ' + kicker.fullName() + Std.string((oldRoom!=null)?(" from " + oldRoom.name):"" )) );
+		
+		if ( oldRoom != null )
+			sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, kicked.fullName() + ' has been kicked by ' + kicker.fullName() ), oldRoom.getCls() );
+	}
+	
+	function appliBann( cl:SockServerUser, kiker:SockServerUser )
+	{
+		cl.send( SockMsgGen.getSend( SendSubject.messageSystem, 'You have been banned by ' + kiker.fullName() ) );
 		sv.rooms.rm( cl );
 		sv.clients.remove( cl );
 		cl.active = false;
@@ -256,10 +253,11 @@ class SockServerScan
 			case "/help" :
 				
 				sv.console.write( "\nCOMMANDS\n" );
-				sv.console.write( "  /exit        quit app" );
-				sv.console.write( "  /kickAll     kick all clients" );
 				sv.console.write( "  /clients     print all clients" );
-				sv.console.write( "  /rooms       print all rooms\n" );
+				sv.console.write( "  /rooms       print all rooms" );
+				sv.console.write( "  /bannAll     bann all clients" );
+				sv.console.write( "  /kick [id]   kick a client from a room" );
+				sv.console.write( "  /close       quit app\n" );
 				
 			case "/exit" | "/close":
 				
@@ -269,11 +267,13 @@ class SockServerScan
 				
 				sv.close();
 				
-			case "/kickAll" :
+			case "/bannAll" :
 				
-				for ( c in sv.clients )
+				var i = sv.clients.length;
+				while ( --i > -1 )
 				{
-					appliKick( c, sv.admin );
+					var c = sv.clients[i];
+					appliBann( c, sv.admin );
 					//c.send( SockMsgGen.getSend( SendSubject.messageSystem, c.fullName() + ' has been kicked by ' + cl.fullName() ) );
 				}
 				sv.console.write( "\n  all clients kicked!\n" );

@@ -40,10 +40,10 @@ class Keyboard
 	var _accTime:Float = 0.08;
 	
 	var _menuEnabled:Bool;
-	var _onMenuPrev:Void->Void;
-	var _onMenuNext:Void->Void;
-	var _onMenuValid:Void->Void;
-	var _onMenuCancel:Void->Void;
+	var _onMenuPrev:Keys->Void;
+	var _onMenuNext:Keys->Void;
+	var _onMenuValid:Keys->Void;
+	var _onMenuCancel:Keys->Void;
 	
 	public function new( accTimeSec:Float = 0.08 )
 	{
@@ -58,7 +58,7 @@ class Keyboard
 		_menuEnabled = false;
 	}
 	
-	public function addListener( onPrev:Void->Void, onNext:Void->Void, onValid:Void->Void, onCancel:Void->Void )
+	public function addListener( onPrev:Keys->Void, onNext:Keys->Void, onValid:Keys->Void, onCancel:Keys->Void )
 	{
 		//removeListener();
 		
@@ -156,22 +156,22 @@ class Keyboard
 			if ( key == Keys.keyRight || key == Keys.keyBottom )
 			{
 				if ( _onMenuNext != null )
-					_onMenuNext();
+					_onMenuNext(key);
 			}
 			else if ( key == Keys.keyLeft || key == Keys.keyTop )
 			{
 				if ( _onMenuPrev != null )
-					_onMenuPrev();
+					_onMenuPrev(key);
 			}
 			else if ( key == Keys.keyB1 || key == Keys.keyStart )
 			{
 				if ( _onMenuValid != null )
-					_onMenuValid();
+					_onMenuValid(key);
 			}
 			else if ( key == Keys.keyB2 || key == Keys.keySelect )
 			{
 				if ( _onMenuCancel != null )
-					_onMenuCancel();
+					_onMenuCancel(key);
 			}
 		}
 	}

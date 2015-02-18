@@ -14,7 +14,7 @@
 --macro Sys.println('Compile: t\'chat server')
 --no-inline
 -cp src
--main dl.samples.SocketServer
+-main dl.samples.SocketServerUI
 -neko bin-all/server/SocketServer.n
 -dce full
 

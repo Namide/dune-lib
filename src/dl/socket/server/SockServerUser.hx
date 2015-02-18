@@ -1,5 +1,5 @@
 package dl.socket.server ;
-import dl.samples.SocketServer;
+import dl.socket.server.SockServer.SocketServer;
 import dl.socket.SockMsg.Role;
 import dl.socket.SockMsg.RoomData;
 import dl.socket.SockMsg.UserData;

@@ -1,4 +1,4 @@
-package dl.samples ;
+package dl.socket.server;
 import dl.socket.server.SockConsole;
 import dl.socket.server.SockRoomList;
 import dl.socket.server.SockServerScan;
@@ -24,6 +24,7 @@ class SockUserAdmin extends SockServerUser
 	{
 		super(sv, null);
 		name = 'Server';
+		role = Role.admin;
 	}
 	
 	override public function toString():String
@@ -39,7 +40,7 @@ class SockUserAdmin extends SockServerUser
 
 class SocketServer
 {
-	static var _MAIN:SocketServer;
+	//static var _MAIN:SocketServer;
 	
 	public var socket:Socket;
 	public var socketPolicy:Socket;
@@ -249,8 +250,8 @@ class SocketServer
 		
 	}
 	
-	static function main()
+	/*static function main()
 	{
 		_MAIN = new SocketServer();
-	}
+	}*/
 }

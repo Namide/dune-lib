@@ -59,6 +59,7 @@ abstract Role(Int)
 {
 	var basic = 0;
 	var roomMaster = 1;
+	var admin = 2;
 	
 	inline function new(s: Int){ this = s; }
 
