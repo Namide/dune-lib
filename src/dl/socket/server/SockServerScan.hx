@@ -148,14 +148,17 @@ class SockServerScan
 			cl.send( SockMsgGen.getSend( SendSubject.errorSystem, name + ' can\'t be private' ) );
 		
 		var oldRoom = cl.room;
-		if ( sv.rooms.change( cl, name, pass ) )
+		if ( sv.rooms.change( cl, name, pass, rd.d ) )
 		{
 			sv.console.write( Std.string(cl) + ' change room > ' + name );
 			
 			if ( oldRoom != null && oldRoom.clLength() > 0 )
 				sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " leaves the room " ), oldRoom.getCls() );
 			
-			sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " join the room" ), cl.room.getCls() );
+			if ( name.toLowerCase() == SockConfig.ROOM_DEFAULT_NAME.toLowerCase() && !SockConfig.ROOM_DEFAULT_IS_ROOM )
+				sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " join the lobby" ), cl.room.getCls() );
+			else
+				sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " join the room" ), cl.room.getCls() );
 		}
 		else
 		{
@@ -163,14 +166,14 @@ class SockServerScan
 		}
 	}
 	
-	inline function updateRoom(  cl:SockServerUser, newRoom:RoomData )
+	/*inline function updateRoom( cl:SockServerUser, newRoom:RoomData )
 	{
 		if ( cl.role > Role.basic && newRoom.d != null )
 		{
 			cl.room.datas = newRoom.d;
 			sv.broadcast( SockMsgGen.getSend( SendSubject.room, cl.room.getRoomData( false, false, true ) ), cl.room.getCls() );
 		}
-	}
+	}*/
 	
 	inline function updateUser( cl:SockServerUser, newUser:UserData )
 	{
@@ -186,16 +189,28 @@ class SockServerScan
 		if ( newUser.r != null )
 		{
 			updateUserRoom( cl, newUser.r );
+			
 			// check the room name to avoid errors
-			newUser.r.n = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT_NAME;
-			newUser.r.p = ( cl.room != null ) ? cl.room.pass : "";
+			if ( cl.room != null )
+				newUser.r = cl.room.getRoomData( true, false, true );
+			else
+				newUser.r = null;
+			
+			
+			//newUser.r.n = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT_NAME;
+			//newUser.r.p = ( cl.room != null ) ? cl.room.pass : "";
 			
 			//newUser.r = ( cl.room != null ) ? cl.room.name : SockConfig.ROOM_DEFAULT;
 			//newUser.rp = ( cl.room != null ) ? cl.room.pass : "";
 		}
 		
 		if ( newUser.d != null )
+		{
 			cl.datas = newUser.d;
+			
+			if ( cl.room != null )
+				sv.broadcast( SockMsgGen.getSend( SendSubject.user, newUser ), cl.room.getCls() );
+		}
 		
 		return newUser;
 	}
@@ -384,7 +399,7 @@ class SockServerScan
 							u = updateUser( cl, u );
 						
 						if ( cl.room == null )
-							sv.rooms.add( cl, SockConfig.ROOM_DEFAULT_NAME, "" );
+							sv.rooms.add( cl, SockConfig.ROOM_DEFAULT_NAME, "", null );
 						
 						u = cl.getUserData( true, true, false, true, false );
 						u.r = cl.room.getRoomData( true, false, true );
@@ -408,7 +423,8 @@ class SockServerScan
 					case SendSubject.room :
 				
 						var newRoom:RoomData = o.d;
-						updateRoom( cl, newRoom );
+						//updateRoom( cl, newRoom );
+						cl.room.editDatas( cl, newRoom.d );
 						return;
 						
 					case SendSubject.kick:

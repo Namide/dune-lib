@@ -40,7 +40,6 @@ abstract SendSubject(Int)
 	var user = 9;
 	var room = 10;
 	
-	
 	inline function new(s: Int){ this = s; }
 
 	@:from
@@ -224,7 +223,7 @@ typedef RoomData = {
 	var p: String; 							// password (only for private room)
 	@:optional var u: Array<UserData>;		// list of users in the room
 	@:optional var l: Int;					// number of users in the room
-	@:optional var d: Int;					// room datas
+	@:optional var d: Dynamic;					// room datas
 }
 
 typedef RoomList = {

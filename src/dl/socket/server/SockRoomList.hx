@@ -22,12 +22,12 @@ class SockRoomList
 			_list = [];
 	}
 	
-	public function set( roomName:String, roomPass:String ):SockRoom
+	function set( roomName:String, roomPass:String, roomDatas:Dynamic ):SockRoom
 	{
 		var ro:SockRoom = Lambda.find (_list, function(tmp:SockRoom):Bool { return tmp.name.toLowerCase() == roomName.toLowerCase(); } );
 		if ( ro == null )
 		{
-			ro = new SockRoom( roomName, roomPass );
+			ro = new SockRoom( roomName, roomPass, roomDatas );
 			_list.push( ro );
 		}
 		
@@ -39,15 +39,15 @@ class SockRoomList
 		return _list;
 	}
 	
-	public inline function change( cl:SockServerUser, roomName:String, roomPass:String ):Bool
+	public inline function change( cl:SockServerUser, roomName:String, roomPass:String, ?datas:Dynamic = null ):Bool
 	{
-		return add( cl, roomName, roomPass );
+		return add( cl, roomName, roomPass, datas );
 	}
 	
-	public function add( cl:SockServerUser, roomName:String, roomPass:String ):Bool
+	public function add( cl:SockServerUser, roomName:String, roomPass:String, roomDatas:Dynamic ):Bool
 	{
 		// CHECK OR CREATE THE ROOM
-		var ro:SockRoom = set( roomName, roomPass );
+		var ro:SockRoom = set( roomName, roomPass, roomDatas );
 		if ( ro == null )
 			return false;
 		

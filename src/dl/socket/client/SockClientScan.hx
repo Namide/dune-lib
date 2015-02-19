@@ -41,26 +41,29 @@ class SockClientScan
 	public var onMe:SockClientUser->Void;
 	public var onOthers:Array<SockClientUser>->Void;
 	public var onConnected:SockClientUser->Void;
-	public var onRoom:String->Array<SockClientUser>->Void;
+	public var onRoomChange:String->Array<SockClientUser>->Void;
+	public var onRoomData:Dynamic->Void;
 	public var onMsgSystem:String->SystemMsg->Void;
 	public var onRoomList:Array<RoomData>->Void;
 	
 	public var onChat:String->Void;
 	public var onGame:TransferDatasServer->Void;
 	
-	var _room:String;
+	var _roomName:String;
+	var _roomDatas:Dynamic;
 	var _socket:SockPipe;
 	
 	var _connected:Bool;
 	
-	inline function _onMe( u:SockClientUser ) 						{ if ( onMe != null ) onMe( u ); }
-	inline function _onOthers( a:Array<SockClientUser> ) 			{ if ( onOthers != null ) onOthers( a ); }
-	inline function _onConnected( u:SockClientUser ) 				{ if ( onConnected != null ) onConnected( u ); }
-	inline function _onRoom( r:String, a:Array<SockClientUser> ) 	{ if ( onRoom != null ) onRoom( r, a ); }
-	inline function _onRoomList( a:Array<RoomData> ) 				{ if ( onRoomList != null ) onRoomList( a ); }
-	inline function _onChat( s:String ) 							{ if ( onChat != null ) onChat( s ); }
-	inline function _onGame( t:TransferDatasServer ) 				{ if ( onGame != null ) onGame( t ); }
-	inline function _onMsgSystem( msg:String, type:SystemMsg ) 		{ if ( onMsgSystem != null ) onMsgSystem( msg, type ); }
+	inline function _onConnected( u:SockClientUser ) 					{ if ( onConnected != null ) onConnected( u ); }
+	inline function _onMe( u:SockClientUser ) 							{ if ( onMe != null ) onMe( u ); }
+	inline function _onOthers( a:Array<SockClientUser> ) 				{ if ( onOthers != null ) onOthers( a ); }
+	inline function _onRoomChange( r:String, a:Array<SockClientUser> ) 	{ if ( onRoomChange != null ) onRoomChange( r, a ); }
+	inline function _onRoomData( d:Dynamic ) 							{ if ( onRoomData != null ) onRoomData( d ); }
+	inline function _onRoomList( a:Array<RoomData> ) 					{ if ( onRoomList != null ) onRoomList( a ); }
+	inline function _onChat( s:String ) 								{ if ( onChat != null ) onChat( s ); }
+	inline function _onGame( t:TransferDatasServer ) 					{ if ( onGame != null ) onGame( t ); }
+	inline function _onMsgSystem( msg:String, type:SystemMsg ) 			{ if ( onMsgSystem != null ) onMsgSystem( msg, type ); }
 	
 	public function new( ?me:SockClientUser = null ) 
 	{
@@ -69,7 +72,7 @@ class SockClientScan
 		this.me = ( me == null ) ? new SockClientUser() : me;
 		others = [];
 		
-		_room = "";
+		_roomName = "";
 		_socket = new SockPipe();
 		_socket.onConnected = connection;
 		_socket.onReceive = appliServer;
@@ -165,7 +168,7 @@ class SockClientScan
 				case "users":
 					
 					_onChat('<b>____________</b>');
-					_onChat("<b>" + _room + "</b> <i>(" + (others.length+1) + ")</i>");
+					_onChat("<b>" + _roomName + "</b> <i>(" + (others.length+1) + ")</i>");
 					_onChat("<b>¯¯¯¯¯¯¯¯¯¯¯¯</b>");
 					_onChat('<i>'+me.fullName()+"</i>");
 					for ( u in others )
@@ -256,20 +259,25 @@ class SockClientScan
 	
 	function setRoom( o:RoomData )
 	{
-		var lastName = _room;
+		var lastName = _roomName;
+		var lastDatas = _roomDatas;
+		var lastLength = others.length;
 		
 		others = [];
-		_room = o.n;
+		_roomName = o.n;
+		_roomDatas = o.d;
 		
 		if( o.u != null )
 			for ( u in o.u )
-				setUser( u, true );
+				setUser( u, false );
 		
-		if ( lastName != _room )
-			_onRoom( _room, others );
-		else
+		if ( lastName != _roomName )
+			_onRoomChange( _roomName, others );
+		else if ( others.length != lastLength )
 			_onOthers( others );
 		
+		if ( Std.string(_roomDatas) != Std.string(lastDatas) )
+			_onRoomData( _roomDatas );
 	}
 	
 	function initMe( o:UserData )
@@ -294,7 +302,7 @@ class SockClientScan
 			setRoom( o.r );
 	}
 	
-	function setUser( o:UserData, avoidMsg:Bool = false )
+	function setUser( o:UserData, dispatchMsg:Bool = true )
 	{
 		var user = getUserById( o.i );
 		if ( user == null && me.id == o.i )
@@ -303,11 +311,11 @@ class SockClientScan
 		if ( user != null )
 		{
 			var lastName:String = user.name;
-			var lastRoom:String = _room;
+			var lastRoom:String = _roomName;
 			var lastRole:Role = user.role;
 			user.name = (o.n != null) ? o.n : user.name;
 			user.role = (o.m != null) ? o.m : user.role;
-			var newRoom = (o.r != null) ? o.r.n : _room;
+			var newRoom = (o.r != null) ? o.r.n : _roomName;
 			
 			if ( me == user )
 			{
@@ -324,17 +332,17 @@ class SockClientScan
 				{
 					others.remove( user );
 					
-					if ( !avoidMsg )
+					if ( dispatchMsg )
 						_onOthers( others );
 				}
 				else if ( user.name != lastName || user.role != lastRole )
 				{
-					if ( !avoidMsg )
+					if ( dispatchMsg )
 						_onOthers( others );
 				}
 			}
 		}
-		else if ( o.r == null || o.r.n == _room )
+		else if ( o.r == null || o.r.n == _roomName )
 		{
 			user = new SockClientUser();
 			user.id = o.i;
@@ -344,7 +352,7 @@ class SockClientScan
 			
 			others.push( user );
 			
-			if ( !avoidMsg )
+			if ( dispatchMsg )
 				_onOthers( others );
 		}
 		
@@ -358,8 +366,8 @@ class SockClientScan
 				if ( user.name != null )
 					so.data.name = user.name;
 				
-				if ( SockConfig.ROOM_COOKIE && _room != null )
-					so.data.room = _room;
+				if ( SockConfig.ROOM_COOKIE && _roomName != null )
+					so.data.room = _roomName;
 				
 				so.flush();
 			}
@@ -408,6 +416,11 @@ class SockClientScan
 		}
 		_onChat('____________');
 		_onChat(' ');
+	}
+	
+	public function send( msg:SockMsg )
+	{
+		_socket.send( msg );
 	}
 	
 	public function appliServer( brut:SockMsg ):Void

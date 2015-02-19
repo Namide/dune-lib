@@ -36,7 +36,7 @@ class SocketClientTchat
 		_process.onChat = _graphic.appendText;
 		_process.onOthers = _graphic.refreshOthers;
 		_process.onMe = _graphic.refreshMe;
-		_process.onRoom = _graphic.changeRoom;
+		_process.onRoomChange = _graphic.changeRoom;
 		_process.onConnected = _graphic.connect;
 		_process.onMsgSystem = function( text:String, type:SystemMsg ) { _graphic.appendText("<i>"+text+"</i>"); };
 		
