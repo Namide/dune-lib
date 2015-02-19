@@ -28,7 +28,10 @@ class SockServerUser
 	public function new(sv:SocketServer, skt:Socket)
 	{
 		id = ++sv.clientN;
-		name = SockConfig.USER_NAME + Std.string( id );
+		
+		//name = SockConfig.USER_NAME + Std.string( id );
+		//name = SockConfig.USER_NAME_GEN( id );
+		
 		role = Role.basic;
 		server = sv;
 		socket = skt;

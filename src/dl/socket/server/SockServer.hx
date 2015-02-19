@@ -84,6 +84,14 @@ class SocketServer
 			if (sk != null)
 			{
 				var cl = new SockServerUser( this, sk );
+				
+				var name:String = SockConfig.USER_NAME_GEN( clientN );
+				while ( Lambda.exists( clients, function( c:SockServerUser ) { return cl.name == name; } ) )
+				{
+					cl.name = SockConfig.USER_NAME_GEN( clientN );
+				}
+				cl.name = name;
+				
 				Thread.create(getThreadListen(cl));
 			}
 		}

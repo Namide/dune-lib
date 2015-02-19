@@ -22,7 +22,33 @@ class SockConfig
 	public static inline var ROOM_DEFAULT_IS_ROOM = false;
 	
 	public static inline var ROOM_COOKIE = false;
-	public static inline var USER_NAME = "~Guest";
+	public static inline function USER_NAME_GEN( seed:Int ) {
+		
+		var v = "aeiouy";
+		var c = "bcdfghjklmnpqrstvwxz";
+		
+		var n = "";
+		
+		var s = Math.round( Math.random() * Math.floor((USER_NAME_LENGTH_MAX - USER_NAME_LENGTH_MIN)/3) + Math.ceil(USER_NAME_LENGTH_MIN / 3) );
+		for ( i in 0...s )
+		{
+			var r = Math.floor(Math.random() * c.length);
+			n += c.charAt( r );
+			
+			if ( i == 0 )
+				n = n.toUpperCase();
+				
+			r = Math.floor(Math.random() * v.length);
+			n += v.charAt( r );
+			if ( Math.random() < 0.3 )
+			{
+				r = Math.floor(Math.random() * c.length);
+				n += c.charAt( r );
+			}
+		}
+		
+		return n;//"~Guest" + seed;
+	};
 	
 	
 	
