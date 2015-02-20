@@ -6,23 +6,23 @@ package dl.socket ;
  */
 class SockConfig
 {
-	public static inline var IP = '127.0.0.1';// '192.75.16.16';
-	public static inline var PORT:UInt = 8090;
+	public static var IP = '127.0.0.1';// '192.75.16.16';
+	public static var PORT:UInt = 8090;
 	
-	public static inline var USER_NAME_LENGTH_MIN:UInt = 2;
-	public static inline var USER_NAME_LENGTH_MAX:UInt = 8;
+	public static var USER_NAME_LENGTH_MIN:UInt = 2;
+	public static var USER_NAME_LENGTH_MAX:UInt = 10;
 	
-	public static inline var ROOM_NAME_LENGTH_MIN:UInt = 3;
-	public static inline var ROOM_NAME_LENGTH_MAX:UInt = 5;
+	public static var ROOM_NAME_LENGTH_MIN:UInt = 3;
+	public static var ROOM_NAME_LENGTH_MAX:UInt = 10;
 	
-	public static inline var MSG_LENGTH_MIN:UInt = 1;
-	public static inline var MSG_LENGTH_MAX:UInt = 512;
+	public static var MSG_LENGTH_MIN:UInt = 1;
+	public static var MSG_LENGTH_MAX:UInt = 512;
 	
-	public static inline var ROOM_DEFAULT_NAME = "~home";
-	public static inline var ROOM_DEFAULT_IS_ROOM = false;
+	public static var ROOM_DEFAULT_NAME = "~home";
+	public static var ROOM_DEFAULT_IS_ROOM = true;
 	
-	public static inline var ROOM_COOKIE = false;
-	public static inline function USER_NAME_GEN( seed:Int ) {
+	public static var ROOM_COOKIE = true;
+	public static function USER_NAME_GEN( seed:Int ) {
 		
 		var v = "aeiouy";
 		var c = "bcdfghjklmnpqrstvwxz";
@@ -55,12 +55,12 @@ class SockConfig
 	/**
 	 * Null to disable user registered
 	 */
-	public static inline var SERVER_USERS_FILE:Null<String> = null;//"users.sqlite";
-	public static inline var SERVER_LOGS = false;
+	public static var SERVER_USERS_FILE:Null<String> = null;//"users.sqlite";
+	public static var SERVER_LOGS = false;
 	
 	/**
 	 * Port 843 only for admin.
 	 * Required for Flash 10+
 	 */
-	public static inline var SEND_POLICY_843 = true;
+	public static var SEND_POLICY_843 = true;
 }
