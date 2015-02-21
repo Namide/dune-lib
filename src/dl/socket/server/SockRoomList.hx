@@ -96,14 +96,14 @@ class SockRoomList
 	{
 		var rl:Array<RoomData> = [];
 		for ( r in sv.rooms.all() )
-			if ( SockConfig.ROOM_DEFAULT_IS_ROOM || r.name.toLowerCase() != SockConfig.ROOM_DEFAULT_NAME.toLowerCase() )
-				rl.push( r.getRoomData( false, true ) );
+			if ( !SockConfig.ROOM_DEFAULT_IS_LOBBY || r.name.toLowerCase() != SockConfig.ROOM_DEFAULT_NAME.toLowerCase() )
+				rl.push( r.getRoomData( false, true, SockConfig.ROOM_LIST_WITH_DATAS ) );
 		return rl;
 	}
 	
 	function informDefaultRoom( sv:SocketServer )
 	{
-		if ( !SockConfig.ROOM_DEFAULT_IS_ROOM )
+		if ( SockConfig.ROOM_DEFAULT_IS_LOBBY )
 		{
 			var ro:SockRoom = Lambda.find( _list, function(tmp:SockRoom):Bool { return tmp.name.toLowerCase() == SockConfig.ROOM_DEFAULT_NAME.toLowerCase(); } );
 			if ( ro != null )

@@ -90,3 +90,22 @@
 -swf-version 11.8
 -dce full
 
+
+# --------------------------------
+# 			DOC
+# --------------------------------
+
+--next
+--macro Sys.println('Generate: documentation')
+--macro include('dl.input')
+--macro include('dl.physic')
+--macro include('dl.render')
+--macro include('dl.socket.client')
+--macro include('dl.socket.SockConfig')
+--macro include('dl.socket.SockMsg')
+--macro include('dl.utils')
+-swf doc/all.swf
+--no-output
+-xml doc/doc.xml
+-cp src
+# dl.samples.ImportAll

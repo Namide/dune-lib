@@ -20,7 +20,7 @@ import flash.Lib;
 import haxe.Constraints.Function;
 import haxe.Json;
 
-class Floor extends Sprite
+class GPUFloor extends Sprite
 {
 	public function new( body:Body, color:Int )
 	{
@@ -35,7 +35,7 @@ class Floor extends Sprite
 	}	
 }
 
-class Player extends Floor
+class GPUPlayer extends GPUFloor
 {
 	public var body:Body;
 	public var id:Int;
@@ -70,7 +70,7 @@ class GpuRender extends Sprite
 	var space:SpaceGrid;
 	var physic:PlatformPhysicSystem;
 	
-	var playerMe:Player;
+	var playerMe:GPUPlayer;
 	var playerControl:PlatformPlayerController;
 	
 	static function main() 
@@ -135,7 +135,7 @@ class GpuRender extends Sprite
 			size:{x:0.5,y:0.7},
 			graphic:function(b:Body, c:PlatformPlayerController)
 			{
-				playerMe = new Player( b, 0x888800 );
+				playerMe = new GPUPlayer( b, 0x888800 );
 				playerControl = c;
 				physic.addBody( b );
 				space.addBody( b );
@@ -149,7 +149,7 @@ class GpuRender extends Sprite
 				contacts: BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.platformTop,
 				graphic:function(b:Body)
 				{
-					var floor = new Floor( b, 0xDD0000 );
+					var floor = new GPUFloor( b, 0xDD0000 );
 					physic.addBody( b );
 					space.addBody( b );
 					STAGE.addChild( floor );
@@ -160,7 +160,7 @@ class GpuRender extends Sprite
 				contacts: BodyContactsFlags.passive | BodyContactsFlags.fix | BodyContactsFlags.wall,
 				graphic:function(b:Body)
 				{
-					var floor = new Floor( b, 0xDD00DD );
+					var floor = new GPUFloor( b, 0xDD00DD );
 					physic.addBody( b );
 					space.addBody( b );
 					STAGE.addChild( floor );

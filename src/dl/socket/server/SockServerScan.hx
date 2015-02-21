@@ -155,7 +155,7 @@ class SockServerScan
 			if ( oldRoom != null && oldRoom.clLength() > 0 )
 				sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " leaves the room " ), oldRoom.getCls() );
 			
-			if ( name.toLowerCase() == SockConfig.ROOM_DEFAULT_NAME.toLowerCase() && !SockConfig.ROOM_DEFAULT_IS_ROOM )
+			if ( name.toLowerCase() == SockConfig.ROOM_DEFAULT_NAME.toLowerCase() && SockConfig.ROOM_DEFAULT_IS_LOBBY )
 				sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " join the lobby" ), cl.room.getCls() );
 			else
 				sv.broadcast( SockMsgGen.getSend( SendSubject.messageSystem, cl.name + " join the room" ), cl.room.getCls() );
@@ -407,7 +407,7 @@ class SockServerScan
 						cl.dispatch = true;
 						cl.send( SockMsgGen.getSend( SendSubject.connect, u ) );
 						
-						if ( 	!SockConfig.ROOM_DEFAULT_IS_ROOM &&
+						if ( 	SockConfig.ROOM_DEFAULT_IS_LOBBY &&
 								cl.room != null &&
 								cl.room.name.toLowerCase() == SockConfig.ROOM_DEFAULT_NAME )
 							cl.send( SockMsgGen.getSend( SendSubject.roomList, sv.rooms.getRoomListData(sv) ) );

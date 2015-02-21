@@ -20,41 +20,6 @@ import flash.Lib;
 import haxe.Constraints.Function;
 import haxe.Json;
 
-class Floor extends Sprite
-{
-	public function new( body:Body, color:Int )
-	{
-		super();
-		
-		this.x = body.x;
-		this.y = body.y;
-		
-		graphics.beginFill( color );
-		graphics.drawRect( 0, 0, body.shape[0].getW(), body.shape[0].getH() );
-		graphics.endFill();
-	}	
-}
-
-class Player extends Floor
-{
-	public var body:Body;
-	public var id:Int;
-	
-	public function new( body:Body, color:Int, id:Int = -1 )
-	{
-		super( body, color );
-		
-		this.body = body;
-		this.id = id;
-	}
-	
-	public function refresh()
-	{
-		this.x = body.x;
-		this.y = body.y;
-	}
-}
-
 /**
  * ...
  * @author Namide

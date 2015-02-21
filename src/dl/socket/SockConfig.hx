@@ -1,4 +1,5 @@
 package dl.socket ;
+import dl.utils.Name;
 
 /**
  * ...
@@ -19,35 +20,12 @@ class SockConfig
 	public static var MSG_LENGTH_MAX:UInt = 512;
 	
 	public static var ROOM_DEFAULT_NAME = "~home";
-	public static var ROOM_DEFAULT_IS_ROOM = true;
+	public static var ROOM_DEFAULT_IS_LOBBY = false;
+	public static var ROOM_LIST_WITH_DATAS = false;
 	
 	public static var ROOM_COOKIE = true;
-	public static function USER_NAME_GEN( seed:Int ) {
-		
-		var v = "aeiouy";
-		var c = "bcdfghjklmnpqrstvwxz";
-		
-		var n = "";
-		
-		var s = Math.round( Math.random() * Math.floor((USER_NAME_LENGTH_MAX - USER_NAME_LENGTH_MIN)/3) + Math.ceil(USER_NAME_LENGTH_MIN / 3) );
-		for ( i in 0...s )
-		{
-			var r = Math.floor(Math.random() * c.length);
-			n += c.charAt( r );
-			
-			if ( i == 0 )
-				n = n.toUpperCase();
-				
-			r = Math.floor(Math.random() * v.length);
-			n += v.charAt( r );
-			if ( Math.random() < 0.3 )
-			{
-				r = Math.floor(Math.random() * c.length);
-				n += c.charAt( r );
-			}
-		}
-		
-		return n;//"~Guest" + seed;
+	public static dynamic function USER_NAME_GEN( seed:Int ) {
+		return Name.getRandName( USER_NAME_LENGTH_MIN, USER_NAME_LENGTH_MAX );// "~Guest" + seed;
 	};
 	
 	

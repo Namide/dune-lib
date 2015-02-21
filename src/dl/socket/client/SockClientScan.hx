@@ -50,7 +50,13 @@ class SockClientScan
 	public var onGame:TransferDatasServer->Void;
 	
 	var _roomName:String;
+	public var roomName(get, null):String;
+	function get_roomName():String { return _roomName; }
+	
 	var _roomDatas:Dynamic;
+	public var roomDatas(get, null):Dynamic;
+	function get_roomDatas():Dynamic { return _roomDatas; }
+	
 	var _socket:SockPipe;
 	
 	var _connected:Bool;
@@ -103,6 +109,12 @@ class SockClientScan
 		
 		var msg:SockMsg = SockMsgGen.getSend( SendSubject.connect, u );
 		return _socket.send( msg );
+	}
+	
+	public function close()
+	{
+		_socket.close();
+		_socket = null;
 	}
 	
 	public inline function transfertData( text:Dynamic )

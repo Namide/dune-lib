@@ -59,7 +59,7 @@ class SockPipe
 		}
 		catch (z:Dynamic)
 		{
-			onReceive( SockMsgGen.getSend(SendSubject.errorSystem, "connection lost (" + Std.string(z) + ")") );
+			onReceive( SockMsgGen.getSend(SendSubject.errorSystem, "Connection lost (" + Std.string(z) + ")") );
 		}
 	}
 	
@@ -79,12 +79,16 @@ class SockPipe
 	
 	function socketClose(e:Dynamic)
 	{
-		onReceive( SockMsgGen.getSend( SendSubject.errorSystem, "connection closed" ) );
+		onReceive( SockMsgGen.getSend( SendSubject.errorSystem, "Connection closed" ) );
 	}
 	
 	function socketError(e:Dynamic)
 	{
-		onReceive( SockMsgGen.getSend(SendSubject.errorSystem, "connection error (" + Std.string(e.text) + ")" ) );
+		onReceive( SockMsgGen.getSend(SendSubject.errorSystem, "Can not connect to server, please try again later (" + Std.string(e.text) + ")" ) );
 	}
 	
+	public function close()
+	{
+		_socket.close();
+	}
 }
