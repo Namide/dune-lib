@@ -14,7 +14,7 @@ class Body
 	 * If you add intermediates positionning you must increment SHAPE_PRINT_NUM.
 	 * In example for multiplayer manipulation.
 	 */
-	public static inline var SHAPE_PRINT_NUM:Int = 5;
+	public static var SHAPE_PRINT_NUM:Int = 2;
 	
 	/**
 	 * Optional data

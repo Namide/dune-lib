@@ -275,19 +275,26 @@ class SockClientScan
 		var lastDatas = _roomDatas;
 		var lastLength = others.length;
 		
-		others = [];
-		_roomName = o.n;
-		_roomDatas = o.d;
+		if ( o.n != null )
+			_roomName = o.n;
 		
-		if( o.u != null )
-			for ( u in o.u )
-				setUser( u, false );
+		if ( o.d != null )
+			_roomDatas = o.d;
+		
+		if ( o.u != null )
+		{
+			others = [];
+			if( o.u != null )
+				for ( u in o.u )
+					setUser( u, false );
+		}
+		
 		
 		if ( lastName != _roomName )
 			_onRoomChange( _roomName, others );
 		else if ( others.length != lastLength )
 			_onOthers( others );
-		
+			
 		if ( Std.string(_roomDatas) != Std.string(lastDatas) )
 			_onRoomData( _roomDatas );
 	}
@@ -325,18 +332,24 @@ class SockClientScan
 			var lastName:String = user.name;
 			var lastRoom:String = _roomName;
 			var lastRole:Role = user.role;
+			var lastDatas:Dynamic = user.datas;
+			
 			user.name = (o.n != null) ? o.n : user.name;
 			user.role = (o.m != null) ? o.m : user.role;
+			user.datas = (o.d != null) ? o.d : user.datas;
 			var newRoom = (o.r != null) ? o.r.n : _roomName;
 			
 			if ( me == user )
 			{
 				if ( newRoom != lastRoom )
 					setRoom( o.r );
-					
-				if ( user.name != lastName || user.role != lastRole )
-					_onMe( user );
 				
+				if ( 	user.name != lastName ||
+						user.role != lastRole ||
+						Std.string(user.datas) != Std.string(lastDatas) )
+				{
+					_onMe( user );
+				}
 			}
 			else
 			{
@@ -347,7 +360,9 @@ class SockClientScan
 					if ( dispatchMsg )
 						_onOthers( others );
 				}
-				else if ( user.name != lastName || user.role != lastRole )
+				else if ( 	user.name != lastName ||
+							user.role != lastRole ||
+							Std.string(user.datas) != Std.string(lastDatas) )
 				{
 					if ( dispatchMsg )
 						_onOthers( others );
@@ -437,7 +452,7 @@ class SockClientScan
 	
 	public function appliServer( brut:SockMsg ):Void
 	{
-		
+		//trace( brut.getString() );
 		switch ( brut.cmd )
 		{
 			case Cmd.transferDatasServer:

@@ -219,11 +219,11 @@ typedef Chat = {
 }
 
 typedef RoomData = {
-	var n: String;							// room name
-	var p: String; 							// password (only for private room)
+	@:optional var n: String;				// room name
+	@:optional var p: String; 				// password (only for private room)
 	@:optional var u: Array<UserData>;		// list of users in the room
 	@:optional var l: Int;					// number of users in the room
-	@:optional var d: Dynamic;					// room datas
+	@:optional var d: Dynamic;				// room datas
 }
 
 typedef RoomList = {

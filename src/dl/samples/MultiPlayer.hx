@@ -1,4 +1,6 @@
 package dl.samples;
+import dl.samples.LevelGeneration.Floor;
+import dl.samples.LevelGeneration.Player;
 import dl.socket.client.SockClientScan;
 import dl.socket.client.SockClientUser;
 import dl.socket.SockMsg.TransferDatasServer;
@@ -83,6 +85,9 @@ class MultiPlayer extends Sprite
 	
 	public function init()
 	{
+		// add accuracy for collision in multiplayer
+		Body.SHAPE_PRINT_NUM = 10;
+		
 		space = new SpaceGrid( TILE_SIZE, TILE_SIZE );
 		physic = new PlatformPhysicSystem( 2.0 );
 		time = new Timer(50, 0);
@@ -117,7 +122,8 @@ class MultiPlayer extends Sprite
 			for ( scu in list )
 			{
 				if ( 	scu.id != playerMe.id &&
-						!Lambda.exists( playerOther, function(c:Player) { return c.id == scu.id; } ) )
+						!Lambda.exists( playerOther, function(c:Player) { return c.id == scu.id; } ) &&
+						scu.datas != null )
 				{
 					addPlayer( scu.id, scu.datas );
 				}

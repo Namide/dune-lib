@@ -177,6 +177,9 @@ class SockServerScan
 	
 	inline function updateUser( cl:SockServerUser, newUser:UserData )
 	{
+		// CHECK THE ID
+		newUser.i = cl.id;
+		
 		// CHANGE THE NAME
 		if ( newUser.n != null )
 		{

@@ -1818,7 +1818,7 @@
  * @author Namide</haxe_doc>
 	</class>
 	<class path="dl.physic.body.Body" params="" file="src/dl/physic/body/Body.hx">
-		<SHAPE_PRINT_NUM public="1" get="inline" set="null" line="17" static="1">
+		<SHAPE_PRINT_NUM public="1" line="17" static="1">
 			<x path="Int"/>
 			<haxe_doc>* Historic of positioning (number of memory). Minimal number is 2.
 	 * If you add intermediates positionning you must increment SHAPE_PRINT_NUM.
@@ -3631,8 +3631,14 @@
 		<c path="Array"><t path="dl.socket.UserData"/></c>
 		<meta><m n=":optional"/></meta>
 	</u>
-	<p><c path="String"/></p>
-	<n><c path="String"/></n>
+	<p>
+		<c path="String"/>
+		<meta><m n=":optional"/></meta>
+	</p>
+	<n>
+		<c path="String"/>
+		<meta><m n=":optional"/></meta>
+	</n>
 	<l>
 		<t path="Null"><x path="Int"/></t>
 		<meta><m n=":optional"/></meta>
@@ -3843,28 +3849,28 @@
 	<t path="dl.socket.RoomData"/>
 	<x path="Void"/>
 </f></setRoom>
-		<initMe set="method" line="295"><f a="o">
+		<initMe set="method" line="302"><f a="o">
 	<t path="dl.socket.UserData"/>
 	<x path="Void"/>
 </f></initMe>
-		<setUser set="method" line="317"><f a="o:?dispatchMsg" v=":true">
+		<setUser set="method" line="324"><f a="o:?dispatchMsg" v=":true">
 	<t path="dl.socket.UserData"/>
 	<x path="Bool"/>
 	<x path="Void"/>
 </f></setUser>
-		<printChatMsg set="method" line="394"><f a="o">
+		<printChatMsg set="method" line="409"><f a="o">
 	<t path="dl.socket.Chat"/>
 	<x path="Void"/>
 </f></printChatMsg>
-		<printRoomList set="method" line="417"><f a="rl">
+		<printRoomList set="method" line="432"><f a="rl">
 	<c path="Array"><t path="dl.socket.RoomData"/></c>
 	<x path="Void"/>
 </f></printRoomList>
-		<send public="1" set="method" line="433"><f a="msg">
+		<send public="1" set="method" line="448"><f a="msg">
 	<c path="dl.socket.SockMsg"/>
 	<x path="Void"/>
 </f></send>
-		<appliServer public="1" set="method" line="438"><f a="brut">
+		<appliServer public="1" set="method" line="453"><f a="brut">
 	<c path="dl.socket.SockMsg"/>
 	<x path="Void"/>
 </f></appliServer>

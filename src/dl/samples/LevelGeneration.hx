@@ -45,11 +45,13 @@ class Floor extends Sprite
 class Player extends Floor
 {
 	public var body:Body;
+	public var id:Int;
 	
-	public function new( body:Body, color:UInt )
+	public function new( body:Body, color:UInt, id:Int = -1 )
 	{
 		super( body, color );
 		this.body = body;
+		this.id = id;
 	}
 	
 	public function refresh()
