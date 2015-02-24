@@ -43,7 +43,6 @@ class PlatformPhysicSystem
 		for ( b in all )
 		{
 			var p = b.physic;
-			
 			if ( p.flags & BodyPhysicFlags.gravity != 0 )
 			{
 				p.vX += gX;
