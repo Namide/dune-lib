@@ -39,8 +39,11 @@ class PlatformPlayerController extends Keyboard
 	var _jumpVXMin:Float;
 	var _jumpVXMax:Float;
 	var _jumpTimeLock:Float;
+	var _g:Float;
 	var _actionPressed:Bool;
 	var _landmark:Float = 0;
+	
+	public var wallFriction:Bool;
 	
 	var _body:Body;
 	
@@ -52,7 +55,9 @@ class PlatformPlayerController extends Keyboard
 		_actionPressed = false;
 		
 		_fDelay = frameDelaySec;
-		init();
+		
+		wallFriction = false;
+		//init();
 	}
 	
 	public function init( 	runPxSec:Float = 12.0 * 32, 
@@ -67,14 +72,18 @@ class PlatformPlayerController extends Keyboard
 		
 		setRun( runPxSec, accTime );
 		setJump( jumpHeightMin, jumpHeightMax , jumpLengthMin, jumpLengthMax, accTime, timeLock, gravityY );
+		
+		//trace( _jumpStartVY );
+		//trace( jumpLengthMax, jumpHeightMax, PlatformUtils.getTopXYMax( _jumpStartVY, _jumpVXMax, _jumpVY, gravityY ) );
 	}
 	
 	function setRun( vel:Float, accTime:Float ):Void {
 		_groundVX = PlatformUtils.getVX( vel, _fDelay );
-	}
+	}        
 	
 	function setJump( hMin:Float, hMax:Float, lMin:Float, lMax:Float, accTime:Float, timeLock:Float, g:Float ):Void
 	{
+		_g = g;
 		_jumpStartVY = PlatformUtils.getJumpStartVY( hMin, g );
 		_jumpVY = PlatformUtils.getJumpVY( hMax, _jumpStartVY, g );
 		_jumpVXMin = PlatformUtils.getJumpVY( lMin, _jumpStartVY, g );
@@ -117,26 +126,18 @@ class PlatformPlayerController extends Keyboard
 			if ( xAxis < 0 && !leftWall )
 			{
 				if ( bottomWall )
-				{
 					_body.physic.vX = xAxis * _groundVX;
-				}
 				else if ( _body.physic.vX > -_jumpVXMax && t > _landmark )
-				{
 					_body.physic.vX = xAxis * _jumpVXMax;
-				}
 			}
 			else
 			{
 				if ( !rightWall )
 				{
 					if ( bottomWall )
-					{
 						_body.physic.vX = xAxis * _groundVX;
-					}
 					else if ( _body.physic.vX < _jumpVXMax && t > _landmark )
-					{
 						_body.physic.vX = xAxis * _jumpVXMax;
-					}
 				}
 			}
 		}
@@ -161,7 +162,7 @@ class PlatformPlayerController extends Keyboard
 		{
 			if ( bottomWall && !_actionPressed )
 			{
-				_body.physic.vY = - _jumpStartVY;
+				_body.physic.vY = -(_jumpStartVY + _g);
 				
 				if ( xAxis < 0 )
 					_body.physic.vX = -_jumpVXMax;
@@ -170,17 +171,18 @@ class PlatformPlayerController extends Keyboard
 			}
 			else if ( leftWall && !_actionPressed )
 			{
-				_body.physic.vY = -_jumpStartVY;
+				_body.physic.vY = -(_jumpStartVY + _g);
 				_body.physic.vX = _jumpVXMax;
 				_landmark = t + _jumpTimeLock;
 			}
 			else if ( rightWall && !_actionPressed )
 			{
-				_body.physic.vY = -_jumpStartVY;
+				_body.physic.vY = -(_jumpStartVY + _g);
 				_body.physic.vX = -_jumpVXMax;
 				_landmark = t + _jumpTimeLock;
 			}
-			else if ( (!topWall && !bottomWall && !leftWall && !rightWall) )
+			
+			if ( _actionPressed && (!wallFriction || (!topWall && !bottomWall && !leftWall && !rightWall)) )
 			{
 				_body.physic.vY -= _jumpVY;
 			}
@@ -194,6 +196,8 @@ class PlatformPlayerController extends Keyboard
 		{
 			_actionPressed = false;
 		}
+		
+		//if ( _body.physic.vY<0 ) trace( -_body.physic.vY);
 		
 		// DIRECTION
 		/*var lastDirX:Int = entity.transform.dirX;
@@ -227,7 +231,7 @@ class PlatformPlayerController extends Keyboard
 		}*/
 	}
 	
-	public inline function getMaxPxXJump( maxTilesXJump:Float, gravity:Float ):Float
+	/*public inline function getMaxPxXJump( maxTilesXJump:Float, gravity:Float ):Float
 	{
 		return PlatformUtils.maxPxXJump( maxTilesXJump, _jumpStartVY, _jumpVXMax, _jumpVY, gravity );
 	}
@@ -235,7 +239,7 @@ class PlatformPlayerController extends Keyboard
 	public inline function getMaxPxYJump( maxTilesYJump:Float, gravity:Float ):Float
 	{
 		return PlatformUtils.maxPxYJump( maxTilesYJump, _jumpStartVY, _jumpVXMax, _jumpVY, gravity );
-	}
+	}*/
 	
 	// STATICS CALCULATIONS
 	public inline static function getVX( pxBySec:Float, frameDelay:Float ):Float

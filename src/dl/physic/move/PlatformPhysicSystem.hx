@@ -18,7 +18,7 @@ class PlatformPhysicSystem
 	 * To prevent error collision.
 	 * More recursive is better for accuracy but less to memory and performances
 	 */
-	static inline var MAX_RECURSIVE:Int = 5; 
+	static inline var MAX_RECURSIVE:Int = 5;
 	
 	public var gX:Float = 0.0;
 	public var gY:Float = 2.0;

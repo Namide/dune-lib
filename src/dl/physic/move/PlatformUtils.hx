@@ -27,7 +27,27 @@ class PlatformUtils
 		return maxPxJump * (gravity - jumpVY) / (jumpStartVY + jumpStartVY);
 	}
 	
-	public static function maxPxYJump( maxPxXJump:Float, jumpStartVY:Float, jumpVX:Float, jumpVY:Float, gravity:Float ):Float
+	public static function getTopXYMax( jumpStartVY:Float, jumpVX:Float, jumpVY:Float, gravity:Float ):Array<Float>
+	{
+		var vY:Float = jumpStartVY;
+		var vX:Float = jumpVX;
+		var h:Float = 0;
+		var w:Float = 0;
+		
+		while ( h >= 0 )
+		{
+			h += vY;
+			w += jumpVX;
+			vY += jumpVY - gravity;
+			
+			if ( vY < 0 )
+				return [w,h];
+			
+		}
+		return [0,0];
+	}
+	
+	/*public static function maxPxXJump( maxPxXJump:Float, jumpStartVY:Float, jumpVX:Float, jumpVY:Float, gravity:Float ):Float
 	{
 		var vY:Float = jumpStartVY;
 		var vX:Float = jumpVX;
@@ -47,7 +67,7 @@ class PlatformUtils
 		return 0;
 	}
 	
-	public static function maxPxXJump( maxPxYJump:Float, jumpStartVY:Float, jumpVX:Float, jumpVY:Float, gravity:Float ):Float
+	public static function maxPxYJump( jumpStartVY:Float, jumpVX:Float, jumpVY:Float, gravity:Float ):Float
 	{
 		var vY:Float = jumpStartVY;
 		var vX:Float = jumpVX;
@@ -59,12 +79,12 @@ class PlatformUtils
 			h += vY;
 			w += jumpVX;
 			
-			if ( h > maxPxYJump )
+			if ( vY < 0 )
 				return w;
 			
 			vY += jumpVY - gravity;
 		}
 		return 0;
-	}
+	}*/
 	
 }
