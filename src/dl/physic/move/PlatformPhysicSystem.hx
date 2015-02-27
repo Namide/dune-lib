@@ -13,6 +13,7 @@ import dl.physic.move.BodyPhysic.BodyPhysicFlags;
 class PlatformPhysicSystem
 {
 	var all:Array<Body>;
+	var dependant:Array<Body>;
 	
 	/**
 	 * To prevent error collision.
@@ -27,15 +28,18 @@ class PlatformPhysicSystem
 	{
 		gY = gravityY;
 		all = [];
+		dependant = [];
 	}
 	
 	public function addBody( body:Body ):Void
 	{
-		if ( all.indexOf( body ) > 0 )
-			removeBody( body );
+		removeBody( body );
 		
 		if ( body.physic != null )
 			all.push( body );
+		
+		if ( body.onUpdateMove != null )
+			dependant.push( body );
 	}
 	
 	public function updateMoves()
@@ -54,6 +58,12 @@ class PlatformPhysicSystem
 				b.addPos( p.vX, p.vY );
 			}
 		}
+		
+		for ( b in dependant )
+		{
+			b.onUpdateMove();
+		}
+		
 	}
 	
 	public function updatePositions( space:ISpace )
@@ -350,7 +360,11 @@ class PlatformPhysicSystem
 	
 	public inline function removeBody( body:Body ):Void
 	{
-		all.remove( body );
+		if ( all.indexOf( body ) > 0 )
+			all.remove( body );
+		
+		if ( dependant.indexOf( body ) > 0 )
+			dependant.remove( body );
 	}
 	
 }

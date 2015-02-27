@@ -79,7 +79,7 @@ abstract BodyContactsFlags(Int)
 	* Collision is activated, but not physic.
 	* It's usable for life, ennemy, ammo...
 	*/
-	var item = 128;
+	//var item = 128;
 	
 	/**
 	 * Never move (like wall or floor)

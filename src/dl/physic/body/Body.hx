@@ -16,6 +16,8 @@ class Body
 	 */
 	public static var SHAPE_PRINT_NUM:Int = 2;
 	
+	public var onUpdateMove:Void->Void;
+	
 	/**
 	 * Optional data
 	 */
@@ -50,6 +52,11 @@ class Body
 	public var y(default, null):Float;
 	
 	/**
+	 * Direction in left or right ?
+	 */
+	public var dirRight(default, default):Bool;
+	
+	/**
 	 * True if the body has moved since the last frame.
 	 */
 	public var moved(default, null):Bool;
@@ -63,9 +70,7 @@ class Body
 		this.y = y;
 		shape.updateAABB( x, y );
 		
-		for ( i in 0...(SHAPE_PRINT_NUM-1) )
-			this.shape.push( shape.clone() );
-		
+		dirRight = true;
 		moved = true;
 	}
 	
@@ -210,6 +215,10 @@ class Body
 	{
 		if ( physic == null )
 			physic = new BodyPhysic(this);
+		
+		var s = shape[0];
+		for ( i in 0...(SHAPE_PRINT_NUM-1) )
+			this.shape.push( s.clone() );
 		
 		physic.flags = flags;
 	}
