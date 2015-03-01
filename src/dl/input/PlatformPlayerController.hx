@@ -77,6 +77,11 @@ class PlatformPlayerController extends Keyboard
 		//trace( jumpLengthMax, jumpHeightMax, PlatformUtils.getTopXYMax( _jumpStartVY, _jumpVXMax, _jumpVY, gravityY ) );
 	}
 	
+	public function jump()
+	{
+		_body.physic.vY = -(_jumpStartVY + _g);
+	}
+	
 	function setRun( vel:Float, accTime:Float ):Void {
 		_groundVX = PlatformUtils.getVX( vel, _fDelay );
 	}        

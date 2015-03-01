@@ -1722,30 +1722,30 @@
 	</class>
 	<class path="dl.input.PlatformPlayerController" params="" file="src/dl/input/PlatformPlayerController.hx">
 		<extends path="dl.input.Keyboard"/>
-		<getVX public="1" get="inline" set="null" line="241" static="1"><f a="pxBySec:frameDelay">
+		<getVX public="1" get="inline" set="null" line="245" static="1"><f a="pxBySec:frameDelay">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getVX>
-		<getJumpStartVY public="1" get="inline" set="null" line="246" static="1"><f a="jumpPx:gravity">
+		<getJumpStartVY public="1" get="inline" set="null" line="250" static="1"><f a="jumpPx:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getJumpStartVY>
-		<getJumpVY public="1" get="inline" set="null" line="251" static="1"><f a="maxPxJump:jumpStartVY:gravity">
+		<getJumpVY public="1" get="inline" set="null" line="255" static="1"><f a="maxPxJump:jumpStartVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getJumpVY>
-		<getJumpVX public="1" get="inline" set="null" line="256" static="1"><f a="maxPxJump:jumpStartVY:?jumpVY:gravity" v="::0:">
+		<getJumpVX public="1" get="inline" set="null" line="260" static="1"><f a="maxPxJump:jumpStartVY:?jumpVY:gravity" v="::0:">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getJumpVX>
-		<maxPxYJump set="method" line="261" static="1"><f a="maxPxXJump:jumpStartVY:jumpVX:jumpVY:gravity">
+		<maxPxYJump set="method" line="265" static="1"><f a="maxPxXJump:jumpStartVY:jumpVX:jumpVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1753,7 +1753,7 @@
 	<x path="Float"/>
 	<x path="Float"/>
 </f></maxPxYJump>
-		<maxPxXJump set="method" line="282" static="1"><f a="maxPxYJump:jumpStartVY:jumpVX:jumpVY:gravity">
+		<maxPxXJump set="method" line="286" static="1"><f a="maxPxYJump:jumpStartVY:jumpVX:jumpVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1768,10 +1768,12 @@
 		<_jumpVXMin><x path="Float"/></_jumpVXMin>
 		<_jumpVXMax><x path="Float"/></_jumpVXMax>
 		<_jumpTimeLock><x path="Float"/></_jumpTimeLock>
+		<_g><x path="Float"/></_g>
 		<_actionPressed><x path="Bool"/></_actionPressed>
 		<_landmark><x path="Float"/></_landmark>
+		<wallFriction public="1"><x path="Bool"/></wallFriction>
 		<_body><c path="dl.physic.body.Body"/></_body>
-		<init public="1" set="method" line="58"><f a="?runPxSec:?jumpHeightMin:?jumpHeightMax:?jumpLengthMin:?jumpLengthMax:?gravityY" v="384.f:48.f:96.f:96.f:192.f:2.0f">
+		<init public="1" set="method" line="63"><f a="?runPxSec:?jumpHeightMin:?jumpHeightMax:?jumpLengthMin:?jumpLengthMax:?gravityY" v="384.f:48.f:96.f:96.f:192.f:2.0f">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1780,12 +1782,12 @@
 	<x path="Float"/>
 	<x path="Void"/>
 </f></init>
-		<setRun set="method" line="72"><f a="vel:accTime">
+		<setRun set="method" line="80"><f a="vel:accTime">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Void"/>
 </f></setRun>
-		<setJump set="method" line="76"><f a="hMin:hMax:lMin:lMax:accTime:timeLock:g">
+		<setJump set="method" line="84"><f a="hMin:hMax:lMin:lMax:accTime:timeLock:g">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1795,21 +1797,11 @@
 	<x path="Float"/>
 	<x path="Void"/>
 </f></setJump>
-		<update public="1" set="method" line="85"><f a="t">
+		<update public="1" set="method" line="94"><f a="t">
 	<x path="Float"/>
 	<x path="Void"/>
 </f></update>
-		<getMaxPxXJump public="1" get="inline" set="null" line="230"><f a="maxTilesXJump:gravity">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-</f></getMaxPxXJump>
-		<getMaxPxYJump public="1" get="inline" set="null" line="235"><f a="maxTilesYJump:gravity">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-</f></getMaxPxYJump>
-		<new public="1" set="method" line="47"><f a="body:?frameDelaySec" v=":0.02f">
+		<new public="1" set="method" line="50"><f a="body:?frameDelaySec" v=":0.02f">
 	<c path="dl.physic.body.Body"/>
 	<x path="Float"/>
 	<x path="Void"/>
@@ -1824,6 +1816,7 @@
 	 * If you add intermediates positionning you must increment SHAPE_PRINT_NUM.
 	 * In example for multiplayer manipulation.</haxe_doc>
 		</SHAPE_PRINT_NUM>
+		<onUpdateMove public="1"><f a=""><x path="Void"/></f></onUpdateMove>
 		<name public="1">
 			<c path="String"/>
 			<haxe_doc>* Optional data</haxe_doc>
@@ -1851,11 +1844,15 @@
 			<x path="Float"/>
 			<haxe_doc>* Position in Y-axis in pixel</haxe_doc>
 		</y>
+		<dirRight public="1">
+			<x path="Bool"/>
+			<haxe_doc>* Direction in left or right ?</haxe_doc>
+		</dirRight>
 		<moved public="1" set="null">
 			<x path="Bool"/>
 			<haxe_doc>* True if the body has moved since the last frame.</haxe_doc>
 		</moved>
-		<setPos public="1" set="method" line="78">
+		<setPos public="1" set="method" line="83">
 			<f a="x:y">
 				<x path="Float"/>
 				<x path="Float"/>
@@ -1866,7 +1863,7 @@
 	 * @param	x		New X-axis position in pixel
 	 * @param	y		New Y-axis position in pixel</haxe_doc>
 		</setPos>
-		<setX public="1" set="method" line="101">
+		<setX public="1" set="method" line="106">
 			<f a="x">
 				<x path="Float"/>
 				<x path="Void"/>
@@ -1875,7 +1872,7 @@
 	 * 
 	 * @param	x	New X-axis position in pixel</haxe_doc>
 		</setX>
-		<setY public="1" set="method" line="124">
+		<setY public="1" set="method" line="129">
 			<f a="y">
 				<x path="Float"/>
 				<x path="Void"/>
@@ -1884,7 +1881,7 @@
 	 * 
 	 * @param	y	New Y-axis position in pixel</haxe_doc>
 		</setY>
-		<addPos public="1" set="method" line="148">
+		<addPos public="1" set="method" line="153">
 			<f a="x:y">
 				<x path="Float"/>
 				<x path="Float"/>
@@ -1895,7 +1892,7 @@
 	 * @param	x		Number to add to the X-axis position in pixel
 	 * @param	y		Number to add to the Y-axis position in pixel</haxe_doc>
 		</addPos>
-		<updateAABB public="1" set="method" line="171">
+		<updateAABB public="1" set="method" line="176">
 			<f a="?updatePrint" v="true">
 				<x path="Bool"/>
 				<x path="Void"/>
@@ -1904,7 +1901,7 @@
 	 * 
 	 * @param	updatePrint		Force the saves of the datas</haxe_doc>
 		</updateAABB>
-		<addBodyContact public="1" get="inline" set="null" line="196">
+		<addBodyContact public="1" get="inline" set="null" line="201">
 			<f a="?flags" v="0">
 				<x path="dl.physic.contact.BodyContactsFlags"/>
 				<x path="Void"/>
@@ -1913,7 +1910,7 @@
 	 * 
 	 * @param	flags		List of flags of the BodyContacts</haxe_doc>
 		</addBodyContact>
-		<addBodyPhysic public="1" get="inline" set="null" line="209">
+		<addBodyPhysic public="1" get="inline" set="null" line="214">
 			<f a="?flags" v="0">
 				<x path="dl.physic.move.BodyPhysicFlags"/>
 				<x path="Void"/>
@@ -1922,7 +1919,7 @@
 	 * 
 	 * @param	flags		List of flags of the BodyPhysic</haxe_doc>
 		</addBodyPhysic>
-		<new public="1" set="method" line="57"><f a="shape:?x:?y" v=":0:0">
+		<new public="1" set="method" line="64"><f a="shape:?x:?y" v=":0:0">
 	<c path="dl.physic.body.Shape"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -2437,21 +2434,13 @@
 		</meta>
 		<haxe_doc>* You can't cross it</haxe_doc>
 	</wall>
-	<item public="1" get="inline" set="null" line="82" static="1">
-		<x path="dl.physic.contact.BodyContactsFlags"/>
-		<meta>
-			<m n=":enum"/>
-			<m n=":impl"/>
-		</meta>
-		<haxe_doc>* You can climb it</haxe_doc>
-	</item>
 	<fix public="1" get="inline" set="null" line="87" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
 			<m n=":impl"/>
 		</meta>
-		<haxe_doc>* Never move (like wall or floor)</haxe_doc>
+		<haxe_doc>* You can climb it</haxe_doc>
 	</fix>
 	<drivable public="1" get="inline" set="null" line="93" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
@@ -2543,21 +2532,13 @@
 			</meta>
 			<haxe_doc>* You can't cross it</haxe_doc>
 		</wall>
-		<item public="1" get="inline" set="null" line="82" static="1">
-			<x path="dl.physic.contact.BodyContactsFlags"/>
-			<meta>
-				<m n=":enum"/>
-				<m n=":impl"/>
-			</meta>
-			<haxe_doc>* You can climb it</haxe_doc>
-		</item>
 		<fix public="1" get="inline" set="null" line="87" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
 				<m n=":impl"/>
 			</meta>
-			<haxe_doc>* Never move (like wall or floor)</haxe_doc>
+			<haxe_doc>* You can climb it</haxe_doc>
 		</fix>
 		<drivable public="1" get="inline" set="null" line="93" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
@@ -2927,53 +2908,54 @@
  * @author Namide</haxe_doc>
 	</class>
 	<class path="dl.physic.move.PlatformPhysicSystem" params="" file="src/dl/physic/move/PlatformPhysicSystem.hx">
-		<MAX_RECURSIVE get="inline" set="null" line="21" static="1">
+		<MAX_RECURSIVE get="inline" set="null" line="22" static="1">
 			<x path="Int"/>
 			<haxe_doc>* To prevent error collision.
 	 * More recursive is better for accuracy but less to memory and performances</haxe_doc>
 		</MAX_RECURSIVE>
 		<all><c path="Array"><c path="dl.physic.body.Body"/></c></all>
+		<dependant><c path="Array"><c path="dl.physic.body.Body"/></c></dependant>
 		<gX public="1"><x path="Float"/></gX>
 		<gY public="1"><x path="Float"/></gY>
-		<addBody public="1" set="method" line="32"><f a="body">
+		<addBody public="1" set="method" line="34"><f a="body">
 	<c path="dl.physic.body.Body"/>
 	<x path="Void"/>
 </f></addBody>
-		<updateMoves public="1" set="method" line="41"><f a=""><x path="Void"/></f></updateMoves>
-		<updatePositions public="1" set="method" line="60"><f a="space">
+		<updateMoves public="1" set="method" line="45"><f a=""><x path="Void"/></f></updateMoves>
+		<updatePositions public="1" set="method" line="69"><f a="space">
 	<c path="dl.physic.contact.ISpace"/>
 	<x path="Void"/>
 </f></updatePositions>
-		<filterDrivable get="inline" set="null" line="75"><f a="list">
+		<filterDrivable get="inline" set="null" line="84"><f a="list">
 	<c path="Array"><c path="dl.physic.body.Body"/></c>
 	<c path="Array"><c path="dl.physic.body.Body"/></c>
 </f></filterDrivable>
-		<filterUndrivable get="inline" set="null" line="80"><f a="list">
+		<filterUndrivable get="inline" set="null" line="89"><f a="list">
 	<c path="Array"><c path="dl.physic.body.Body"/></c>
 	<c path="Array"><c path="dl.physic.body.Body"/></c>
 </f></filterUndrivable>
-		<getPos get="inline" set="null" line="85"><f a="a:b">
+		<getPos get="inline" set="null" line="94"><f a="a:b">
 	<c path="dl.physic.body.Body"/>
 	<c path="dl.physic.body.Body"/>
 	<x path="dl.physic.contact.BodyLimitFlags"/>
 </f></getPos>
-		<applyVertMobilesReact set="method" line="174"><f a="top:bottom">
+		<applyVertMobilesReact set="method" line="183"><f a="top:bottom">
 	<c path="dl.physic.body.Body"/>
 	<c path="dl.physic.body.Body"/>
 	<x path="Bool"/>
 </f></applyVertMobilesReact>
-		<applyHorMobilesReact set="method" line="206"><f a="left:right">
+		<applyHorMobilesReact set="method" line="215"><f a="left:right">
 	<c path="dl.physic.body.Body"/>
 	<c path="dl.physic.body.Body"/>
 	<x path="Bool"/>
 </f></applyHorMobilesReact>
-		<applyReact set="method" line="238"><f a="a:b:reactBody">
+		<applyReact set="method" line="247"><f a="a:b:reactBody">
 	<c path="dl.physic.body.Body"/>
 	<c path="dl.physic.body.Body"/>
 	<x path="Bool"/>
 	<x path="Bool"/>
 </f></applyReact>
-		<updatePosBody set="method" line="329"><f a="a:list:space:?complexCol:?num" v=":::false:0">
+		<updatePosBody set="method" line="338"><f a="a:list:space:?complexCol:?num" v=":::false:0">
 	<c path="dl.physic.body.Body"/>
 	<c path="Array"><c path="dl.physic.body.Body"/></c>
 	<c path="dl.physic.contact.ISpace"/>
@@ -2981,11 +2963,11 @@
 	<x path="Int"/>
 	<x path="Void"/>
 </f></updatePosBody>
-		<removeBody public="1" get="inline" set="null" line="352"><f a="body">
+		<removeBody public="1" get="inline" set="null" line="361"><f a="body">
 	<c path="dl.physic.body.Body"/>
 	<x path="Void"/>
 </f></removeBody>
-		<new public="1" set="method" line="26"><f a="?gravityY" v="2.0f">
+		<new public="1" set="method" line="27"><f a="?gravityY" v="2.0f">
 	<x path="Float"/>
 	<x path="Void"/>
 </f></new>
@@ -3016,22 +2998,13 @@
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getJumpVX>
-		<maxPxYJump public="1" set="method" line="30" static="1"><f a="maxPxXJump:jumpStartVY:jumpVX:jumpVY:gravity">
+		<getTopXYMax public="1" set="method" line="30" static="1"><f a="jumpStartVY:jumpVX:jumpVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-</f></maxPxYJump>
-		<maxPxXJump public="1" set="method" line="50" static="1"><f a="maxPxYJump:jumpStartVY:jumpVX:jumpVY:gravity">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-</f></maxPxXJump>
+	<c path="Array"><x path="Float"/></c>
+</f></getTopXYMax>
 		<new get="inline" set="null" line="10"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
