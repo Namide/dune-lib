@@ -458,7 +458,7 @@ class SockClientScan
 			case Cmd.transferDatasServer:
 				
 				var o:TransferDatasServer = brut.struct;
-				onGame( o );
+				_onGame( o );
 				
 			case Cmd.send:
 				
