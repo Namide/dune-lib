@@ -35,6 +35,18 @@ abstract BodyPhysicFlags(Int)
 	public function toInt():Int {
 		return this;
 	}
+	
+	@:op(A & B)
+	public function and(b: BodyPhysicFlags): BodyPhysicFlags
+	{
+		return new BodyPhysicFlags( this & b.toInt() );
+	}
+	
+	@:op(A | B)
+	public function or(b: BodyPhysicFlags): BodyPhysicFlags
+	{
+		return new BodyPhysicFlags( this | b.toInt() );
+	}
 }
 
 /**

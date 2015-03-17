@@ -22,6 +22,18 @@ abstract BodyLimitFlags(Int)
 	public function toInt():Int {
 		return this;
 	}
+	
+	@:op(A & B)
+	public function and(b: BodyLimitFlags): BodyLimitFlags
+	{
+		return new BodyLimitFlags( this & b.toInt() );
+	}
+	
+	@:op(A | B)
+	public function or(b: BodyLimitFlags): BodyLimitFlags
+	{
+		return new BodyLimitFlags( this | b.toInt() );
+	}
 }
 
 @:enum
@@ -42,11 +54,25 @@ abstract BodyContactState(Int)
 	public function toInt():Int {
 		return this;
 	}
+	
+	@:op(A & B)
+	public function and(b: BodyContactState): BodyContactState
+	{
+		return new BodyContactState( this & b.toInt() );
+	}
+	
+	@:op(A | B)
+	public function or(b: BodyContactState): BodyContactState
+	{
+		return new BodyContactState( this | b.toInt() );
+	}
 }
 
 @:enum
 abstract BodyContactsFlags(Int)
 {
+	var none = 0;
+	
 	/**
 	* This body don't test the collision but the actives bodies tests the collision with this one
 	*/
@@ -103,6 +129,18 @@ abstract BodyContactsFlags(Int)
 	@:to
 	public function toInt():Int {
 		return this;
+	}
+	
+	@:op(A & B)
+	public function and(b: BodyContactsFlags): BodyContactsFlags
+	{
+		return new BodyContactsFlags(this & b.toInt());
+	}
+	
+	@:op(A | B)
+	public function or(b: BodyContactsFlags): BodyContactsFlags
+	{
+		return new BodyContactsFlags( this | b.toInt() );
 	}
 }
 

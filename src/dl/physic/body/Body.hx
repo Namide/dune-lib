@@ -198,7 +198,7 @@ class Body
 	 * 
 	 * @param	flags		List of flags of the BodyContacts
 	 */
-	public inline function addBodyContact( flags:BodyContactsFlags = 0 ):Void
+	public inline function addBodyContact( flags:BodyContactsFlags = BodyContactsFlags.none ):Void
 	{
 		if ( contacts == null )
 			contacts = new BodyContact(this);
