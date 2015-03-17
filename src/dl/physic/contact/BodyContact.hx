@@ -8,8 +8,8 @@ abstract BodyLimitFlags(Int)
 	var none = 0;
 	var top = 1;
 	var left = 2;
-	var right = 3;
-	var bottom = 4;
+	var right = 4;
+	var bottom = 8;
 	
 	inline function new( i:Int ) { this = i; }
 	
