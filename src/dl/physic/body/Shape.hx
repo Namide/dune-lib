@@ -28,6 +28,9 @@ abstract ShapeType(Int)
  */
 class Shape
 {
+	public var anchorX(default, default):Float;
+	public var anchorY(default, default):Float;
+	
 	public var aabbXMin(default, null):Float;
 	public var aabbXMax(default, null):Float;
 	public var aabbYMin(default, null):Float;
@@ -35,10 +38,17 @@ class Shape
 	
 	public var type(default, null):ShapeType;
 	
-	public function new() { }
+	public function new()
+	{
+		anchorX = 0;
+		anchorY = 0;
+	}
 	
 	public function clone():Shape
 	{
+		anchorX = 0;
+		anchorY = 0;
+		
 		var c = new Shape();
 		c.aabbXMin = aabbXMin;
 		c.aabbXMax = aabbXMax;
@@ -49,8 +59,8 @@ class Shape
 	}
 	
 	public function updateAABB( x:Float, y:Float ) {
-		aabbXMin = x;
-		aabbYMin = y;
+		aabbXMin = x + anchorX;
+		aabbYMin = y + anchorY;
 	}
 	
 	public inline function getHitArea( s:Shape ):Float {

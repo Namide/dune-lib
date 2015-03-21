@@ -20,10 +20,10 @@ class ShapeCircle extends Shape
 	public override function updateAABB( x:Float, y:Float )
 	{
 		var rd = r + r;
-		aabbXMin = x;
-		aabbXMax = x + rd;
-		aabbYMin = x;
-		aabbYMax = y + rd;
+		aabbXMin = x + anchorX;
+		aabbXMax = x + rd + anchorX;
+		aabbYMin = y + anchorY;
+		aabbYMax = y + rd + anchorY;
 	}
 	
 	public override function clone():ShapeCircle 
@@ -35,6 +35,9 @@ class ShapeCircle extends Shape
 		c.aabbYMin = aabbYMin;
 		c.aabbYMax = aabbYMax;
 		c.r = r;
+		
+		c.anchorX = anchorX;
+		c.anchorY = anchorY;
 		
 		return c;
 	}

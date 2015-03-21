@@ -21,14 +21,18 @@ class ShapePoint extends Shape
 		c.aabbXMax = aabbXMax;
 		c.aabbYMin = aabbYMin;
 		c.aabbYMax = aabbYMax;
+		
+		c.anchorX = anchorX;
+		c.anchorY = anchorY;
+		
 		return c;
 	}
 	
 	override public function updateAABB( x:Float, y:Float )
 	{
 		aabbXMin =
-		aabbXMax = x;
+		aabbXMax = x + anchorX;
 		aabbYMin =
-		aabbYMax = y;
+		aabbYMax = y + anchorY;
 	}	
 }
