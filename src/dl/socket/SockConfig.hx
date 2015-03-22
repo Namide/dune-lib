@@ -33,7 +33,12 @@ class SockConfig
 	/**
 	 * Null to disable user registered
 	 */
-	public static var SERVER_USERS_FILE:Null<String> = null;//"users.sqlite";
+	#if !nosqlite
+	
+		public static var SERVER_USERS_FILE:Null<String> = null;//"users.sqlite";
+		
+	#end
+	
 	public static var SERVER_LOGS = false;
 	
 	/**

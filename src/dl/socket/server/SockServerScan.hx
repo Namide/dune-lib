@@ -106,8 +106,18 @@ class SockServerScan
 	
 	inline function userExist( name:String ):Bool
 	{
-		return 	Lambda.exists( sv.clients, function( c:SockServerUser ):Bool { return c.name.toLowerCase() == name.toLowerCase(); } ) || 
-				(sv.users != null && sv.users.hasName( name ) );
+		var a = Lambda.exists( sv.clients, function( c:SockServerUser ):Bool { return c.name.toLowerCase() == name.toLowerCase(); } );
+		
+		#if !nosqlite
+		
+			var b = (sv.users != null && sv.users.hasName( name ) );
+			return a || b;
+			
+		#else
+		
+			return a;
+			
+		#end
 	}
 	
 	function updateUserRoom( cl:SockServerUser, rd:RoomData )
@@ -482,55 +492,71 @@ class SockServerScan
 					
 					case SendSubject.register:
 						
-						if ( sv.users == null )
+						#if nosqlite
+						
 							return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'Register mode disable' ) );
-						
-						var ui:UserID = o.d;
-						var ereg = ~/\w+@[a-z_\.-]+?\.[a-z]{2,6}/i;
-						if ( !ereg.match( ui.m ) )
-							return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, ui.m + ' invalid e-mail format' ) );
-						
-						if ( !testWord(ui.n) )
-							return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, ui.n + ' is not a valid name' ) );
-						
-						if ( userExist(ui.n) && ui.n.toLowerCase() != cl.name.toLowerCase() )
-							return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, ui.n + ' such name already exists' ) );
-						
-						if ( sv.users.hasMail(ui.m) )
-						{
-							if ( sv.users.get( ui.m, ui.p ) == null )
-								return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'bad password' ) );
 							
-							sv.users.update( ui.m, ui.p, ui.n );
-						}
-						else
-						{
-							sv.users.insert( ui.m, ui.p, ui.n );
-						}
+						#else
 						
-						appliUserName( cl, ui.n );
-						
-						return cl.send( SockMsgGen.getSend( SendSubject.messageSystem, 'You have been registered' ) );
+							if ( sv.users == null )
+								return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'Register mode disable' ) );
+							
+							var ui:UserID = o.d;
+							var ereg = ~/\w+@[a-z_\.-]+?\.[a-z]{2,6}/i;
+							if ( !ereg.match( ui.m ) )
+								return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, ui.m + ' invalid e-mail format' ) );
+							
+							if ( !testWord(ui.n) )
+								return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, ui.n + ' is not a valid name' ) );
+							
+							if ( userExist(ui.n) && ui.n.toLowerCase() != cl.name.toLowerCase() )
+								return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, ui.n + ' such name already exists' ) );
+							
+							if ( sv.users.hasMail(ui.m) )
+							{
+								if ( sv.users.get( ui.m, ui.p ) == null )
+									return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'bad password' ) );
+								
+								sv.users.update( ui.m, ui.p, ui.n );
+							}
+							else
+							{
+								sv.users.insert( ui.m, ui.p, ui.n );
+							}
+							
+							appliUserName( cl, ui.n );
+							
+							return cl.send( SockMsgGen.getSend( SendSubject.messageSystem, 'You have been registered' ) );
+							
+						#end
 						
 					case SendSubject.login:
 						
-						if ( sv.users == null )
+						#if nosqlite
+						
 							return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'Login mode disable' ) );
-						
-						var ui:UserID = o.d;
-						
-						if ( sv.users.hasMail(ui.m) )
-						{
-							var udb = sv.users.get( ui.m, ui.p );
-							if ( udb == null )
-								return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'bad password' ) );
 							
-							appliUserName( cl, udb.name );
-						}
-						else
-						{
-							return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'Entry not found' ) );
-						}
+						#else
+						
+							if ( sv.users == null )
+								return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'Login mode disable' ) );
+							
+							var ui:UserID = o.d;
+							
+							if ( sv.users.hasMail(ui.m) )
+							{
+								var udb = sv.users.get( ui.m, ui.p );
+								if ( udb == null )
+									return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'bad password' ) );
+								
+								appliUserName( cl, udb.name );
+							}
+							else
+							{
+								return cl.send( SockMsgGen.getSend( SendSubject.errorSystem, 'Entry not found' ) );
+							}
+							
+						#end
 					
 				}
 				

@@ -72,7 +72,15 @@ class SockPipe
 		{
 			if ( t != "" )
 			{
-				onReceive( SockMsg.fromString(t) );
+				try
+				{
+					onReceive( SockMsg.fromString(t) );
+				}
+				catch (e:Dynamic)
+				{
+					trace(e, t);
+					onReceive( SockMsgGen.getSend(SendSubject.errorSystem, "Parse error: " + t) );
+				}
 			}
 		}
 	}

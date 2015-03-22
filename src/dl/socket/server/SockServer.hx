@@ -8,7 +8,6 @@ import dl.socket.SockMsg;
 import haxe.io.Eof;
 import haxe.io.Output;
 import neko.vm.Thread;
-import dl.socket.server.db.SockUserDB;
 import dl.socket.SockMsg.SendSubject;
 import dl.socket.SockMsg.SockMsgGen;
 import sys.net.Host;
@@ -49,7 +48,10 @@ class SocketServer
 	public var process:SockServerScan;
 	public var rooms:SockRoomList;
 	public var clientN:Int;
-	public var users:Null<SockUserDB>;
+	
+	#if !nosqlite
+	public var users:Null<dl.socket.server.db.dl.socket.server.db.SockUserDB>;
+	#end
 	
 	public var console:SockConsole;
 	public var admin:SockUserAdmin;
@@ -58,8 +60,10 @@ class SocketServer
 	{
 		console.close();
 		
+		#if !nosqlite
 		if ( SockConfig.SERVER_USERS_FILE != null )
 			users.close();
+		#end
 		
 		Sys.exit(0);
 	}
@@ -219,7 +223,10 @@ class SocketServer
 	public function new()
 	{
 		console = new SockConsole();
-		users = (SockConfig.SERVER_USERS_FILE == null) ? null : new SockUserDB();
+		
+		#if !nosqlite
+		users = (SockConfig.SERVER_USERS_FILE == null) ? null : new dl.socket.server.db.SockUserDB();
+		#end
 		
 		// Add a policy distributor
 		if ( SockConfig.SEND_POLICY_843 )
@@ -252,8 +259,10 @@ class SocketServer
 		};
 		
 		Thread.create(threadAccept);
+		#if !nosqlite
 		if ( SockConfig.SERVER_USERS_FILE != null )
 			users.open();
+		#end
 		console.open();
 		
 	}

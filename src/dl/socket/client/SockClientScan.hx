@@ -332,7 +332,7 @@ class SockClientScan
 			var lastName:String = user.name;
 			var lastRoom:String = _roomName;
 			var lastRole:Role = user.role;
-			var lastDatas:Dynamic = user.datas;
+			var lastDatas:String = Std.string(user.datas);
 			
 			user.name = (o.n != null) ? o.n : user.name;
 			user.role = (o.m != null) ? o.m : user.role;
@@ -346,7 +346,7 @@ class SockClientScan
 				
 				if ( 	user.name != lastName ||
 						user.role != lastRole ||
-						Std.string(user.datas) != Std.string(lastDatas) )
+						Std.string(user.datas) != lastDatas )
 				{
 					_onMe( user );
 				}
@@ -362,7 +362,7 @@ class SockClientScan
 				}
 				else if ( 	user.name != lastName ||
 							user.role != lastRole ||
-							Std.string(user.datas) != Std.string(lastDatas) )
+							Std.string(user.datas) != lastDatas )
 				{
 					if ( dispatchMsg )
 						_onOthers( others );
