@@ -130,7 +130,7 @@ class MultiPlayer extends Sprite
 			}
 		}
 		
-		sockets.onOthers = updatePlayersFct;
+		//sockets.onOther = updatePlayersFct;
 		sockets.onRoomChange = function( s:String, other:Array<SockClientUser> ) { updatePlayersFct(other); }
 		sockets.onConnected = function(me:SockClientUser)
 		{

@@ -39,7 +39,7 @@ class SockClientScan
 	public var others:Array<SockClientUser>;
 	
 	public var onMe:SockClientUser->Void;
-	public var onOthers:Array<SockClientUser>->Void;
+	public var onOther:SockClientUser->Void;
 	public var onConnected:SockClientUser->Void;
 	public var onRoomChange:String->Array<SockClientUser>->Void;
 	public var onRoomData:Dynamic->Void;
@@ -63,7 +63,7 @@ class SockClientScan
 	
 	inline function _onConnected( u:SockClientUser ) 					{ if ( onConnected != null ) onConnected( u ); }
 	inline function _onMe( u:SockClientUser ) 							{ if ( onMe != null ) onMe( u ); }
-	inline function _onOthers( a:Array<SockClientUser> ) 				{ if ( onOthers != null ) onOthers( a ); }
+	inline function _onOther( s:SockClientUser ) 						{ if ( onOther != null ) onOther( s ); }
 	inline function _onRoomChange( r:String, a:Array<SockClientUser> ) 	{ if ( onRoomChange != null ) onRoomChange( r, a ); }
 	inline function _onRoomData( d:Dynamic ) 							{ if ( onRoomData != null ) onRoomData( d ); }
 	inline function _onRoomList( a:Array<RoomData> ) 					{ if ( onRoomList != null ) onRoomList( a ); }
@@ -293,7 +293,7 @@ class SockClientScan
 		if ( lastName != _roomName )
 			_onRoomChange( _roomName, others );
 		else if ( others.length != lastLength )
-			_onOthers( others );
+			_onRoomChange( _roomName, others );
 			
 		if ( Std.string(_roomDatas) != Std.string(lastDatas) )
 			_onRoomData( _roomDatas );
@@ -358,14 +358,14 @@ class SockClientScan
 					others.remove( user );
 					
 					if ( dispatchMsg )
-						_onOthers( others );
+						_onRoomChange( roomName, others.concat([me]) );//_onOther( user );
 				}
 				else if ( 	user.name != lastName ||
 							user.role != lastRole ||
 							Std.string(user.datas) != lastDatas )
 				{
 					if ( dispatchMsg )
-						_onOthers( others );
+						_onOther( user );
 				}
 			}
 		}
@@ -380,7 +380,7 @@ class SockClientScan
 			others.push( user );
 			
 			if ( dispatchMsg )
-				_onOthers( others );
+				_onRoomChange( roomName, others.concat([me]) );//_onOther( user );
 		}
 		
 		// Save the datas in cookie file

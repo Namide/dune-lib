@@ -34,7 +34,7 @@ class SocketClientTchat
 		
 		_process = new SockClientScan();
 		_process.onChat = _graphic.appendText;
-		_process.onOthers = _graphic.refreshOthers;
+		//_process.onOther = _graphic.refreshOthers;
 		_process.onMe = _graphic.refreshMe;
 		_process.onRoomChange = _graphic.changeRoom;
 		_process.onConnected = _graphic.connect;

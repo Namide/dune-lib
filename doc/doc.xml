@@ -121,7 +121,7 @@
 
 		The sort operation is not guaranteed to be stable, which means that the
 		order of equal elements may not be retained. For a stable Array sorting
-		algorithm, `haxe.ds.sort.MergeSort.sort()` can be used instead.
+		algorithm, `haxe.ds.ArraySort.sort()` can be used instead.
 
 		If `f` is null, the result is unspecified.]]></haxe_doc>
 		</sort>
@@ -293,6 +293,7 @@
 		</new>
 		<haxe_doc>An Array is a storage for values. You can access it using indexes or
 	with its API.</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<abstract path="Class" params="T" file="C:\HaxeToolkit\haxe\std/Class.hx">
 		<this><x path="Class"><c path="Class.T"/></x></this>
@@ -404,10 +405,11 @@
 
 	In the context of haxe dates, a timestamp is defined as the number of
 	milliseconds elapsed since 1st January 1970.</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="EReg" params="" file="C:\HaxeToolkit\haxe\std/flash/_std/EReg.hx">
 		<r><c path="flash.utils.RegExp"/></r>
-		<result><c path="+Array"/></result>
+		<result><d/></result>
 		<match public="1" set="method" line="31">
 			<f a="s">
 				<c path="String"/>
@@ -459,9 +461,10 @@
 	its methods.
 
 	A detailed explanation of the supported operations is available at
-	http://haxe.org/doc/cross/regexp</haxe_doc>
+	http://haxe.org/manual/std-regex.html</haxe_doc>
 		<meta>
 			<m n=":keep"/>
+			<m n=":directlyUsed"/>
 			<m n=":coreApi"/>
 		</meta>
 	</class>
@@ -537,7 +540,10 @@
 
 	If the first argument to any of the methods is null, the result is
 	unspecified.</haxe_doc>
-		<meta><m n=":keep"/></meta>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
 	<class path="List" params="T" file="C:\HaxeToolkit\haxe\std/List.hx">
 		<h><c path="Array"><d/></c></h>
@@ -567,10 +573,6 @@
 
 		Otherwise, false is returned.</haxe_doc>
 		</remove>
-		<iterator public="1" set="method" line="161">
-			<f a=""><t path="Iterator"><c path="List.T"/></t></f>
-			<haxe_doc>Returns an iterator on the elements of the list.</haxe_doc>
-		</iterator>
 		<new public="1" set="method" line="40">
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new empty list.</haxe_doc>
@@ -578,54 +580,15 @@
 		<haxe_doc>A linked-list of elements. The list is composed of two-elements arrays
 	that are chained together. It is optimized so that adding or removing an
 	element does not imply copying the whole array content every time.</haxe_doc>
-		<meta><m n=":keep"/></meta>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
-	<abstract path="Map" params="K:V" file="C:\HaxeToolkit\haxe\std/Map.hx">
-		<from>
-			<icast field="fromStringMap"><c path="haxe.ds.StringMap"><c path="fromStringMap.V"/></c></icast>
-			<icast field="fromIntMap"><c path="haxe.ds.IntMap"><c path="fromIntMap.V"/></c></icast>
-			<icast field="fromObjectMap"><c path="haxe.ds.ObjectMap">
-	<c path="fromObjectMap.K"/>
-	<c path="fromObjectMap.V"/>
-</c></icast>
-		</from>
-		<this><c path="IMap">
-	<c path="Map.K"/>
-	<c path="Map.V"/>
-</c></this>
-		<to>
-			<icast field="toStringMap"><c path="haxe.ds.StringMap"><c path="Map.V"/></c></icast>
-			<icast field="toIntMap"><c path="haxe.ds.IntMap"><c path="Map.V"/></c></icast>
-			<icast field="toEnumValueMapMap"><c path="haxe.ds.EnumValueMap">
-	<c path="toEnumValueMapMap.K"/>
-	<c path="Map.V"/>
-</c></icast>
-			<icast field="toObjectMap"><c path="haxe.ds.ObjectMap">
-	<c path="toObjectMap.K"/>
-	<c path="Map.V"/>
-</c></icast>
-		</to>
-		<haxe_doc><![CDATA[Map allows key to value mapping for arbitrary value types, and many key
-	types.
-
-	This is a multi-type abstract, it is instantiated as one of its
-	specialization types depending on its type parameters.
-
-	A Map can be instantiated without explicit type parameters. Type inference
-	will then determine the type parameters from the usage.
-
-	Maps can also be created with `key1 => value1, key2 => value2` syntax.
-
-	Map is an abstract type, it is not available at runtime.]]></haxe_doc>
-		<meta><m n=":multiType"><e>K</e></m></meta>
-		<impl><class path="_Map.Map_Impl_" params="" file="C:\HaxeToolkit\haxe\std/Map.hx" private="1" module="Map"><meta><m n=":keep"/></meta></class></impl>
-	</abstract>
-	<class path="IMap" params="K:V" file="C:\HaxeToolkit\haxe\std/Map.hx" module="Map" interface="1"><meta><m n=":keep"/></meta></class>
-	<typedef path="_Map.Hashable" params="" file="C:\HaxeToolkit\haxe\std/Map.hx" private="1" module="Map"><a><hashCode set="method"><f a=""><x path="Int"/></f></hashCode></a></typedef>
 	<class path="Math" params="" file="C:\HaxeToolkit\haxe\std/Math.hx" extern="1">
 		<PI public="1" set="null" static="1">
 			<x path="Float"/>
-			<haxe_doc>Represents the ratio of the circumference of a circle to its diameter, 
+			<haxe_doc>Represents the ratio of the circumference of a circle to its diameter,
 		specified by the constant, π. `PI` is approximately 3.141592653589793.</haxe_doc>
 		</PI>
 		<NEGATIVE_INFINITY public="1" set="null" static="1">
@@ -635,7 +598,7 @@
 		For example, this is the result of -1.0 / 0.0.
 
 		Operations with NEGATIVE_INFINITY as an operand may result in
-		NEGATIVE_INFINITY, POSITIVE_INFINITY or NaN. 
+		NEGATIVE_INFINITY, POSITIVE_INFINITY or NaN.
 
 		If this constant is converted to an Int, e.g. through Std.int(), the
 		result is unspecified.</haxe_doc>
@@ -647,7 +610,7 @@
 		For example, this is the result of 1.0 / 0.0.
 
 		Operations with POSITIVE_INFINITY as an operand may result in
-		NEGATIVE_INFINITY, POSITIVE_INFINITY or NaN. 
+		NEGATIVE_INFINITY, POSITIVE_INFINITY or NaN.
 
 		If this constant is converted to an Int, e.g. through Std.int(), the
 		result is unspecified.</haxe_doc>
@@ -668,7 +631,7 @@
 		In order to test if a value is NaN, you should use Math.isNaN() function.
 
 		@php In PHP versions prior to 5.3.1 VC 9 there may be unexpected
-		results when performing arithmetic operations with NaN on Windows, 
+		results when performing arithmetic operations with NaN on Windows,
 		see [https://bugs.php.net/bug.php?id=42143]</haxe_doc>
 		</NaN>
 		<abs public="1" set="method" static="1">
@@ -678,12 +641,12 @@
 			</f>
 			<haxe_doc>Returns the absolute value of `v`.
 
-		If `v` is positive or 0, the result is unchanged. Otherwise the result 
+		If `v` is positive or 0, the result is unchanged. Otherwise the result
 		is -`v`.
-		
-		If `v` is NEGATIVE_INFINITY or POSITIVE_INFINITY, the result is 
+
+		If `v` is NEGATIVE_INFINITY or POSITIVE_INFINITY, the result is
 		POSITIVE_INFINITY.
-		
+
 		If `v` is NaN, the result is NaN.</haxe_doc>
 		</abs>
 		<min public="1" set="method" static="1">
@@ -716,7 +679,7 @@
 				<x path="Float"/>
 			</f>
 			<haxe_doc>Returns the trigonometric sine of the specified angle `v`, in radians.
-		
+
 		If `v` is NaN or infinite, the result is NaN.</haxe_doc>
 		</sin>
 		<cos public="1" set="method" static="1">
@@ -725,7 +688,7 @@
 				<x path="Float"/>
 			</f>
 			<haxe_doc>Returns the trigonometric cosine of the specified angle `v`, in radians.
-		
+
 		If `v` is NaN or infinite, the result is NaN.</haxe_doc>
 		</cos>
 		<tan public="1" set="method" static="1">
@@ -734,7 +697,7 @@
 				<x path="Float"/>
 			</f>
 			<haxe_doc>Returns the trigonometric tangent of the specified angle `v`, in radians.
-		
+
 		If `v` is NaN or infinite, the result is NaN.</haxe_doc>
 		</tan>
 		<asin public="1" set="method" static="1">
@@ -743,7 +706,7 @@
 				<x path="Float"/>
 			</f>
 			<haxe_doc>Returns the trigonometric arc of the specified angle `v`, in radians.
-		
+
 		If `v` is NaN or infinite, the result is NaN.</haxe_doc>
 		</asin>
 		<acos public="1" set="method" static="1">
@@ -751,9 +714,9 @@
 				<x path="Float"/>
 				<x path="Float"/>
 			</f>
-			<haxe_doc>Returns the trigonometric arc cosine of the specified angle `v`, 
+			<haxe_doc>Returns the trigonometric arc cosine of the specified angle `v`,
 		in radians.
-		
+
 		If `v` is NaN or infinite, the result is NaN.</haxe_doc>
 		</acos>
 		<atan public="1" set="method" static="1">
@@ -761,9 +724,9 @@
 				<x path="Float"/>
 				<x path="Float"/>
 			</f>
-			<haxe_doc>Returns the trigonometric arc tangent of the specified angle `v`, 
+			<haxe_doc>Returns the trigonometric arc tangent of the specified angle `v`,
 		in radians.
-		
+
 		If `v` is NaN or infinite, the result is NaN.</haxe_doc>
 		</atan>
 		<atan2 public="1" set="method" static="1">
@@ -772,10 +735,10 @@
 				<x path="Float"/>
 				<x path="Float"/>
 			</f>
-			<haxe_doc>Returns the trigonometric arc tangent whose tangent is the quotient of 
+			<haxe_doc>Returns the trigonometric arc tangent whose tangent is the quotient of
 		two specified numbers, in radians.
-		
-		If parameter `x` or `y`  is NaN, NEGATIVE_INFINITY or POSITIVE_INFINITY, 
+
+		If parameter `x` or `y`  is NaN, NEGATIVE_INFINITY or POSITIVE_INFINITY,
 		the result is NaN.</haxe_doc>
 		</atan2>
 		<exp public="1" set="method" static="1">
@@ -784,9 +747,9 @@
 				<x path="Float"/>
 			</f>
 			<haxe_doc>Returns Euler's number, raised to the power of `v`.
-		
+
 		exp(1.0) is approximately 2.718281828459.
-		
+
 		If `v` is POSITIVE_INFINITY, the result is POSITIVE_INFINITY.
 		If `v` is NEGATIVE_INFINITY, the result is 0.0.
 		If `v` is NaN, the result is NaN.</haxe_doc>
@@ -797,11 +760,11 @@
 				<x path="Float"/>
 			</f>
 			<haxe_doc>Returns the natural logarithm of `v`.
-		
-		This is the mathematical inverse operation of exp, 
+
+		This is the mathematical inverse operation of exp,
 		i.e. `log(exp(v)) == v` always holds.
-		
-		If `v` is negative (including NEGATIVE_INFINITY) or NaN, the result 
+
+		If `v` is negative (including NEGATIVE_INFINITY) or NaN, the result
 		is NaN.
 		If `v` is POSITIVE_INFINITY, the result is POSITIVE_INFINITY.
 		If `v` is 0.0, the result is NEGATIVE_INFINITY.</haxe_doc>
@@ -820,8 +783,8 @@
 				<x path="Float"/>
 			</f>
 			<haxe_doc>Returns the square root of `v`.
-		
-		If `v` is negative (including NEGATIVE_INFINITY) or NaN, the result 
+
+		If `v` is negative (including NEGATIVE_INFINITY) or NaN, the result
 		is NaN.
 		If `v` is POSITIVE_INFINITY, the result is POSITIVE_INFINITY.
 		If `v` is 0.0, the result is 0.0.</haxe_doc>
@@ -832,8 +795,8 @@
 				<x path="Int"/>
 			</f>
 			<haxe_doc>Rounds `v` to the nearest integer value.
-		
-		If `v` is outside of the signed Int32 range, or is NaN, NEGATIVE_INFINITY 
+
+		If `v` is outside of the signed Int32 range, or is NaN, NEGATIVE_INFINITY
 		or POSITIVE_INFINITY, the result is unspecified.</haxe_doc>
 		</round>
 		<floor public="1" set="method" static="1">
@@ -843,7 +806,7 @@
 			</f>
 			<haxe_doc>Returns the largest integer value that is not greater than `v`.
 
-		If `v` is outside of the signed Int32 range, or is NaN, NEGATIVE_INFINITY 
+		If `v` is outside of the signed Int32 range, or is NaN, NEGATIVE_INFINITY
 		or POSITIVE_INFINITY, the result is unspecified.</haxe_doc>
 		</floor>
 		<ceil public="1" set="method" static="1">
@@ -853,12 +816,12 @@
 			</f>
 			<haxe_doc>Returns the smallest integer value that is not less than `v`.
 
-		If `v` is outside of the signed Int32 range, or is NaN, NEGATIVE_INFINITY 
+		If `v` is outside of the signed Int32 range, or is NaN, NEGATIVE_INFINITY
 		or POSITIVE_INFINITY, the result is unspecified.</haxe_doc>
 		</ceil>
 		<random public="1" set="method" static="1">
 			<f a=""><x path="Float"/></f>
-			<haxe_doc>Returns a pseudo-random number which is greater than or equal to 0.0, 
+			<haxe_doc>Returns a pseudo-random number which is greater than or equal to 0.0,
 		and less than 1.0.</haxe_doc>
 		</random>
 		<ffloor public="1" set="method" static="1">
@@ -868,7 +831,7 @@
 			</f>
 			<haxe_doc>Returns the largest integer value that is not greater than `v`, as a Float.
 
-		If `v` is is NaN, NEGATIVE_INFINITY or POSITIVE_INFINITY, 
+		If `v` is is NaN, NEGATIVE_INFINITY or POSITIVE_INFINITY,
 		the result is unspecified.</haxe_doc>
 		</ffloor>
 		<fceil public="1" set="method" static="1">
@@ -878,7 +841,7 @@
 			</f>
 			<haxe_doc>Returns the smallest integer value that is not less than `v`, as a Float.
 
-		If `v` is is NaN, NEGATIVE_INFINITY or POSITIVE_INFINITY, 
+		If `v` is is NaN, NEGATIVE_INFINITY or POSITIVE_INFINITY,
 		the result is unspecified.</haxe_doc>
 		</fceil>
 		<fround public="1" set="method" static="1">
@@ -888,7 +851,7 @@
 			</f>
 			<haxe_doc>Rounds `v` to the nearest integer value, as a Float.
 
-		If `v` is is NaN, NEGATIVE_INFINITY or POSITIVE_INFINITY, 
+		If `v` is is NaN, NEGATIVE_INFINITY or POSITIVE_INFINITY,
 		the result is unspecified.</haxe_doc>
 		</fround>
 		<isFinite public="1" set="method" static="1">
@@ -898,7 +861,7 @@
 			</f>
 			<haxe_doc>Tells if `f` is a finite number.
 
-		If `f` is POSITIVE_INFINITY, NEGATIVE_INFINITY or NaN, the result 
+		If `f` is POSITIVE_INFINITY, NEGATIVE_INFINITY or NaN, the result
 		is false, otherwise the result is true.</haxe_doc>
 		</isFinite>
 		<isNaN public="1" set="method" static="1">
@@ -908,11 +871,12 @@
 			</f>
 			<haxe_doc>Tells if `f` is not a valid number.
 
-		If `f` is NaN, the result is true, otherwise the result is false. 
+		If `f` is NaN, the result is true, otherwise the result is false.
 		In particular, both POSITIVE_INFINITY and NEGATIVE_INFINITY are
 		not considered NaN.</haxe_doc>
 		</isNaN>
 		<haxe_doc>This class defines mathematical functions and constants.</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="Reflect" params="" file="C:\HaxeToolkit\haxe\std/flash/_std/Reflect.hx">
 		<field public="1" set="method" line="28" static="1">
@@ -921,6 +885,7 @@
 				<c path="String"/>
 				<d/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Returns the value of the field named `field` on object `o`.
 
 		If `o` is not an object or has no field named `field`, the result is
@@ -939,6 +904,7 @@
 				<d/>
 				<c path="Array"><c path="String"/></c>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Returns the fields of structure `o`.
 
 		This method is only guaranteed to work on anonymous structures. Refer to
@@ -951,6 +917,7 @@
 				<d/>
 				<x path="Bool"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Returns true if `f` is a function, false otherwise.
 
 		If `f` is null, the result is false.</haxe_doc>
@@ -960,6 +927,7 @@
 				<d/>
 				<x path="Bool"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc><![CDATA[Tells if `v` is an object.
 
 		The result is true if `v` is one of the following:
@@ -983,10 +951,11 @@
 
 		Otherwise, including if `v` is null, the result is false.</haxe_doc>
 		</isEnumValue>
-		<haxe_doc>The Reflect API is a way to manipulate values dynamicly through an
+		<haxe_doc>The Reflect API is a way to manipulate values dynamically through an
 	abstract interface in an untyped manner. Use with care.</haxe_doc>
 		<meta>
 			<m n=":keep"/>
+			<m n=":directlyUsed"/>
 			<m n=":coreApi"/>
 		</meta>
 	</class>
@@ -997,6 +966,7 @@
 				<d/>
 				<x path="Bool"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Tells if a value v is of the type t. Returns false if v or t are null.</haxe_doc>
 		</is>
 		<string public="1" set="method" line="34" static="1">
@@ -1004,6 +974,7 @@
 				<d/>
 				<c path="String"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Converts any value to a String.
 
 		If `s` is of `String`, `Int`, `Float` or `Bool`, its value is returned.
@@ -1026,6 +997,7 @@
 				<c path="String"/>
 				<t path="Null"><x path="Int"/></t>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Converts a `String` to an `Int`.
 
 		Leading whitespaces are ignored.
@@ -1050,6 +1022,7 @@
 				<c path="String"/>
 				<x path="Float"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Converts a `String` to a `Float`.
 
 		The parsing rules for `parseInt` apply here as well, with the exception of invalid input
@@ -1060,6 +1033,7 @@
 		<haxe_doc>The Std class provides standard methods for manipulating basic types.</haxe_doc>
 		<meta>
 			<m n=":keep"/>
+			<m n=":directlyUsed"/>
 			<m n=":coreApi"/>
 		</meta>
 	</class>
@@ -1096,7 +1070,7 @@
 	<typedef path="Null" params="T" file="C:\HaxeToolkit\haxe\std/StdTypes.hx" module="StdTypes">
 		<c path="Null.T"/>
 		<haxe_doc>`Null` can be useful in two cases. In order to document some methods
-	that accepts or can return a `null` value, or for the Flash9 compiler and AS3
+	that accepts or can return a `null` value, or for the Flash compiler and AS3
 	generator to distinguish between base values that can be null and others that
 	can't.</haxe_doc>
 	</typedef>
@@ -1130,8 +1104,11 @@
 				<f a=""><c path="Iterator.T"/></f>
 				<haxe_doc>Returns the current item of the Iterator and advances to the next one.
 
-		This method is not required to check hasNext() first. A call to this
-		method while hasNext() is false yields unspecified behavior.</haxe_doc>
+		This method is not required to check `hasNext` first. A call to this
+		method while `hasNext` is false yields unspecified behavior.
+
+		On the other hand iterators should not require a call to `hasNext`
+		before the first call to `next` if an element is available.</haxe_doc>
 			</next>
 			<hasNext set="method">
 				<f a=""><x path="Bool"/></f>
@@ -1155,7 +1132,7 @@
 	See `Lambda` for generic functions on iterable structures.</haxe_doc>
 	</typedef>
 	<class path="ArrayAccess" params="T" file="C:\HaxeToolkit\haxe\std/StdTypes.hx" module="StdTypes" extern="1" interface="1"><haxe_doc>ArrayAccess is used to indicate a class that can be accessed using brackets.
-	The type parameter represent the type of the elements stored.</haxe_doc></class>
+	The type parameter represents the type of the elements stored.</haxe_doc></class>
 	<class path="String" params="" file="C:\HaxeToolkit\haxe\std/String.hx" extern="1">
 		<fromCharCode public="1" set="method" static="1">
 			<f a="code">
@@ -1288,7 +1265,7 @@
 				<x path="Int"/>
 				<c path="String"/>
 			</f>
-			<haxe_doc>Returns the part of `this` String from `startIndex` to `endIndex`.
+			<haxe_doc>Returns the part of `this` String from `startIndex` to but not including `endIndex`.
 
 		If `startIndex` or `endIndex` are negative, 0 is used instead.
 
@@ -1320,10 +1297,15 @@
 
 	String can be concatenated by using the + operator. If an operand is not a
 	String, it is passed through Std.string() first.</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="StringBuf" params="" file="C:\HaxeToolkit\haxe\std/StringBuf.hx">
 		<b><c path="String"/></b>
-		<new public="1" set="method" line="47">
+		<length public="1" get="null" set="null">
+			<x path="Int"/>
+			<haxe_doc>The length of `this` StringBuf in characters.</haxe_doc>
+		</length>
+		<new public="1" get="inline" set="null" line="47">
 			<f a=""><x path="Void"/></f>
 			<haxe_doc>Creates a new StringBuf instance.
 
@@ -1338,10 +1320,13 @@
 	Unlike String, an instance of StringBuf is not immutable in the sense that
 	it can be passed as argument to functions which modify it by appending more
 	values. However, the internal buffer cannot be modified.</haxe_doc>
-		<meta><m n=":keep"/></meta>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
 	<class path="StringTools" params="" file="C:\HaxeToolkit\haxe\std/StringTools.hx">
-		<lpad public="1" set="method" line="248" static="1">
+		<lpad public="1" set="method" line="272" static="1">
 			<f a="s:c:l">
 				<c path="String"/>
 				<c path="String"/>
@@ -1364,7 +1349,10 @@
 
 	If the first argument to any of the methods is null, the result is
 	unspecified.</haxe_doc>
-		<meta><m n=":keep"/></meta>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
 	<enum path="ValueType" params="" file="C:\HaxeToolkit\haxe\std/flash/_std/Type.hx" module="Type">
 		<TNull/>
@@ -1376,6 +1364,7 @@
 		<TClass a="c"><x path="Class"><d/></x></TClass>
 		<TEnum a="e"><x path="Enum"><d/></x></TEnum>
 		<TUnknown/>
+		<meta><m n=":directlyUsed"/></meta>
 	</enum>
 	<class path="Type" params="" file="C:\HaxeToolkit\haxe\std/flash/_std/Type.hx">
 		<getClass public="1" params="T" set="method" line="36" static="1">
@@ -1383,6 +1372,7 @@
 				<c path="getClass.T"/>
 				<x path="Class"><c path="getClass.T"/></x>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Returns the class of `o`, if `o` is a class instance.
 
 		If `o` is null or of a different type, null is returned.
@@ -1395,6 +1385,7 @@
 				<c path="Array"><d/></c>
 				<c path="createInstance.T"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Creates an instance of class `cl`, using `args` as arguments to the
 		class constructor.
 
@@ -1416,17 +1407,21 @@
 				<x path="Class"><c path="createEmptyInstance.T"/></x>
 				<c path="createEmptyInstance.T"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Creates an instance of class `cl`.
 
 		This function guarantees that the class constructor is not called.
 
 		If `cl` is null, the result is unspecified.</haxe_doc>
 		</createEmptyInstance>
-		<describe set="method" line="182" static="1"><f a="t:fact">
-	<d/>
-	<x path="Bool"/>
-	<c path="Array"><c path="String"/></c>
-</f></describe>
+		<describe set="method" line="182" static="1">
+			<f a="t:fact">
+				<d/>
+				<x path="Bool"/>
+				<c path="Array"><c path="String"/></c>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</describe>
 		<getInstanceFields public="1" set="method" line="199" static="1">
 			<f a="c">
 				<x path="Class"><d/></x>
@@ -1449,6 +1444,7 @@
 				<d/>
 				<e path="ValueType"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Returns the runtime type of value `v`.
 
 		The result corresponds to the type `v` has at runtime, which may vary
@@ -1461,6 +1457,7 @@
 	class and enum instances.</haxe_doc>
 		<meta>
 			<m n=":keep"/>
+			<m n=":directlyUsed"/>
 			<m n=":coreApi"/>
 		</meta>
 	</class>
@@ -1468,13 +1465,15 @@
 		<from><icast><x path="Int"/></icast></from>
 		<this><x path="UInt"/></this>
 		<to><icast><x path="Int"/></icast></to>
-		<haxe_doc>The unsigned Int type is only defined for Flash9 and C#. It's currently
+		<haxe_doc>The unsigned Int type is only defined for Flash and C#. It's currently
 	handled the same as a normal Int.</haxe_doc>
 		<meta>
 			<m n=":coreType"/>
 			<m n=":notNull"/>
 			<m n=":runtimeValue"/>
+			<m n=":analyzer"><e>no_const_propagation</e></m>
 		</meta>
+		<impl><class path="_UInt.UInt_Impl_" params="" file="C:\HaxeToolkit\haxe\std/UInt.hx" private="1" module="UInt"><meta><m n=":keep"/></meta></class></impl>
 	</abstract>
 	<abstract path="dl.input.Keys" params="" file="src/dl/input/Keyboard.hx" module="dl.input.Keyboard">
 		<from><icast field="fromInt"><x path="UInt"/></icast></from>
@@ -1541,7 +1540,7 @@
 	<_new get="inline" set="null" line="18" static="1">
 		<f a="i">
 			<x path="UInt"/>
-			<x path="UInt"/>
+			<x path="dl.input.Keys"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
@@ -1562,7 +1561,10 @@
 			<m n=":to"/>
 		</meta>
 	</toUInt>
-	<meta><m n=":enum"/></meta>
+	<meta>
+		<m n=":directlyUsed"/>
+		<m n=":enum"/>
+	</meta>
 </class></impl>
 	</abstract>
 	<class path="dl.input._Keyboard.Keys_Impl_" params="" file="src/dl/input/Keyboard.hx" private="1" module="dl.input.Keyboard">
@@ -1625,7 +1627,7 @@
 		<_new get="inline" set="null" line="18" static="1">
 			<f a="i">
 				<x path="UInt"/>
-				<x path="UInt"/>
+				<x path="dl.input.Keys"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
@@ -1646,7 +1648,10 @@
 				<m n=":to"/>
 			</meta>
 		</toUInt>
-		<meta><m n=":enum"/></meta>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":enum"/>
+		</meta>
 	</class>
 	<class path="dl.input.Keyboard" params="" file="src/dl/input/Keyboard.hx">
 		<_listKeyPressed><c path="Array"><x path="UInt"/></c></_listKeyPressed>
@@ -1712,7 +1717,7 @@
 	<c path="flash.events.KeyboardEvent"/>
 	<x path="Void"/>
 </f></keyUp>
-		<new public="1" set="method" line="48"><f a="?accTimeSec" v="0.08f">
+		<new public="1" set="method" line="48"><f a="?accTimeSec">
 	<x path="Float"/>
 	<x path="Void"/>
 </f></new>
@@ -1722,30 +1727,30 @@
 	</class>
 	<class path="dl.input.PlatformPlayerController" params="" file="src/dl/input/PlatformPlayerController.hx">
 		<extends path="dl.input.Keyboard"/>
-		<getVX public="1" get="inline" set="null" line="245" static="1"><f a="pxBySec:frameDelay">
+		<getVX public="1" get="inline" set="null" line="250" static="1"><f a="pxBySec:frameDelay">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getVX>
-		<getJumpStartVY public="1" get="inline" set="null" line="250" static="1"><f a="jumpPx:gravity">
+		<getJumpStartVY public="1" get="inline" set="null" line="255" static="1"><f a="jumpPx:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getJumpStartVY>
-		<getJumpVY public="1" get="inline" set="null" line="255" static="1"><f a="maxPxJump:jumpStartVY:gravity">
+		<getJumpVY public="1" get="inline" set="null" line="260" static="1"><f a="maxPxJump:jumpStartVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getJumpVY>
-		<getJumpVX public="1" get="inline" set="null" line="260" static="1"><f a="maxPxJump:jumpStartVY:?jumpVY:gravity" v="::0:">
+		<getJumpVX public="1" get="inline" set="null" line="265" static="1"><f a="maxPxJump:jumpStartVY:?jumpVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getJumpVX>
-		<maxPxYJump set="method" line="265" static="1"><f a="maxPxXJump:jumpStartVY:jumpVX:jumpVY:gravity">
+		<maxPxYJump set="method" line="270" static="1"><f a="maxPxXJump:jumpStartVY:jumpVX:jumpVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1753,7 +1758,7 @@
 	<x path="Float"/>
 	<x path="Float"/>
 </f></maxPxYJump>
-		<maxPxXJump set="method" line="286" static="1"><f a="maxPxYJump:jumpStartVY:jumpVX:jumpVY:gravity">
+		<maxPxXJump set="method" line="291" static="1"><f a="maxPxYJump:jumpStartVY:jumpVX:jumpVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1773,7 +1778,7 @@
 		<_landmark><x path="Float"/></_landmark>
 		<wallFriction public="1"><x path="Bool"/></wallFriction>
 		<_body><c path="dl.physic.body.Body"/></_body>
-		<init public="1" set="method" line="63"><f a="?runPxSec:?jumpHeightMin:?jumpHeightMax:?jumpLengthMin:?jumpLengthMax:?gravityY" v="384.f:48.f:96.f:96.f:192.f:2.0f">
+		<init public="1" set="method" line="63"><f a="?runPxSec:?jumpHeightMin:?jumpHeightMax:?jumpLengthMin:?jumpLengthMax:?gravityY">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1782,12 +1787,13 @@
 	<x path="Float"/>
 	<x path="Void"/>
 </f></init>
-		<setRun set="method" line="80"><f a="vel:accTime">
+		<jump public="1" set="method" line="80"><f a=""><x path="Void"/></f></jump>
+		<setRun set="method" line="85"><f a="vel:accTime">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Void"/>
 </f></setRun>
-		<setJump set="method" line="84"><f a="hMin:hMax:lMin:lMax:accTime:timeLock:g">
+		<setJump set="method" line="89"><f a="hMin:hMax:lMin:lMax:accTime:timeLock:g">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1797,17 +1803,18 @@
 	<x path="Float"/>
 	<x path="Void"/>
 </f></setJump>
-		<update public="1" set="method" line="94"><f a="t">
+		<update public="1" set="method" line="99"><f a="t">
 	<x path="Float"/>
 	<x path="Void"/>
 </f></update>
-		<new public="1" set="method" line="50"><f a="body:?frameDelaySec" v=":0.02f">
+		<new public="1" set="method" line="50"><f a="body:?frameDelaySec">
 	<c path="dl.physic.body.Body"/>
 	<x path="Float"/>
 	<x path="Void"/>
 </f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.physic.body.Body" params="" file="src/dl/physic/body/Body.hx">
 		<SHAPE_PRINT_NUM public="1" line="17" static="1">
@@ -1893,7 +1900,7 @@
 	 * @param	y		Number to add to the Y-axis position in pixel</haxe_doc>
 		</addPos>
 		<updateAABB public="1" set="method" line="176">
-			<f a="?updatePrint" v="true">
+			<f a="?updatePrint">
 				<x path="Bool"/>
 				<x path="Void"/>
 			</f>
@@ -1902,7 +1909,7 @@
 	 * @param	updatePrint		Force the saves of the datas</haxe_doc>
 		</updateAABB>
 		<addBodyContact public="1" get="inline" set="null" line="201">
-			<f a="?flags" v="0">
+			<f a="?flags">
 				<x path="dl.physic.contact.BodyContactsFlags"/>
 				<x path="Void"/>
 			</f>
@@ -1911,7 +1918,7 @@
 	 * @param	flags		List of flags of the BodyContacts</haxe_doc>
 		</addBodyContact>
 		<addBodyPhysic public="1" get="inline" set="null" line="214">
-			<f a="?flags" v="0">
+			<f a="?flags">
 				<x path="dl.physic.move.BodyPhysicFlags"/>
 				<x path="Void"/>
 			</f>
@@ -1919,7 +1926,7 @@
 	 * 
 	 * @param	flags		List of flags of the BodyPhysic</haxe_doc>
 		</addBodyPhysic>
-		<new public="1" set="method" line="64"><f a="shape:?x:?y" v=":0:0">
+		<new public="1" set="method" line="64"><f a="shape:?x:?y">
 	<c path="dl.physic.body.Shape"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -1927,6 +1934,7 @@
 </f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<abstract path="dl.physic.body.ShapeType" params="" file="src/dl/physic/body/Shape.hx" module="dl.physic.body.Shape">
 		<from><icast field="fromInt"><x path="Int"/></icast></from>
@@ -1958,7 +1966,7 @@
 	<_new get="inline" set="null" line="11" static="1">
 		<f a="i">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.physic.body.ShapeType"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
@@ -2007,7 +2015,7 @@
 		<_new get="inline" set="null" line="11" static="1">
 			<f a="i">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.physic.body.ShapeType"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
@@ -2031,74 +2039,77 @@
 		<meta><m n=":enum"/></meta>
 	</class>
 	<class path="dl.physic.body.Shape" params="" file="src/dl/physic/body/Shape.hx">
-		<_getHitArea get="inline" set="null" line="60" static="1"><f a="a:b">
+		<_getHitArea get="inline" set="null" line="70" static="1"><f a="a:b">
 	<c path="dl.physic.body.Shape"/>
 	<c path="dl.physic.body.Shape"/>
 	<x path="Float"/>
 </f></_getHitArea>
-		<_max get="inline" set="null" line="65" static="1"><f a="a:b">
+		<_max get="inline" set="null" line="75" static="1"><f a="a:b">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></_max>
-		<_min get="inline" set="null" line="69" static="1"><f a="a:b">
+		<_min get="inline" set="null" line="79" static="1"><f a="a:b">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></_min>
-		<_getW set="method" line="82" static="1"><f a="a">
+		<_getW set="method" line="92" static="1"><f a="a">
 	<c path="dl.physic.body.Shape"/>
 	<x path="Float"/>
 </f></_getW>
-		<_getH set="method" line="93" static="1"><f a="a">
+		<_getH set="method" line="103" static="1"><f a="a">
 	<c path="dl.physic.body.Shape"/>
 	<x path="Float"/>
 </f></_getH>
-		<_hitTest set="method" line="108" static="1"><f a="a:b">
+		<_hitTest set="method" line="118" static="1"><f a="a:b">
 	<c path="dl.physic.body.Shape"/>
 	<c path="dl.physic.body.Shape"/>
 	<x path="Bool"/>
 </f></_hitTest>
-		<hitTestAABB get="inline" set="null" line="129" static="1"><f a="a:b">
+		<hitTestAABB get="inline" set="null" line="139" static="1"><f a="a:b">
 	<c path="dl.physic.body.Shape"/>
 	<c path="dl.physic.body.Shape"/>
 	<x path="Bool"/>
 </f></hitTestAABB>
-		<hitTestCircles set="method" line="137" static="1"><f a="a:b">
+		<hitTestCircles set="method" line="147" static="1"><f a="a:b">
 	<c path="dl.physic.body.ShapeCircle"/>
 	<c path="dl.physic.body.ShapeCircle"/>
 	<x path="Bool"/>
 </f></hitTestCircles>
-		<hitTestPointCircle set="method" line="146" static="1"><f a="a:b">
+		<hitTestPointCircle set="method" line="156" static="1"><f a="a:b">
 	<c path="dl.physic.body.ShapePoint"/>
 	<c path="dl.physic.body.ShapeCircle"/>
 	<x path="Bool"/>
 </f></hitTestPointCircle>
+		<anchorX public="1"><x path="Float"/></anchorX>
+		<anchorY public="1"><x path="Float"/></anchorY>
 		<aabbXMin public="1" set="null"><x path="Float"/></aabbXMin>
 		<aabbXMax public="1" set="null"><x path="Float"/></aabbXMax>
 		<aabbYMin public="1" set="null"><x path="Float"/></aabbYMin>
 		<aabbYMax public="1" set="null"><x path="Float"/></aabbYMax>
 		<type public="1" set="null"><x path="dl.physic.body.ShapeType"/></type>
-		<clone public="1" set="method" line="40"><f a=""><c path="dl.physic.body.Shape"/></f></clone>
-		<updateAABB public="1" set="method" line="51"><f a="x:y">
+		<clone public="1" set="method" line="47"><f a=""><c path="dl.physic.body.Shape"/></f></clone>
+		<updateAABB public="1" set="method" line="61"><f a="x:y">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Void"/>
 </f></updateAABB>
-		<getHitArea public="1" get="inline" set="null" line="56"><f a="s">
+		<getHitArea public="1" get="inline" set="null" line="66"><f a="s">
 	<c path="dl.physic.body.Shape"/>
 	<x path="Float"/>
 </f></getHitArea>
-		<getH public="1" get="inline" set="null" line="74"><f a=""><x path="Float"/></f></getH>
-		<getW public="1" get="inline" set="null" line="78"><f a=""><x path="Float"/></f></getW>
-		<hitTest public="1" get="inline" set="null" line="104"><f a="b">
+		<getH public="1" get="inline" set="null" line="84"><f a=""><x path="Float"/></f></getH>
+		<getW public="1" get="inline" set="null" line="88"><f a=""><x path="Float"/></f></getW>
+		<hitTest public="1" get="inline" set="null" line="114"><f a="b">
 	<c path="dl.physic.body.Shape"/>
 	<x path="Bool"/>
 </f></hitTest>
-		<new public="1" set="method" line="38"><f a=""><x path="Void"/></f></new>
+		<new public="1" set="method" line="41"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* Form of the body.
  * 
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.physic.body.ShapeCircle" params="" file="src/dl/physic/body/ShapeCircle.hx">
 		<extends path="dl.physic.body.Shape"/>
@@ -2112,11 +2123,12 @@
 		<new public="1" set="method" line="13"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.physic.body.ShapePoint" params="" file="src/dl/physic/body/ShapePoint.hx">
 		<extends path="dl.physic.body.Shape"/>
 		<clone public="1" set="method" line="17" override="1"><f a=""><c path="dl.physic.body.ShapePoint"/></f></clone>
-		<updateAABB public="1" set="method" line="27" override="1"><f a="x:y">
+		<updateAABB public="1" set="method" line="31" override="1"><f a="x:y">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Void"/>
@@ -2124,13 +2136,14 @@
 		<new public="1" set="method" line="11"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.physic.body.ShapeRect" params="" file="src/dl/physic/body/ShapeRect.hx">
 		<extends path="dl.physic.body.Shape"/>
 		<w public="1"><x path="Float"/></w>
 		<h public="1"><x path="Float"/></h>
 		<clone public="1" set="method" line="22" override="1"><f a=""><c path="dl.physic.body.ShapeRect"/></f></clone>
-		<updateAABB public="1" set="method" line="33" override="1"><f a="x:y">
+		<updateAABB public="1" set="method" line="36" override="1"><f a="x:y">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Void"/>
@@ -2142,6 +2155,7 @@
 </f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<abstract path="dl.physic.contact.BodyLimitFlags" params="" file="src/dl/physic/contact/BodyContact.hx" module="dl.physic.contact.BodyContact">
 		<from><icast field="fromInt"><x path="Int"/></icast></from>
@@ -2187,7 +2201,7 @@
 	<_new get="inline" set="null" line="14" static="1">
 		<f a="i">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.physic.contact.BodyLimitFlags"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
@@ -2208,7 +2222,32 @@
 			<m n=":to"/>
 		</meta>
 	</toInt>
-	<meta><m n=":enum"/></meta>
+	<and public="1" set="method" line="27" static="1">
+		<f a="this:b">
+			<x path="Int"/>
+			<x path="dl.physic.contact.BodyLimitFlags"/>
+			<x path="dl.physic.contact.BodyLimitFlags"/>
+		</f>
+		<meta>
+			<m n=":impl"/>
+			<m n=":op"><e><![CDATA[A&B]]></e></m>
+		</meta>
+	</and>
+	<or public="1" set="method" line="33" static="1">
+		<f a="this:b">
+			<x path="Int"/>
+			<x path="dl.physic.contact.BodyLimitFlags"/>
+			<x path="dl.physic.contact.BodyLimitFlags"/>
+		</f>
+		<meta>
+			<m n=":impl"/>
+			<m n=":op"><e>A|B</e></m>
+		</meta>
+	</or>
+	<meta>
+		<m n=":directlyUsed"/>
+		<m n=":enum"/>
+	</meta>
 </class></impl>
 	</abstract>
 	<class path="dl.physic.contact._BodyContact.BodyLimitFlags_Impl_" params="" file="src/dl/physic/contact/BodyContact.hx" private="1" module="dl.physic.contact.BodyContact">
@@ -2250,7 +2289,7 @@
 		<_new get="inline" set="null" line="14" static="1">
 			<f a="i">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.physic.contact.BodyLimitFlags"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
@@ -2271,7 +2310,32 @@
 				<m n=":to"/>
 			</meta>
 		</toInt>
-		<meta><m n=":enum"/></meta>
+		<and public="1" set="method" line="27" static="1">
+			<f a="this:b">
+				<x path="Int"/>
+				<x path="dl.physic.contact.BodyLimitFlags"/>
+				<x path="dl.physic.contact.BodyLimitFlags"/>
+			</f>
+			<meta>
+				<m n=":impl"/>
+				<m n=":op"><e><![CDATA[A&B]]></e></m>
+			</meta>
+		</and>
+		<or public="1" set="method" line="33" static="1">
+			<f a="this:b">
+				<x path="Int"/>
+				<x path="dl.physic.contact.BodyLimitFlags"/>
+				<x path="dl.physic.contact.BodyLimitFlags"/>
+			</f>
+			<meta>
+				<m n=":impl"/>
+				<m n=":op"><e>A|B</e></m>
+			</meta>
+		</or>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":enum"/>
+		</meta>
 	</class>
 	<abstract path="dl.physic.contact.BodyContactState" params="" file="src/dl/physic/contact/BodyContact.hx" module="dl.physic.contact.BodyContact">
 		<from><icast field="fromInt"><x path="Int"/></icast></from>
@@ -2279,42 +2343,42 @@
 		<to><icast field="toInt"><x path="Int"/></icast></to>
 		<meta><m n=":enum"/></meta>
 		<impl><class path="dl.physic.contact._BodyContact.BodyContactState_Impl_" params="" file="src/dl/physic/contact/BodyContact.hx" private="1" module="dl.physic.contact.BodyContact">
-	<init public="1" get="inline" set="null" line="30" static="1">
+	<init public="1" get="inline" set="null" line="42" static="1">
 		<x path="dl.physic.contact.BodyContactState"/>
 		<meta>
 			<m n=":enum"/>
 			<m n=":impl"/>
 		</meta>
 	</init>
-	<contacts public="1" get="inline" set="null" line="31" static="1">
+	<contacts public="1" get="inline" set="null" line="43" static="1">
 		<x path="dl.physic.contact.BodyContactState"/>
 		<meta>
 			<m n=":enum"/>
 			<m n=":impl"/>
 		</meta>
 	</contacts>
-	<limits public="1" get="inline" set="null" line="32" static="1">
+	<limits public="1" get="inline" set="null" line="44" static="1">
 		<x path="dl.physic.contact.BodyContactState"/>
 		<meta>
 			<m n=":enum"/>
 			<m n=":impl"/>
 		</meta>
 	</limits>
-	<_new get="inline" set="null" line="34" static="1">
+	<_new get="inline" set="null" line="46" static="1">
 		<f a="i">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.physic.contact.BodyContactState"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
-	<fromInt public="1" set="method" line="37" static="1">
+	<fromInt public="1" set="method" line="49" static="1">
 		<f a="i">
 			<x path="Int"/>
 			<x path="dl.physic.contact.BodyContactState"/>
 		</f>
 		<meta><m n=":from"/></meta>
 	</fromInt>
-	<toInt public="1" set="method" line="42" static="1">
+	<toInt public="1" set="method" line="54" static="1">
 		<f a="this">
 			<x path="Int"/>
 			<x path="Int"/>
@@ -2324,46 +2388,71 @@
 			<m n=":to"/>
 		</meta>
 	</toInt>
-	<meta><m n=":enum"/></meta>
+	<and public="1" set="method" line="59" static="1">
+		<f a="this:b">
+			<x path="Int"/>
+			<x path="dl.physic.contact.BodyContactState"/>
+			<x path="dl.physic.contact.BodyContactState"/>
+		</f>
+		<meta>
+			<m n=":impl"/>
+			<m n=":op"><e><![CDATA[A&B]]></e></m>
+		</meta>
+	</and>
+	<or public="1" set="method" line="65" static="1">
+		<f a="this:b">
+			<x path="Int"/>
+			<x path="dl.physic.contact.BodyContactState"/>
+			<x path="dl.physic.contact.BodyContactState"/>
+		</f>
+		<meta>
+			<m n=":impl"/>
+			<m n=":op"><e>A|B</e></m>
+		</meta>
+	</or>
+	<meta>
+		<m n=":directlyUsed"/>
+		<m n=":enum"/>
+	</meta>
 </class></impl>
 	</abstract>
 	<class path="dl.physic.contact._BodyContact.BodyContactState_Impl_" params="" file="src/dl/physic/contact/BodyContact.hx" private="1" module="dl.physic.contact.BodyContact">
-		<init public="1" get="inline" set="null" line="30" static="1">
+		<init public="1" get="inline" set="null" line="42" static="1">
 			<x path="dl.physic.contact.BodyContactState"/>
 			<meta>
 				<m n=":enum"/>
 				<m n=":impl"/>
 			</meta>
 		</init>
-		<contacts public="1" get="inline" set="null" line="31" static="1">
+		<contacts public="1" get="inline" set="null" line="43" static="1">
 			<x path="dl.physic.contact.BodyContactState"/>
 			<meta>
 				<m n=":enum"/>
 				<m n=":impl"/>
 			</meta>
 		</contacts>
-		<limits public="1" get="inline" set="null" line="32" static="1">
+		<limits public="1" get="inline" set="null" line="44" static="1">
 			<x path="dl.physic.contact.BodyContactState"/>
 			<meta>
 				<m n=":enum"/>
 				<m n=":impl"/>
 			</meta>
 		</limits>
-		<_new get="inline" set="null" line="34" static="1">
+		<_new get="inline" set="null" line="46" static="1">
 			<f a="i">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.physic.contact.BodyContactState"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
-		<fromInt public="1" set="method" line="37" static="1">
+		<fromInt public="1" set="method" line="49" static="1">
 			<f a="i">
 				<x path="Int"/>
 				<x path="dl.physic.contact.BodyContactState"/>
 			</f>
 			<meta><m n=":from"/></meta>
 		</fromInt>
-		<toInt public="1" set="method" line="42" static="1">
+		<toInt public="1" set="method" line="54" static="1">
 			<f a="this">
 				<x path="Int"/>
 				<x path="Int"/>
@@ -2373,7 +2462,32 @@
 				<m n=":to"/>
 			</meta>
 		</toInt>
-		<meta><m n=":enum"/></meta>
+		<and public="1" set="method" line="59" static="1">
+			<f a="this:b">
+				<x path="Int"/>
+				<x path="dl.physic.contact.BodyContactState"/>
+				<x path="dl.physic.contact.BodyContactState"/>
+			</f>
+			<meta>
+				<m n=":impl"/>
+				<m n=":op"><e><![CDATA[A&B]]></e></m>
+			</meta>
+		</and>
+		<or public="1" set="method" line="65" static="1">
+			<f a="this:b">
+				<x path="Int"/>
+				<x path="dl.physic.contact.BodyContactState"/>
+				<x path="dl.physic.contact.BodyContactState"/>
+			</f>
+			<meta>
+				<m n=":impl"/>
+				<m n=":op"><e>A|B</e></m>
+			</meta>
+		</or>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":enum"/>
+		</meta>
 	</class>
 	<abstract path="dl.physic.contact.BodyContactsFlags" params="" file="src/dl/physic/contact/BodyContact.hx" module="dl.physic.contact.BodyContact">
 		<from><icast field="fromInt"><x path="Int"/></icast></from>
@@ -2381,7 +2495,14 @@
 		<to><icast field="toInt"><x path="Int"/></icast></to>
 		<meta><m n=":enum"/></meta>
 		<impl><class path="dl.physic.contact._BodyContact.BodyContactsFlags_Impl_" params="" file="src/dl/physic/contact/BodyContact.hx" private="1" module="dl.physic.contact.BodyContact">
-	<passive public="1" get="inline" set="null" line="53" static="1">
+	<none public="1" get="inline" set="null" line="74" static="1">
+		<x path="dl.physic.contact.BodyContactsFlags"/>
+		<meta>
+			<m n=":enum"/>
+			<m n=":impl"/>
+		</meta>
+	</none>
+	<passive public="1" get="inline" set="null" line="79" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
@@ -2389,7 +2510,7 @@
 		</meta>
 		<haxe_doc>* This body don't test the collision but the actives bodies tests the collision with this one</haxe_doc>
 	</passive>
-	<active public="1" get="inline" set="null" line="58" static="1">
+	<active public="1" get="inline" set="null" line="84" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
@@ -2397,7 +2518,7 @@
 		</meta>
 		<haxe_doc>* This body test the collision with the passives bodies</haxe_doc>
 	</active>
-	<platformBottom public="1" get="inline" set="null" line="63" static="1">
+	<platformBottom public="1" get="inline" set="null" line="89" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
@@ -2405,28 +2526,28 @@
 		</meta>
 		<haxe_doc>* You can jump from bottom over a platform</haxe_doc>
 	</platformBottom>
-	<platformTop public="1" get="inline" set="null" line="64" static="1">
+	<platformTop public="1" get="inline" set="null" line="90" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
 			<m n=":impl"/>
 		</meta>
 	</platformTop>
-	<platformLeft public="1" get="inline" set="null" line="65" static="1">
+	<platformLeft public="1" get="inline" set="null" line="91" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
 			<m n=":impl"/>
 		</meta>
 	</platformLeft>
-	<platformRight public="1" get="inline" set="null" line="66" static="1">
+	<platformRight public="1" get="inline" set="null" line="92" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
 			<m n=":impl"/>
 		</meta>
 	</platformRight>
-	<wall public="1" get="inline" set="null" line="71" static="1">
+	<wall public="1" get="inline" set="null" line="97" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
@@ -2434,7 +2555,7 @@
 		</meta>
 		<haxe_doc>* You can't cross it</haxe_doc>
 	</wall>
-	<fix public="1" get="inline" set="null" line="87" static="1">
+	<fix public="1" get="inline" set="null" line="113" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
@@ -2442,7 +2563,7 @@
 		</meta>
 		<haxe_doc>* You can climb it</haxe_doc>
 	</fix>
-	<drivable public="1" get="inline" set="null" line="93" static="1">
+	<drivable public="1" get="inline" set="null" line="119" static="1">
 		<x path="dl.physic.contact.BodyContactsFlags"/>
 		<meta>
 			<m n=":enum"/>
@@ -2451,21 +2572,21 @@
 		<haxe_doc>* Can be receive data moves out the physic engine.
 	 * In example it can be push by an active object.</haxe_doc>
 	</drivable>
-	<_new get="inline" set="null" line="96" static="1">
+	<_new get="inline" set="null" line="122" static="1">
 		<f a="i">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.physic.contact.BodyContactsFlags"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
-	<fromInt public="1" set="method" line="99" static="1">
+	<fromInt public="1" set="method" line="125" static="1">
 		<f a="i">
 			<x path="Int"/>
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 		</f>
 		<meta><m n=":from"/></meta>
 	</fromInt>
-	<toInt public="1" set="method" line="104" static="1">
+	<toInt public="1" set="method" line="130" static="1">
 		<f a="this">
 			<x path="Int"/>
 			<x path="Int"/>
@@ -2475,11 +2596,43 @@
 			<m n=":to"/>
 		</meta>
 	</toInt>
-	<meta><m n=":enum"/></meta>
+	<and public="1" set="method" line="135" static="1">
+		<f a="this:b">
+			<x path="Int"/>
+			<x path="dl.physic.contact.BodyContactsFlags"/>
+			<x path="dl.physic.contact.BodyContactsFlags"/>
+		</f>
+		<meta>
+			<m n=":impl"/>
+			<m n=":op"><e><![CDATA[A&B]]></e></m>
+		</meta>
+	</and>
+	<or public="1" set="method" line="141" static="1">
+		<f a="this:b">
+			<x path="Int"/>
+			<x path="dl.physic.contact.BodyContactsFlags"/>
+			<x path="dl.physic.contact.BodyContactsFlags"/>
+		</f>
+		<meta>
+			<m n=":impl"/>
+			<m n=":op"><e>A|B</e></m>
+		</meta>
+	</or>
+	<meta>
+		<m n=":directlyUsed"/>
+		<m n=":enum"/>
+	</meta>
 </class></impl>
 	</abstract>
 	<class path="dl.physic.contact._BodyContact.BodyContactsFlags_Impl_" params="" file="src/dl/physic/contact/BodyContact.hx" private="1" module="dl.physic.contact.BodyContact">
-		<passive public="1" get="inline" set="null" line="53" static="1">
+		<none public="1" get="inline" set="null" line="74" static="1">
+			<x path="dl.physic.contact.BodyContactsFlags"/>
+			<meta>
+				<m n=":enum"/>
+				<m n=":impl"/>
+			</meta>
+		</none>
+		<passive public="1" get="inline" set="null" line="79" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
@@ -2487,7 +2640,7 @@
 			</meta>
 			<haxe_doc>* This body don't test the collision but the actives bodies tests the collision with this one</haxe_doc>
 		</passive>
-		<active public="1" get="inline" set="null" line="58" static="1">
+		<active public="1" get="inline" set="null" line="84" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
@@ -2495,7 +2648,7 @@
 			</meta>
 			<haxe_doc>* This body test the collision with the passives bodies</haxe_doc>
 		</active>
-		<platformBottom public="1" get="inline" set="null" line="63" static="1">
+		<platformBottom public="1" get="inline" set="null" line="89" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
@@ -2503,28 +2656,28 @@
 			</meta>
 			<haxe_doc>* You can jump from bottom over a platform</haxe_doc>
 		</platformBottom>
-		<platformTop public="1" get="inline" set="null" line="64" static="1">
+		<platformTop public="1" get="inline" set="null" line="90" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
 				<m n=":impl"/>
 			</meta>
 		</platformTop>
-		<platformLeft public="1" get="inline" set="null" line="65" static="1">
+		<platformLeft public="1" get="inline" set="null" line="91" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
 				<m n=":impl"/>
 			</meta>
 		</platformLeft>
-		<platformRight public="1" get="inline" set="null" line="66" static="1">
+		<platformRight public="1" get="inline" set="null" line="92" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
 				<m n=":impl"/>
 			</meta>
 		</platformRight>
-		<wall public="1" get="inline" set="null" line="71" static="1">
+		<wall public="1" get="inline" set="null" line="97" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
@@ -2532,7 +2685,7 @@
 			</meta>
 			<haxe_doc>* You can't cross it</haxe_doc>
 		</wall>
-		<fix public="1" get="inline" set="null" line="87" static="1">
+		<fix public="1" get="inline" set="null" line="113" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
@@ -2540,7 +2693,7 @@
 			</meta>
 			<haxe_doc>* You can climb it</haxe_doc>
 		</fix>
-		<drivable public="1" get="inline" set="null" line="93" static="1">
+		<drivable public="1" get="inline" set="null" line="119" static="1">
 			<x path="dl.physic.contact.BodyContactsFlags"/>
 			<meta>
 				<m n=":enum"/>
@@ -2549,21 +2702,21 @@
 			<haxe_doc>* Can be receive data moves out the physic engine.
 	 * In example it can be push by an active object.</haxe_doc>
 		</drivable>
-		<_new get="inline" set="null" line="96" static="1">
+		<_new get="inline" set="null" line="122" static="1">
 			<f a="i">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.physic.contact.BodyContactsFlags"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
-		<fromInt public="1" set="method" line="99" static="1">
+		<fromInt public="1" set="method" line="125" static="1">
 			<f a="i">
 				<x path="Int"/>
 				<x path="dl.physic.contact.BodyContactsFlags"/>
 			</f>
 			<meta><m n=":from"/></meta>
 		</fromInt>
-		<toInt public="1" set="method" line="104" static="1">
+		<toInt public="1" set="method" line="130" static="1">
 			<f a="this">
 				<x path="Int"/>
 				<x path="Int"/>
@@ -2573,10 +2726,35 @@
 				<m n=":to"/>
 			</meta>
 		</toInt>
-		<meta><m n=":enum"/></meta>
+		<and public="1" set="method" line="135" static="1">
+			<f a="this:b">
+				<x path="Int"/>
+				<x path="dl.physic.contact.BodyContactsFlags"/>
+				<x path="dl.physic.contact.BodyContactsFlags"/>
+			</f>
+			<meta>
+				<m n=":impl"/>
+				<m n=":op"><e><![CDATA[A&B]]></e></m>
+			</meta>
+		</and>
+		<or public="1" set="method" line="141" static="1">
+			<f a="this:b">
+				<x path="Int"/>
+				<x path="dl.physic.contact.BodyContactsFlags"/>
+				<x path="dl.physic.contact.BodyContactsFlags"/>
+			</f>
+			<meta>
+				<m n=":impl"/>
+				<m n=":op"><e>A|B</e></m>
+			</meta>
+		</or>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":enum"/>
+		</meta>
 	</class>
 	<class path="dl.physic.contact.BodyContact" params="" file="src/dl/physic/contact/BodyContact.hx">
-		<classBodiesByContactArea public="1" get="inline" set="null" line="143" static="1"><f a="shape:list">
+		<classBodiesByContactArea public="1" get="inline" set="null" line="181" static="1"><f a="shape:list">
 	<c path="dl.physic.body.Shape"/>
 	<c path="Array"><c path="dl.physic.body.Body"/></c>
 	<x path="Void"/>
@@ -2586,23 +2764,27 @@
 		<state public="1"><x path="dl.physic.contact.BodyContactState"/></state>
 		<flags public="1"><x path="dl.physic.contact.BodyContactsFlags"/></flags>
 		<fixedLimits public="1"><x path="dl.physic.contact.BodyLimitFlags"/></fixedLimits>
-		<push public="1" get="inline" set="null" line="130"><f a="body">
+		<push public="1" get="inline" set="null" line="168"><f a="body">
 	<c path="dl.physic.body.Body"/>
 	<x path="Void"/>
 </f></push>
-		<change public="1" get="inline" set="null" line="131"><f a="bodies">
+		<change public="1" get="inline" set="null" line="169"><f a="bodies">
 	<c path="Array"><c path="dl.physic.body.Body"/></c>
 	<x path="Void"/>
 </f></change>
-		<length public="1" get="inline" set="null" line="132"><f a=""><x path="Int"/></f></length>
-		<classByArea public="1" get="inline" set="null" line="134"><f a=""><x path="Void"/></f></classByArea>
-		<clear public="1" get="inline" set="null" line="152"><f a=""><x path="Void"/></f></clear>
-		<new public="1" set="method" line="122"><f a="p">
+		<length public="1" get="inline" set="null" line="170"><f a=""><x path="Int"/></f></length>
+		<classByArea public="1" get="inline" set="null" line="172"><f a=""><x path="Void"/></f></classByArea>
+		<clear public="1" get="inline" set="null" line="190">
+			<f a=""><x path="Void"/></f>
+			<meta><m n=":has_untyped"/></meta>
+		</clear>
+		<new public="1" set="method" line="160"><f a="p">
 	<c path="dl.physic.body.Body"/>
 	<x path="Void"/>
 </f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.physic.contact.ISpace" params="" file="src/dl/physic/contact/ISpace.hx" interface="1">
 		<addBody public="1" set="method"><f a="body">
@@ -2656,6 +2838,7 @@
 	<x path="Int"/>
 	<x path="Void"/>
 </f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.physic.contact.Node" params="" file="src/dl/physic/contact/SpaceGrid.hx" module="dl.physic.contact.SpaceGrid">
 		<body public="1" set="null"><c path="dl.physic.body.Body"/></body>
@@ -2674,7 +2857,7 @@
 	<c path="dl.physic.contact.Grid"/>
 	<x path="Void"/>
 </f></removeFromGrid>
-		<refresh public="1" set="method" line="145"><f a="pitchExpX:pitchExpY:grid:?updatePrint" v=":::true">
+		<refresh public="1" set="method" line="145"><f a="pitchExpX:pitchExpY:grid:?updatePrint">
 	<x path="Int"/>
 	<x path="Int"/>
 	<c path="dl.physic.contact.Grid"/>
@@ -2685,6 +2868,7 @@
 	<c path="dl.physic.body.Body"/>
 	<x path="Void"/>
 </f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.physic.contact.SpaceGrid" params="" file="src/dl/physic/contact/SpaceGrid.hx">
 		<implements path="dl.physic.contact.ISpace"/>
@@ -2726,7 +2910,7 @@
 	 * 
 	 * @param	body			Body to add</haxe_doc>
 		</removeBody>
-		<new public="1" set="method" line="212"><f a="?tileW:?tileH:?xMin:?xMax:?yMin:?yMax" v="64:64:null:null:null:null">
+		<new public="1" set="method" line="212"><f a="?tileW:?tileH:?xMin:?xMax:?yMin:?yMax">
 	<x path="Int"/>
 	<x path="Int"/>
 	<x path="Int"/>
@@ -2811,7 +2995,7 @@
 	<_new get="inline" set="null" line="27" static="1">
 		<f a="i">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.physic.move.BodyPhysicFlags"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
@@ -2832,7 +3016,32 @@
 			<m n=":to"/>
 		</meta>
 	</toInt>
-	<meta><m n=":enum"/></meta>
+	<and public="1" set="method" line="40" static="1">
+		<f a="this:b">
+			<x path="Int"/>
+			<x path="dl.physic.move.BodyPhysicFlags"/>
+			<x path="dl.physic.move.BodyPhysicFlags"/>
+		</f>
+		<meta>
+			<m n=":impl"/>
+			<m n=":op"><e><![CDATA[A&B]]></e></m>
+		</meta>
+	</and>
+	<or public="1" set="method" line="46" static="1">
+		<f a="this:b">
+			<x path="Int"/>
+			<x path="dl.physic.move.BodyPhysicFlags"/>
+			<x path="dl.physic.move.BodyPhysicFlags"/>
+		</f>
+		<meta>
+			<m n=":impl"/>
+			<m n=":op"><e>A|B</e></m>
+		</meta>
+	</or>
+	<meta>
+		<m n=":directlyUsed"/>
+		<m n=":enum"/>
+	</meta>
 </class></impl>
 	</abstract>
 	<class path="dl.physic.move._BodyPhysic.BodyPhysicFlags_Impl_" params="" file="src/dl/physic/move/BodyPhysic.hx" private="1" module="dl.physic.move.BodyPhysic">
@@ -2871,7 +3080,7 @@
 		<_new get="inline" set="null" line="27" static="1">
 			<f a="i">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.physic.move.BodyPhysicFlags"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
@@ -2892,7 +3101,32 @@
 				<m n=":to"/>
 			</meta>
 		</toInt>
-		<meta><m n=":enum"/></meta>
+		<and public="1" set="method" line="40" static="1">
+			<f a="this:b">
+				<x path="Int"/>
+				<x path="dl.physic.move.BodyPhysicFlags"/>
+				<x path="dl.physic.move.BodyPhysicFlags"/>
+			</f>
+			<meta>
+				<m n=":impl"/>
+				<m n=":op"><e><![CDATA[A&B]]></e></m>
+			</meta>
+		</and>
+		<or public="1" set="method" line="46" static="1">
+			<f a="this:b">
+				<x path="Int"/>
+				<x path="dl.physic.move.BodyPhysicFlags"/>
+				<x path="dl.physic.move.BodyPhysicFlags"/>
+			</f>
+			<meta>
+				<m n=":impl"/>
+				<m n=":op"><e>A|B</e></m>
+			</meta>
+		</or>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":enum"/>
+		</meta>
 	</class>
 	<class path="dl.physic.move.BodyPhysic" params="" file="src/dl/physic/move/BodyPhysic.hx">
 		<_parent><c path="dl.physic.body.Body"/></_parent>
@@ -2900,12 +3134,13 @@
 		<vY public="1"><x path="Float"/></vY>
 		<flags public="1"><x path="dl.physic.move.BodyPhysicFlags"/></flags>
 		<mass public="1"><x path="Float"/></mass>
-		<new public="1" set="method" line="54"><f a="parent">
+		<new public="1" set="method" line="66"><f a="parent">
 	<c path="dl.physic.body.Body"/>
 	<x path="Void"/>
 </f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.physic.move.PlatformPhysicSystem" params="" file="src/dl/physic/move/PlatformPhysicSystem.hx">
 		<MAX_RECURSIVE get="inline" set="null" line="22" static="1">
@@ -2955,7 +3190,7 @@
 	<x path="Bool"/>
 	<x path="Bool"/>
 </f></applyReact>
-		<updatePosBody set="method" line="338"><f a="a:list:space:?complexCol:?num" v=":::false:0">
+		<updatePosBody set="method" line="338"><f a="a:list:space:?complexCol:?num">
 	<c path="dl.physic.body.Body"/>
 	<c path="Array"><c path="dl.physic.body.Body"/></c>
 	<c path="dl.physic.contact.ISpace"/>
@@ -2967,7 +3202,7 @@
 	<c path="dl.physic.body.Body"/>
 	<x path="Void"/>
 </f></removeBody>
-		<new public="1" set="method" line="27"><f a="?gravityY" v="2.0f">
+		<new public="1" set="method" line="27"><f a="?gravityY">
 	<x path="Float"/>
 	<x path="Void"/>
 </f></new>
@@ -2991,7 +3226,7 @@
 	<x path="Float"/>
 	<x path="Float"/>
 </f></getJumpVY>
-		<getJumpVX public="1" get="inline" set="null" line="26" static="1"><f a="maxPxJump:jumpStartVY:?jumpVY:gravity" v="::0:">
+		<getJumpVX public="1" get="inline" set="null" line="26" static="1"><f a="maxPxJump:jumpStartVY:?jumpVY:gravity">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
@@ -3031,18 +3266,19 @@
 	<x path="Int"/>
 	<c path="String"/>
 </f></USER_NAME_GEN>
-		<SERVER_USERS_FILE public="1" line="36" static="1">
+		<SERVER_USERS_FILE public="1" line="38" static="1">
 			<t path="Null"><c path="String"/></t>
 			<haxe_doc>* Null to disable user registered</haxe_doc>
 		</SERVER_USERS_FILE>
-		<SERVER_LOGS public="1" line="37" static="1"><x path="Bool"/></SERVER_LOGS>
-		<SEND_POLICY_843 public="1" line="43" static="1">
+		<SERVER_LOGS public="1" line="42" static="1"><x path="Bool"/></SERVER_LOGS>
+		<SEND_POLICY_843 public="1" line="48" static="1">
 			<x path="Bool"/>
 			<haxe_doc>* Port 843 only for admin.
 	 * Required for Flash 10+</haxe_doc>
 		</SEND_POLICY_843>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<abstract path="dl.socket.Cmd" params="" file="src/dl/socket/SockMsg.hx" module="dl.socket.SockMsg">
 		<from>
@@ -3084,7 +3320,7 @@
 	<_new get="inline" set="null" line="11" static="1">
 		<f a="i">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.socket.Cmd"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
@@ -3112,7 +3348,10 @@
 			<m n=":to"/>
 		</meta>
 	</toInt>
-	<meta><m n=":enum"/></meta>
+	<meta>
+		<m n=":directlyUsed"/>
+		<m n=":enum"/>
+	</meta>
 </class></impl>
 	</abstract>
 	<class path="dl.socket._SockMsg.Cmd_Impl_" params="" file="src/dl/socket/SockMsg.hx" private="1" module="dl.socket.SockMsg">
@@ -3147,7 +3386,7 @@
 		<_new get="inline" set="null" line="11" static="1">
 			<f a="i">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.socket.Cmd"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
@@ -3175,7 +3414,10 @@
 				<m n=":to"/>
 			</meta>
 		</toInt>
-		<meta><m n=":enum"/></meta>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":enum"/>
+		</meta>
 	</class>
 	<abstract path="dl.socket.SendSubject" params="" file="src/dl/socket/SockMsg.hx" module="dl.socket.SockMsg">
 		<from><icast field="fromInt"><x path="Int"/></icast></from>
@@ -3256,7 +3498,7 @@
 	<_new get="inline" set="null" line="43" static="1">
 		<f a="s">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.socket.SendSubject"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
@@ -3354,7 +3596,7 @@
 		<_new get="inline" set="null" line="43" static="1">
 			<f a="s">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.socket.SendSubject"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
@@ -3407,7 +3649,7 @@
 	<_new get="inline" set="null" line="63" static="1">
 		<f a="s">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.socket.Role"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
@@ -3450,7 +3692,10 @@
 			<m n=":op"><e><![CDATA[A<B]]></e></m>
 		</meta>
 	</inf>
-	<meta><m n=":enum"/></meta>
+	<meta>
+		<m n=":directlyUsed"/>
+		<m n=":enum"/>
+	</meta>
 </class></impl>
 	</abstract>
 	<class path="dl.socket._SockMsg.Role_Impl_" params="" file="src/dl/socket/SockMsg.hx" private="1" module="dl.socket.SockMsg">
@@ -3478,7 +3723,7 @@
 		<_new get="inline" set="null" line="63" static="1">
 			<f a="s">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.socket.Role"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
@@ -3521,10 +3766,13 @@
 				<m n=":op"><e><![CDATA[A<B]]></e></m>
 			</meta>
 		</inf>
-		<meta><m n=":enum"/></meta>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":enum"/>
+		</meta>
 	</class>
 	<class path="dl.socket.SockMsgGen" params="" file="src/dl/socket/SockMsg.hx" module="dl.socket.SockMsg">
-		<getSend public="1" set="method" line="111" static="1"><f a="subject:?content" v=":null">
+		<getSend public="1" set="method" line="111" static="1"><f a="subject:?content">
 	<x path="dl.socket.SendSubject"/>
 	<d/>
 	<c path="dl.socket.SockMsg"/>
@@ -3539,6 +3787,7 @@
 	<c path="dl.socket.SockMsg"/>
 </f></getTransferDatasClient>
 		<new set="method" line="90"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.socket.SockMsg" params="" file="src/dl/socket/SockMsg.hx">
 		<fromString public="1" set="method" line="148" static="1"><f a="text">
@@ -3548,11 +3797,12 @@
 		<cmd public="1"><x path="dl.socket.Cmd"/></cmd>
 		<struct public="1"><d/></struct>
 		<getString public="1" set="method" line="190"><f a=""><c path="String"/></f></getString>
-		<new public="1" get="inline" set="null" line="142"><f a="?cmd:?struct" v="null:null">
+		<new public="1" get="inline" set="null" line="142"><f a="?cmd:?struct">
 	<x path="dl.socket.Cmd"/>
 	<d/>
 	<x path="Void"/>
 </f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<typedef path="dl.socket.UserData" params="" file="src/dl/socket/SockMsg.hx" module="dl.socket.SockMsg"><a>
 	<r>
@@ -3560,7 +3810,7 @@
 		<meta><m n=":optional"/></meta>
 	</r>
 	<n>
-		<c path="String"/>
+		<t path="Null"><c path="String"/></t>
 		<meta><m n=":optional"/></meta>
 	</n>
 	<m>
@@ -3572,7 +3822,7 @@
 		<meta><m n=":optional"/></meta>
 	</i>
 	<d>
-		<d/>
+		<t path="Null"><d/></t>
 		<meta><m n=":optional"/></meta>
 	</d>
 </a></typedef>
@@ -3584,7 +3834,7 @@
 	<typedef path="dl.socket.Send" params="" file="src/dl/socket/SockMsg.hx" module="dl.socket.SockMsg"><a>
 	<s><x path="dl.socket.SendSubject"/></s>
 	<d>
-		<d/>
+		<t path="Null"><d/></t>
 		<meta><m n=":optional"/></meta>
 	</d>
 </a></typedef>
@@ -3601,15 +3851,15 @@
 </a></typedef>
 	<typedef path="dl.socket.RoomData" params="" file="src/dl/socket/SockMsg.hx" module="dl.socket.SockMsg"><a>
 	<u>
-		<c path="Array"><t path="dl.socket.UserData"/></c>
+		<t path="Null"><c path="Array"><t path="dl.socket.UserData"/></c></t>
 		<meta><m n=":optional"/></meta>
 	</u>
 	<p>
-		<c path="String"/>
+		<t path="Null"><c path="String"/></t>
 		<meta><m n=":optional"/></meta>
 	</p>
 	<n>
-		<c path="String"/>
+		<t path="Null"><c path="String"/></t>
 		<meta><m n=":optional"/></meta>
 	</n>
 	<l>
@@ -3617,7 +3867,7 @@
 		<meta><m n=":optional"/></meta>
 	</l>
 	<d>
-		<d/>
+		<t path="Null"><d/></t>
 		<meta><m n=":optional"/></meta>
 	</d>
 </a></typedef>
@@ -3649,7 +3899,7 @@
 	<_new get="inline" set="null" line="19" static="1">
 		<f a="s">
 			<x path="Int"/>
-			<x path="Int"/>
+			<x path="dl.socket.client.SystemMsg"/>
 		</f>
 		<meta><m n=":impl"/></meta>
 	</_new>
@@ -3691,7 +3941,7 @@
 		<_new get="inline" set="null" line="19" static="1">
 			<f a="s">
 				<x path="Int"/>
-				<x path="Int"/>
+				<x path="dl.socket.client.SystemMsg"/>
 			</f>
 			<meta><m n=":impl"/></meta>
 		</_new>
@@ -3721,10 +3971,10 @@
 	<c path="dl.socket.client.SockClientUser"/>
 	<x path="Void"/>
 </f></onMe>
-		<onOthers public="1"><f a="">
-	<c path="Array"><c path="dl.socket.client.SockClientUser"/></c>
+		<onOther public="1"><f a="">
+	<c path="dl.socket.client.SockClientUser"/>
 	<x path="Void"/>
-</f></onOthers>
+</f></onOther>
 		<onConnected public="1"><f a="">
 	<c path="dl.socket.client.SockClientUser"/>
 	<x path="Void"/>
@@ -3771,10 +4021,10 @@
 	<c path="dl.socket.client.SockClientUser"/>
 	<x path="Void"/>
 </f></_onMe>
-		<_onOthers get="inline" set="null" line="66"><f a="a">
-	<c path="Array"><c path="dl.socket.client.SockClientUser"/></c>
+		<_onOther get="inline" set="null" line="66"><f a="s">
+	<c path="dl.socket.client.SockClientUser"/>
 	<x path="Void"/>
-</f></_onOthers>
+</f></_onOther>
 		<_onRoomChange get="inline" set="null" line="67"><f a="r:a">
 	<c path="String"/>
 	<c path="Array"><c path="dl.socket.client.SockClientUser"/></c>
@@ -3826,7 +4076,7 @@
 	<t path="dl.socket.UserData"/>
 	<x path="Void"/>
 </f></initMe>
-		<setUser set="method" line="324"><f a="o:?dispatchMsg" v=":true">
+		<setUser set="method" line="324"><f a="o:?dispatchMsg">
 	<t path="dl.socket.UserData"/>
 	<x path="Bool"/>
 	<x path="Void"/>
@@ -3847,7 +4097,7 @@
 	<c path="dl.socket.SockMsg"/>
 	<x path="Void"/>
 </f></appliServer>
-		<new public="1" set="method" line="74"><f a="?me" v="null">
+		<new public="1" set="method" line="74"><f a="?me">
 	<c path="dl.socket.client.SockClientUser"/>
 	<x path="Void"/>
 </f></new>
@@ -3855,17 +4105,20 @@
  * @author Namide</haxe_doc>
 	</class>
 	<class path="flash.events.IEventDispatcher" params="" file="C:\HaxeToolkit\haxe\std/flash/events/IEventDispatcher.hx" extern="1" interface="1">
-		<addEventListener public="1" set="method"><f a="type:listener:?useCapture:?priority:?useWeakReference">
-	<c path="String"/>
-	<f a="">
-		<d/>
-		<x path="Void"/>
-	</f>
-	<x path="Bool"/>
-	<x path="Int"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></addEventListener>
+		<addEventListener public="1" set="method">
+			<f a="type:listener:?useCapture:?priority:?useWeakReference" v="::false:0:false">
+				<c path="String"/>
+				<f a="">
+					<d/>
+					<x path="Void"/>
+				</f>
+				<x path="Bool"/>
+				<x path="Int"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{useWeakReference:false,priority:0,useCapture:false}</e></m></meta>
+		</addEventListener>
 		<dispatchEvent public="1" set="method"><f a="event">
 	<c path="flash.events.Event"/>
 	<x path="Bool"/>
@@ -3874,15 +4127,18 @@
 	<c path="String"/>
 	<x path="Bool"/>
 </f></hasEventListener>
-		<removeEventListener public="1" set="method"><f a="type:listener:?useCapture">
-	<c path="String"/>
-	<f a="">
-		<d/>
-		<x path="Void"/>
-	</f>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></removeEventListener>
+		<removeEventListener public="1" set="method">
+			<f a="type:listener:?useCapture" v="::false">
+				<c path="String"/>
+				<f a="">
+					<d/>
+					<x path="Void"/>
+				</f>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{useCapture:false}</e></m></meta>
+		</removeEventListener>
 		<willTrigger public="1" set="method"><f a="type">
 	<c path="String"/>
 	<x path="Bool"/>
@@ -3890,17 +4146,20 @@
 	</class>
 	<class path="flash.events.EventDispatcher" params="" file="C:\HaxeToolkit\haxe\std/flash/events/EventDispatcher.hx" extern="1">
 		<implements path="flash.events.IEventDispatcher"/>
-		<addEventListener public="1" set="method"><f a="type:listener:?useCapture:?priority:?useWeakReference">
-	<c path="String"/>
-	<f a="">
-		<d/>
-		<x path="Void"/>
-	</f>
-	<x path="Bool"/>
-	<x path="Int"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></addEventListener>
+		<addEventListener public="1" set="method">
+			<f a="type:listener:?useCapture:?priority:?useWeakReference" v="::false:0:false">
+				<c path="String"/>
+				<f a="">
+					<d/>
+					<x path="Void"/>
+				</f>
+				<x path="Bool"/>
+				<x path="Int"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{useWeakReference:false,priority:0,useCapture:false}</e></m></meta>
+		</addEventListener>
 		<dispatchEvent public="1" set="method"><f a="event">
 	<c path="flash.events.Event"/>
 	<x path="Bool"/>
@@ -3909,15 +4168,18 @@
 	<c path="String"/>
 	<x path="Bool"/>
 </f></hasEventListener>
-		<removeEventListener public="1" set="method"><f a="type:listener:?useCapture">
-	<c path="String"/>
-	<f a="">
-		<d/>
-		<x path="Void"/>
-	</f>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></removeEventListener>
+		<removeEventListener public="1" set="method">
+			<f a="type:listener:?useCapture" v="::false">
+				<c path="String"/>
+				<f a="">
+					<d/>
+					<x path="Void"/>
+				</f>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{useCapture:false}</e></m></meta>
+		</removeEventListener>
 		<toString public="1" set="method"><f a=""><c path="String"/></f></toString>
 		<willTrigger public="1" set="method"><f a="type">
 	<c path="String"/>
@@ -4004,12 +4266,15 @@
 	<c path="flash.display.DisplayObject"/>
 	<x path="Bool"/>
 </f></hitTestObject>
-		<hitTestPoint public="1" set="method"><f a="x:y:?shapeFlag">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-</f></hitTestPoint>
+		<hitTestPoint public="1" set="method">
+			<f a="x:y:?shapeFlag" v="::false">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":value"><e>{shapeFlag:false}</e></m></meta>
+		</hitTestPoint>
 		<local3DToGlobal public="1" set="method">
 			<f a="point3d">
 				<c path="flash.geom.Vector3D"/>
@@ -4105,13 +4370,17 @@
 		<hitArea public="1"><c path="flash.display.Sprite"/></hitArea>
 		<soundTransform public="1"><c path="flash.media.SoundTransform"/></soundTransform>
 		<useHandCursor public="1"><x path="Bool"/></useHandCursor>
-		<startDrag public="1" set="method"><f a="?lockCenter:?bounds">
-	<x path="Bool"/>
-	<c path="flash.geom.Rectangle"/>
-	<x path="Void"/>
-</f></startDrag>
+		<startDrag public="1" set="method">
+			<f a="?lockCenter:?bounds" v="false:">
+				<x path="Bool"/>
+				<c path="flash.geom.Rectangle"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{lockCenter:false}</e></m></meta>
+		</startDrag>
 		<stopDrag public="1" set="method"><f a=""><x path="Void"/></f></stopDrag>
 		<new public="1" set="method"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.socket.client.SockClientTchatUI" params="" file="src/dl/socket/client/SockClientTchatUI.hx">
 		<extends path="flash.display.Sprite"/>
@@ -4145,33 +4414,34 @@
 	<c path="Array"><c path="dl.socket.client.SockClientUser"/></c>
 	<x path="Void"/>
 </f></changeRoom>
-		<cloneList get="inline" set="null" line="125"><f a="list">
+		<cloneList get="inline" set="null" line="127"><f a="list">
 	<c path="Array"><c path="dl.socket.client.SockClientUser"/></c>
 	<c path="Array"><c path="dl.socket.client.SockClientUser"/></c>
 </f></cloneList>
-		<clear get="inline" set="null" line="133"><f a=""><x path="Void"/></f></clear>
-		<appendTextAlign public="1" get="inline" set="null" line="139"><f a="t:?align" v=":'left'">
+		<clear get="inline" set="null" line="135"><f a=""><x path="Void"/></f></clear>
+		<appendTextAlign public="1" get="inline" set="null" line="141"><f a="t:?align">
 	<c path="String"/>
 	<c path="String"/>
 	<x path="Void"/>
 </f></appendTextAlign>
-		<appendText public="1" get="inline" set="null" line="145"><f a="t">
+		<appendText public="1" get="inline" set="null" line="147"><f a="t">
 	<c path="String"/>
 	<x path="Void"/>
 </f></appendText>
-		<refreshOthers public="1" get="inline" set="null" line="150"><f a="list">
+		<refreshOthers public="1" get="inline" set="null" line="152"><f a="list">
 	<c path="Array"><c path="dl.socket.client.SockClientUser"/></c>
 	<x path="Void"/>
 </f></refreshOthers>
-		<refreshRight set="method" line="190"><f a=""><x path="Void"/></f></refreshRight>
-		<refreshText get="inline" set="null" line="206"><f a=""><x path="Void"/></f></refreshText>
-		<resize public="1" set="method" line="211"><f a="?e" v="null">
+		<refreshRight set="method" line="192"><f a=""><x path="Void"/></f></refreshRight>
+		<refreshText get="inline" set="null" line="208"><f a=""><x path="Void"/></f></refreshText>
+		<resize public="1" set="method" line="213"><f a="?e">
 	<d/>
 	<x path="Void"/>
 </f></resize>
 		<new public="1" set="method" line="36"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.socket.client.SockClientUser" params="" file="src/dl/socket/client/SockClientUser.hx">
 		<name public="1"><c path="String"/></name>
@@ -4183,6 +4453,7 @@
 		<new public="1" set="method" line="17"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.socket.client.SockPipe" params="" file="src/dl/socket/client/SockPipe.hx">
 		<_FIRST_INIT line="18" static="1"><x path="Bool"/></_FIRST_INIT>
@@ -4208,31 +4479,32 @@
 	<c path="flash.events.ProgressEvent"/>
 	<x path="Void"/>
 </f></socketData>
-		<socketClose set="method" line="80"><f a="e">
+		<socketClose set="method" line="89"><f a="e">
 	<d/>
 	<x path="Void"/>
 </f></socketClose>
-		<socketError set="method" line="85"><f a="e">
+		<socketError set="method" line="94"><f a="e">
 	<d/>
 	<x path="Void"/>
 </f></socketError>
-		<close public="1" set="method" line="90"><f a=""><x path="Void"/></f></close>
+		<close public="1" set="method" line="99"><f a=""><x path="Void"/></f></close>
 		<new public="1" set="method" line="32"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.utils.Calcul" params="" file="src/dl/utils/Calcul.hx">
-		<exposant public="1" get="inline" set="null" line="13" static="1"><f a="n:?pow" v=":2">
+		<exposant public="1" get="inline" set="null" line="13" static="1"><f a="n:?pow">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Float"/>
 </f></exposant>
-		<exposantInt public="1" get="inline" set="null" line="17" static="1"><f a="n:?pow" v=":2">
+		<exposantInt public="1" get="inline" set="null" line="17" static="1"><f a="n:?pow">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Int"/>
 </f></exposantInt>
-		<nextPow public="1" get="inline" set="null" line="21" static="1"><f a="n:?pow" v=":2">
+		<nextPow public="1" get="inline" set="null" line="21" static="1"><f a="n:?pow">
 	<x path="Float"/>
 	<x path="Float"/>
 	<x path="Int"/>
@@ -4250,6 +4522,7 @@
 		<new public="1" set="method" line="10"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.utils.Obj" params="" file="src/dl/utils/Obj.hx">
 		<deepCopy public="1" params="T" set="method" line="17" static="1">
@@ -4257,11 +4530,13 @@
 				<c path="deepCopy.T"/>
 				<c path="deepCopy.T"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>* deep copy of anything</haxe_doc>
 		</deepCopy>
 		<new public="1" set="method" line="10"><f a=""><x path="Void"/></f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<typedef path="dl.utils.PosGrid" params="" file="src/dl/utils/PlatformLevelFactory.hx" module="dl.utils.PlatformLevelFactory"><a>
 	<j><x path="Int"/></j>
@@ -4336,6 +4611,7 @@
 		<haxe_doc>* Construct a platform level from a LevelDatas TypeDef
  * 
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="dl.utils.Timer" params="" file="src/dl/utils/Timer.hx">
 		<STAGE static="1"><c path="flash.display.Stage"/></STAGE>
@@ -4352,18 +4628,19 @@
 	<x path="Void"/>
 </f></onFrameUpdate>
 		<dispose public="1" set="method" line="37"><f a=""><x path="Void"/></f></dispose>
-		<update set="method" line="42"><f a="?e" v="null">
+		<update set="method" line="42"><f a="?e">
 	<d/>
 	<x path="Void"/>
 </f></update>
 		<restart public="1" set="method" line="67"><f a=""><x path="Void"/></f></restart>
-		<new public="1" set="method" line="22"><f a="?FPS:?sec" v="50:0">
+		<new public="1" set="method" line="22"><f a="?FPS:?sec">
 	<x path="Int"/>
 	<x path="Float"/>
 	<x path="Void"/>
 </f></new>
 		<haxe_doc>* ...
  * @author Namide</haxe_doc>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.display.MovieClip" params="" file="C:\HaxeToolkit\haxe\std/flash/display/MovieClip.hx" extern="1">
 		<extends path="flash.display.Sprite"/>
@@ -4405,6 +4682,7 @@
 		<prevScene public="1" set="method"><f a=""><x path="Void"/></f></prevScene>
 		<stop public="1" set="method"><f a=""><x path="Void"/></f></stop>
 		<new public="1" set="method"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
 		<haxe_dynamic><d/></haxe_dynamic>
 	</class>
 	<class path="flash.Boot" params="" file="C:\HaxeToolkit\haxe\std/flash/Boot.hx">
@@ -4420,11 +4698,14 @@
 	</a>
 	<c path="String"/>
 </f></enum_to_string>
-		<__instanceof public="1" set="method" line="92" static="1"><f a="v:t">
-	<d/>
-	<d/>
-	<x path="Bool"/>
-</f></__instanceof>
+		<__instanceof public="1" set="method" line="92" static="1">
+			<f a="v:t">
+				<d/>
+				<d/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</__instanceof>
 		<__clear_trace public="1" set="method" line="102" static="1"><f a=""><x path="Void"/></f></__clear_trace>
 		<__set_trace_color public="1" set="method" line="110" static="1"><f a="rgb">
 	<x path="UInt"/>
@@ -4436,23 +4717,48 @@
 	<t path="haxe.PosInfos"/>
 	<x path="Void"/>
 </f></__trace>
-		<__string_rec public="1" set="method" line="163" static="1"><f a="v:str">
-	<d/>
-	<c path="String"/>
-	<c path="String"/>
-</f></__string_rec>
+		<__string_rec public="1" set="method" line="163" static="1">
+			<f a="v:str">
+				<d/>
+				<c path="String"/>
+				<c path="String"/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</__string_rec>
 		<__unprotect__ set="method" line="208" static="1"><f a="s">
 	<c path="String"/>
 	<c path="String"/>
 </f></__unprotect__>
-		<start set="method" line="53"><f a=""><x path="Void"/></f></start>
+		<mapDynamic public="1" set="method" line="212" static="1">
+			<f a="d:f">
+				<d/>
+				<d/>
+				<unknown/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</mapDynamic>
+		<filterDynamic public="1" set="method" line="220" static="1">
+			<f a="d:f">
+				<d/>
+				<d/>
+				<unknown/>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</filterDynamic>
+		<start set="method" line="53">
+			<f a=""><x path="Void"/></f>
+			<meta><m n=":has_untyped"/></meta>
+		</start>
 		<doInitDelay set="method" line="74"><f a="_">
 	<unknown/>
 	<x path="Void"/>
 </f></doInitDelay>
 		<init set="method" line="79"><f a=""><x path="Void"/></f></init>
 		<new public="1" set="method" line="45"><f a=""><x path="Void"/></f></new>
-		<meta><m n=":keep"/></meta>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":keep"/>
+		</meta>
 	</class>
 	<class path="flash._Boot.RealBoot" params="" file="C:\HaxeToolkit\haxe\std/flash/Boot.hx" private="1" module="flash.Boot">
 		<extends path="flash.Boot"/>
@@ -4462,17 +4768,26 @@
 	</class>
 	<class path="flash.Lib" params="" file="C:\HaxeToolkit\haxe\std/flash/Lib.hx">
 		<current public="1" static="1"><c path="flash.display.MovieClip"/></current>
-		<meta><m n=":keep"/></meta>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
 	<class path="flash.Vector" params="T" file="C:\HaxeToolkit\haxe\std/flash/Vector.hx" extern="1">
-		<ofArray public="1" params="T" get="inline" set="null" line="47" static="1"><f a="v">
-	<c path="Array"><c path="ofArray.T"/></c>
-	<c path="flash.Vector"><c path="ofArray.T"/></c>
-</f></ofArray>
-		<convert public="1" params="T:U" get="inline" set="null" line="51" static="1"><f a="v">
-	<c path="flash.Vector"><c path="convert.T"/></c>
-	<c path="flash.Vector"><c path="convert.U"/></c>
-</f></convert>
+		<ofArray public="1" params="T" get="inline" set="null" line="47" static="1">
+			<f a="v">
+				<c path="Array"><c path="ofArray.T"/></c>
+				<c path="flash.Vector"><c path="ofArray.T"/></c>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</ofArray>
+		<convert public="1" params="T:U" get="inline" set="null" line="51" static="1">
+			<f a="v">
+				<c path="flash.Vector"><c path="convert.T"/></c>
+				<c path="flash.Vector"><c path="convert.U"/></c>
+			</f>
+			<meta><m n=":has_untyped"/></meta>
+		</convert>
 		<length public="1"><x path="Int"/></length>
 		<fixed public="1"><x path="Bool"/></fixed>
 		<concat public="1" set="method"><f a="?a">
@@ -4626,25 +4941,31 @@
 	<x path="UInt"/>
 	<x path="Void"/>
 </f></copyChannel>
-		<copyPixels public="1" set="method"><f a="sourceBitmapData:sourceRect:destPoint:?alphaBitmapData:?alphaPoint:?mergeAlpha">
-	<c path="flash.display.BitmapData"/>
-	<c path="flash.geom.Rectangle"/>
-	<c path="flash.geom.Point"/>
-	<c path="flash.display.BitmapData"/>
-	<c path="flash.geom.Point"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></copyPixels>
+		<copyPixels public="1" set="method">
+			<f a="sourceBitmapData:sourceRect:destPoint:?alphaBitmapData:?alphaPoint:?mergeAlpha" v=":::::false">
+				<c path="flash.display.BitmapData"/>
+				<c path="flash.geom.Rectangle"/>
+				<c path="flash.geom.Point"/>
+				<c path="flash.display.BitmapData"/>
+				<c path="flash.geom.Point"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{mergeAlpha:false}</e></m></meta>
+		</copyPixels>
 		<dispose public="1" set="method"><f a=""><x path="Void"/></f></dispose>
-		<draw public="1" set="method"><f a="source:?matrix:?colorTransform:?blendMode:?clipRect:?smoothing">
-	<c path="flash.display.IBitmapDrawable"/>
-	<c path="flash.geom.Matrix"/>
-	<c path="flash.geom.ColorTransform"/>
-	<e path="flash.display.BlendMode"/>
-	<c path="flash.geom.Rectangle"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></draw>
+		<draw public="1" set="method">
+			<f a="source:?matrix:?colorTransform:?blendMode:?clipRect:?smoothing" v=":::::false">
+				<c path="flash.display.IBitmapDrawable"/>
+				<c path="flash.geom.Matrix"/>
+				<c path="flash.geom.ColorTransform"/>
+				<e path="flash.display.BlendMode"/>
+				<c path="flash.geom.Rectangle"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{smoothing:false}</e></m></meta>
+		</draw>
 		<fillRect public="1" set="method"><f a="rect:color">
 	<c path="flash.geom.Rectangle"/>
 	<x path="UInt"/>
@@ -4661,12 +4982,15 @@
 	<c path="flash.filters.BitmapFilter"/>
 	<c path="flash.geom.Rectangle"/>
 </f></generateFilterRect>
-		<getColorBoundsRect public="1" set="method"><f a="mask:color:?findColor">
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Bool"/>
-	<c path="flash.geom.Rectangle"/>
-</f></getColorBoundsRect>
+		<getColorBoundsRect public="1" set="method">
+			<f a="mask:color:?findColor" v="::true">
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Bool"/>
+				<c path="flash.geom.Rectangle"/>
+			</f>
+			<meta><m n=":value"><e>{findColor:true}</e></m></meta>
+		</getColorBoundsRect>
 		<getPixel public="1" set="method"><f a="x:y">
 	<x path="Int"/>
 	<x path="Int"/>
@@ -4695,14 +5019,17 @@
 			</f>
 			<meta><m n=":require"><e>flash10</e></m></meta>
 		</histogram>
-		<hitTest public="1" set="method"><f a="firstPoint:firstAlphaThreshold:secondObject:?secondBitmapDataPoint:?secondAlphaThreshold">
-	<c path="flash.geom.Point"/>
-	<x path="UInt"/>
-	<t path="flash.utils.Object"/>
-	<c path="flash.geom.Point"/>
-	<x path="UInt"/>
-	<x path="Bool"/>
-</f></hitTest>
+		<hitTest public="1" set="method">
+			<f a="firstPoint:firstAlphaThreshold:secondObject:?secondBitmapDataPoint:?secondAlphaThreshold" v="::::1">
+				<c path="flash.geom.Point"/>
+				<x path="UInt"/>
+				<t path="flash.utils.Object"/>
+				<c path="flash.geom.Point"/>
+				<x path="UInt"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":value"><e>{secondAlphaThreshold:1}</e></m></meta>
+		</hitTest>
 		<lock public="1" set="method"><f a=""><x path="Void"/></f></lock>
 		<merge public="1" set="method"><f a="sourceBitmapData:sourceRect:destPoint:redMultiplier:greenMultiplier:blueMultiplier:alphaMultiplier">
 	<c path="flash.display.BitmapData"/>
@@ -4714,14 +5041,17 @@
 	<x path="UInt"/>
 	<x path="Void"/>
 </f></merge>
-		<noise public="1" set="method"><f a="randomSeed:?low:?high:?channelOptions:?grayScale">
-	<x path="Int"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></noise>
+		<noise public="1" set="method">
+			<f a="randomSeed:?low:?high:?channelOptions:?grayScale" v=":0:255:7:false">
+				<x path="Int"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{grayScale:false,channelOptions:7,high:255,low:0}</e></m></meta>
+		</noise>
 		<paletteMap public="1" set="method"><f a="sourceBitmapData:sourceRect:destPoint:?redArray:?greenArray:?blueArray:?alphaArray">
 	<c path="flash.display.BitmapData"/>
 	<c path="flash.geom.Rectangle"/>
@@ -4732,27 +5062,33 @@
 	<c path="Array"><x path="Int"/></c>
 	<x path="Void"/>
 </f></paletteMap>
-		<perlinNoise public="1" set="method"><f a="baseX:baseY:numOctaves:randomSeed:stitch:fractalNoise:?channelOptions:?grayScale:?offsets">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="UInt"/>
-	<x path="Int"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<x path="UInt"/>
-	<x path="Bool"/>
-	<c path="Array"><c path="flash.geom.Point"/></c>
-	<x path="Void"/>
-</f></perlinNoise>
-		<pixelDissolve public="1" set="method"><f a="sourceBitmapData:sourceRect:destPoint:?randomSeed:?numPixels:?fillColor">
-	<c path="flash.display.BitmapData"/>
-	<c path="flash.geom.Rectangle"/>
-	<c path="flash.geom.Point"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="UInt"/>
-	<x path="Int"/>
-</f></pixelDissolve>
+		<perlinNoise public="1" set="method">
+			<f a="baseX:baseY:numOctaves:randomSeed:stitch:fractalNoise:?channelOptions:?grayScale:?offsets" v="::::::7:false:">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="UInt"/>
+				<x path="Int"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="UInt"/>
+				<x path="Bool"/>
+				<c path="Array"><c path="flash.geom.Point"/></c>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{grayScale:false,channelOptions:7}</e></m></meta>
+		</perlinNoise>
+		<pixelDissolve public="1" set="method">
+			<f a="sourceBitmapData:sourceRect:destPoint:?randomSeed:?numPixels:?fillColor" v=":::0:0:0">
+				<c path="flash.display.BitmapData"/>
+				<c path="flash.geom.Rectangle"/>
+				<c path="flash.geom.Point"/>
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="UInt"/>
+				<x path="Int"/>
+			</f>
+			<meta><m n=":value"><e>{fillColor:0,numPixels:0,randomSeed:0}</e></m></meta>
+		</pixelDissolve>
 		<scroll public="1" set="method"><f a="x:y">
 	<x path="Int"/>
 	<x path="Int"/>
@@ -4783,28 +5119,34 @@
 			</f>
 			<meta><m n=":require"><e>flash10</e></m></meta>
 		</setVector>
-		<threshold public="1" set="method"><f a="sourceBitmapData:sourceRect:destPoint:operation:threshold:?color:?mask:?copySource">
-	<c path="flash.display.BitmapData"/>
-	<c path="flash.geom.Rectangle"/>
-	<c path="flash.geom.Point"/>
-	<c path="String"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Bool"/>
-	<x path="UInt"/>
-</f></threshold>
+		<threshold public="1" set="method">
+			<f a="sourceBitmapData:sourceRect:destPoint:operation:threshold:?color:?mask:?copySource" v=":::::0:0xFFFFFFFF:false">
+				<c path="flash.display.BitmapData"/>
+				<c path="flash.geom.Rectangle"/>
+				<c path="flash.geom.Point"/>
+				<c path="String"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Bool"/>
+				<x path="UInt"/>
+			</f>
+			<meta><m n=":value"><e>{copySource:false,mask:0xFFFFFFFF,color:0}</e></m></meta>
+		</threshold>
 		<unlock public="1" set="method"><f a="?changeRect">
 	<c path="flash.geom.Rectangle"/>
 	<x path="Void"/>
 </f></unlock>
-		<new public="1" set="method"><f a="width:height:?transparent:?fillColor">
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Bool"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="width:height:?transparent:?fillColor" v="::true:0xFFFFFFFF">
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Bool"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{fillColor:0xFFFFFFFF,transparent:true}</e></m></meta>
+		</new>
 	</class>
 	<enum path="flash.display.BlendMode" params="" file="C:\HaxeToolkit\haxe\std/flash/display/BlendMode.hx">
 		<ADD/>
@@ -4876,29 +5218,38 @@
 		</meta>
 	</enum>
 	<class path="flash.display.Graphics" params="" file="C:\HaxeToolkit\haxe\std/flash/display/Graphics.hx" extern="1">
-		<beginBitmapFill public="1" set="method"><f a="bitmap:?matrix:?repeat:?smooth">
-	<c path="flash.display.BitmapData"/>
-	<c path="flash.geom.Matrix"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></beginBitmapFill>
-		<beginFill public="1" set="method"><f a="color:?alpha">
-	<x path="UInt"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></beginFill>
-		<beginGradientFill public="1" set="method"><f a="type:colors:alphas:ratios:?matrix:?spreadMethod:?interpolationMethod:?focalPointRatio">
-	<e path="flash.display.GradientType"/>
-	<c path="Array"><x path="UInt"/></c>
-	<c path="Array"><d/></c>
-	<c path="Array"><d/></c>
-	<c path="flash.geom.Matrix"/>
-	<e path="flash.display.SpreadMethod"/>
-	<e path="flash.display.InterpolationMethod"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></beginGradientFill>
+		<beginBitmapFill public="1" set="method">
+			<f a="bitmap:?matrix:?repeat:?smooth" v="::true:false">
+				<c path="flash.display.BitmapData"/>
+				<c path="flash.geom.Matrix"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{smooth:false,repeat:true}</e></m></meta>
+		</beginBitmapFill>
+		<beginFill public="1" set="method">
+			<f a="color:?alpha" v=":1">
+				<x path="UInt"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{alpha:1}</e></m></meta>
+		</beginFill>
+		<beginGradientFill public="1" set="method">
+			<f a="type:colors:alphas:ratios:?matrix:?spreadMethod:?interpolationMethod:?focalPointRatio" v=":::::::0">
+				<e path="flash.display.GradientType"/>
+				<c path="Array"><x path="UInt"/></c>
+				<c path="Array"><d/></c>
+				<c path="Array"><d/></c>
+				<c path="flash.geom.Matrix"/>
+				<e path="flash.display.SpreadMethod"/>
+				<e path="flash.display.InterpolationMethod"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{focalPointRatio:0}</e></m></meta>
+		</beginGradientFill>
 		<beginShaderFill public="1" set="method">
 			<f a="shader:?matrix">
 				<c path="flash.display.Shader"/>
@@ -4990,26 +5341,32 @@
 		</drawTriangles>
 		<endFill public="1" set="method"><f a=""><x path="Void"/></f></endFill>
 		<lineBitmapStyle public="1" set="method">
-			<f a="bitmap:?matrix:?repeat:?smooth">
+			<f a="bitmap:?matrix:?repeat:?smooth" v="::true:false">
 				<c path="flash.display.BitmapData"/>
 				<c path="flash.geom.Matrix"/>
 				<x path="Bool"/>
 				<x path="Bool"/>
 				<x path="Void"/>
 			</f>
-			<meta><m n=":require"><e>flash10</e></m></meta>
+			<meta>
+				<m n=":value"><e>{smooth:false,repeat:true}</e></m>
+				<m n=":require"><e>flash10</e></m>
+			</meta>
 		</lineBitmapStyle>
-		<lineGradientStyle public="1" set="method"><f a="type:colors:alphas:ratios:?matrix:?spreadMethod:?interpolationMethod:?focalPointRatio">
-	<e path="flash.display.GradientType"/>
-	<c path="Array"><x path="UInt"/></c>
-	<c path="Array"><d/></c>
-	<c path="Array"><d/></c>
-	<c path="flash.geom.Matrix"/>
-	<e path="flash.display.SpreadMethod"/>
-	<e path="flash.display.InterpolationMethod"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></lineGradientStyle>
+		<lineGradientStyle public="1" set="method">
+			<f a="type:colors:alphas:ratios:?matrix:?spreadMethod:?interpolationMethod:?focalPointRatio" v=":::::::0">
+				<e path="flash.display.GradientType"/>
+				<c path="Array"><x path="UInt"/></c>
+				<c path="Array"><d/></c>
+				<c path="Array"><d/></c>
+				<c path="flash.geom.Matrix"/>
+				<e path="flash.display.SpreadMethod"/>
+				<e path="flash.display.InterpolationMethod"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{focalPointRatio:0}</e></m></meta>
+		</lineGradientStyle>
 		<lineShaderStyle public="1" set="method">
 			<f a="shader:?matrix">
 				<c path="flash.display.Shader"/>
@@ -5018,17 +5375,20 @@
 			</f>
 			<meta><m n=":require"><e>flash10</e></m></meta>
 		</lineShaderStyle>
-		<lineStyle public="1" set="method"><f a="?thickness:?color:?alpha:?pixelHinting:?scaleMode:?caps:?joints:?miterLimit">
-	<x path="Float"/>
-	<x path="UInt"/>
-	<x path="Float"/>
-	<x path="Bool"/>
-	<e path="flash.display.LineScaleMode"/>
-	<e path="flash.display.CapsStyle"/>
-	<e path="flash.display.JointStyle"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></lineStyle>
+		<lineStyle public="1" set="method">
+			<f a="?thickness:?color:?alpha:?pixelHinting:?scaleMode:?caps:?joints:?miterLimit" v=":0:1:false::::3">
+				<x path="Float"/>
+				<x path="UInt"/>
+				<x path="Float"/>
+				<x path="Bool"/>
+				<e path="flash.display.LineScaleMode"/>
+				<e path="flash.display.CapsStyle"/>
+				<e path="flash.display.JointStyle"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{miterLimit:3,pixelHinting:false,alpha:1,color:0}</e></m></meta>
+		</lineStyle>
 		<lineTo public="1" set="method"><f a="x:y">
 	<x path="Float"/>
 	<x path="Float"/>
@@ -5095,11 +5455,14 @@
 </f></loadBytes>
 		<unload public="1" set="method"><f a=""><x path="Void"/></f></unload>
 		<unloadAndStop public="1" set="method">
-			<f a="?gc">
+			<f a="?gc" v="true">
 				<x path="Bool"/>
 				<x path="Void"/>
 			</f>
-			<meta><m n=":require"><e>flash10</e></m></meta>
+			<meta>
+				<m n=":value"><e>{gc:true}</e></m>
+				<m n=":require"><e>flash10</e></m>
+			</meta>
 		</unloadAndStop>
 		<new public="1" set="method"><f a=""><x path="Void"/></f></new>
 	</class>
@@ -5213,7 +5576,7 @@
 		<x public="1"><x path="Float"/></x>
 		<y public="1"><x path="Float"/></y>
 		<requestContext3D public="1" set="method"><f a="?context3DRenderMode:?profile">
-	<c path="String"/>
+	<e path="flash.display3D.Context3DRenderMode"/>
 	<e path="flash.display3D.Context3DProfile"/>
 	<x path="Void"/>
 </f></requestContext3D>
@@ -5279,63 +5642,84 @@
 		<extends path="flash.events.EventDispatcher"/>
 		<driverInfo public="1" set="null"><c path="String"/></driverInfo>
 		<enableErrorChecking public="1"><x path="Bool"/></enableErrorChecking>
-		<clear public="1" set="method"><f a="?red:?green:?blue:?alpha:?depth:?stencil:?mask">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></clear>
-		<configureBackBuffer public="1" set="method"><f a="width:height:antiAlias:?enableDepthAndStencil:?wantsBestResolution">
+		<clear public="1" set="method">
+			<f a="?red:?green:?blue:?alpha:?depth:?stencil:?mask" v="0:0:0:1:1:0:0xFFFFFFFF">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{mask:0xFFFFFFFF,stencil:0,depth:1,alpha:1,blue:0,green:0,red:0}</e></m></meta>
+		</clear>
+		<configureBackBuffer public="1" set="method">
+			<f a="width:height:antiAlias:?enableDepthAndStencil:?wantsBestResolution:?wantsBestResolutionOnBrowserZoom" v=":::true:false:false">
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{wantsBestResolutionOnBrowserZoom:false,wantsBestResolution:false,enableDepthAndStencil:true}</e></m></meta>
+		</configureBackBuffer>
+		<createCubeTexture public="1" set="method">
+			<f a="size:format:optimizeForRenderToTexture:?streamingLevels" v=":::0">
+				<x path="Int"/>
+				<e path="flash.display3D.Context3DTextureFormat"/>
+				<x path="Bool"/>
+				<x path="Int"/>
+				<c path="flash.display3D.textures.CubeTexture"/>
+			</f>
+			<meta><m n=":value"><e>{streamingLevels:0}</e></m></meta>
+		</createCubeTexture>
+		<createIndexBuffer public="1" set="method"><f a="numIndices:?bufferUsage">
 	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></configureBackBuffer>
-		<createCubeTexture public="1" set="method"><f a="size:format:optimizeForRenderToTexture:?streamingLevels">
-	<x path="Int"/>
-	<e path="flash.display3D.Context3DTextureFormat"/>
-	<x path="Bool"/>
-	<x path="Int"/>
-	<c path="flash.display3D.textures.CubeTexture"/>
-</f></createCubeTexture>
-		<createIndexBuffer public="1" set="method"><f a="numIndices">
-	<x path="Int"/>
+	<e path="flash.display3D.Context3DBufferUsage"/>
 	<c path="flash.display3D.IndexBuffer3D"/>
 </f></createIndexBuffer>
 		<createProgram public="1" set="method"><f a=""><c path="flash.display3D.Program3D"/></f></createProgram>
-		<createTexture public="1" set="method"><f a="width:height:format:optimizeForRenderToTexture:?streamingLevels">
+		<createTexture public="1" set="method">
+			<f a="width:height:format:optimizeForRenderToTexture:?streamingLevels" v="::::0">
+				<x path="Int"/>
+				<x path="Int"/>
+				<e path="flash.display3D.Context3DTextureFormat"/>
+				<x path="Bool"/>
+				<x path="Int"/>
+				<c path="flash.display3D.textures.Texture"/>
+			</f>
+			<meta><m n=":value"><e>{streamingLevels:0}</e></m></meta>
+		</createTexture>
+		<createVertexBuffer public="1" set="method"><f a="numVertices:data32PerVertex:?bufferUsage">
 	<x path="Int"/>
 	<x path="Int"/>
-	<e path="flash.display3D.Context3DTextureFormat"/>
-	<x path="Bool"/>
-	<x path="Int"/>
-	<c path="flash.display3D.textures.Texture"/>
-</f></createTexture>
-		<createVertexBuffer public="1" set="method"><f a="numVertices:data32PerVertex">
-	<x path="Int"/>
-	<x path="Int"/>
+	<e path="flash.display3D.Context3DBufferUsage"/>
 	<c path="flash.display3D.VertexBuffer3D"/>
 </f></createVertexBuffer>
-		<dispose public="1" set="method"><f a="?recreate">
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></dispose>
+		<dispose public="1" set="method">
+			<f a="?recreate" v="true">
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{recreate:true}</e></m></meta>
+		</dispose>
 		<drawToBitmapData public="1" set="method"><f a="destination">
 	<c path="flash.display.BitmapData"/>
 	<x path="Void"/>
 </f></drawToBitmapData>
-		<drawTriangles public="1" set="method"><f a="indexBuffer:?firstIndex:?numTriangles">
-	<c path="flash.display3D.IndexBuffer3D"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></drawTriangles>
+		<drawTriangles public="1" set="method">
+			<f a="indexBuffer:?firstIndex:?numTriangles" v=":0:-1">
+				<c path="flash.display3D.IndexBuffer3D"/>
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{numTriangles:-1,firstIndex:0}</e></m></meta>
+		</drawTriangles>
 		<present public="1" set="method"><f a=""><x path="Void"/></f></present>
 		<setBlendFactors public="1" set="method"><f a="sourceFactor:destinationFactor">
 	<e path="flash.display3D.Context3DBlendFactor"/>
@@ -5362,28 +5746,38 @@
 	<c path="flash.display3D.Program3D"/>
 	<x path="Void"/>
 </f></setProgram>
-		<setProgramConstantsFromMatrix public="1" set="method"><f a="programType:firstRegister:matrix:?transposedMatrix">
-	<e path="flash.display3D.Context3DProgramType"/>
-	<x path="Int"/>
-	<c path="flash.geom.Matrix3D"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></setProgramConstantsFromMatrix>
-		<setProgramConstantsFromVector public="1" set="method"><f a="programType:firstRegister:data:?numRegisters">
-	<e path="flash.display3D.Context3DProgramType"/>
-	<x path="Int"/>
-	<c path="flash.Vector"><x path="Float"/></c>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></setProgramConstantsFromVector>
+		<setProgramConstantsFromMatrix public="1" set="method">
+			<f a="programType:firstRegister:matrix:?transposedMatrix" v=":::false">
+				<e path="flash.display3D.Context3DProgramType"/>
+				<x path="Int"/>
+				<c path="flash.geom.Matrix3D"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{transposedMatrix:false}</e></m></meta>
+		</setProgramConstantsFromMatrix>
+		<setProgramConstantsFromVector public="1" set="method">
+			<f a="programType:firstRegister:data:?numRegisters" v=":::-1">
+				<e path="flash.display3D.Context3DProgramType"/>
+				<x path="Int"/>
+				<c path="flash.Vector"><x path="Float"/></c>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{numRegisters:-1}</e></m></meta>
+		</setProgramConstantsFromVector>
 		<setRenderToBackBuffer public="1" set="method"><f a=""><x path="Void"/></f></setRenderToBackBuffer>
-		<setRenderToTexture public="1" set="method"><f a="texture:?enableDepthAndStencil:?antiAlias:?surfaceSelector">
-	<c path="flash.display3D.textures.TextureBase"/>
-	<x path="Bool"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></setRenderToTexture>
+		<setRenderToTexture public="1" set="method">
+			<f a="texture:?enableDepthAndStencil:?antiAlias:?surfaceSelector:?colorOutputIndex" v=":false:0:0:0">
+				<c path="flash.display3D.textures.TextureBase"/>
+				<x path="Bool"/>
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{colorOutputIndex:0,surfaceSelector:0,antiAlias:0,enableDepthAndStencil:false}</e></m></meta>
+		</setRenderToTexture>
 		<setScissorRectangle public="1" set="method"><f a="rectangle">
 	<c path="flash.geom.Rectangle"/>
 	<x path="Void"/>
@@ -5396,24 +5790,30 @@
 	<e path="flash.display3D.Context3DStencilAction"/>
 	<x path="Void"/>
 </f></setStencilActions>
-		<setStencilReferenceValue public="1" set="method"><f a="referenceValue:?readMask:?writeMask">
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></setStencilReferenceValue>
+		<setStencilReferenceValue public="1" set="method">
+			<f a="referenceValue:?readMask:?writeMask" v=":255:255">
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{writeMask:255,readMask:255}</e></m></meta>
+		</setStencilReferenceValue>
 		<setTextureAt public="1" set="method"><f a="sampler:texture">
 	<x path="Int"/>
 	<c path="flash.display3D.textures.TextureBase"/>
 	<x path="Void"/>
 </f></setTextureAt>
-		<setVertexBufferAt public="1" set="method"><f a="index:buffer:?bufferOffset:?format">
-	<x path="Int"/>
-	<c path="flash.display3D.VertexBuffer3D"/>
-	<x path="Int"/>
-	<e path="flash.display3D.Context3DVertexBufferFormat"/>
-	<x path="Void"/>
-</f></setVertexBufferAt>
+		<setVertexBufferAt public="1" set="method">
+			<f a="index:buffer:?bufferOffset:?format" v="::0:">
+				<x path="Int"/>
+				<c path="flash.display3D.VertexBuffer3D"/>
+				<x path="Int"/>
+				<e path="flash.display3D.Context3DVertexBufferFormat"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{bufferOffset:0}</e></m></meta>
+		</setVertexBufferAt>
 		<meta><m n=":final"/></meta>
 	</class>
 	<enum path="flash.display3D.Context3DBlendFactor" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DBlendFactor.hx">
@@ -5432,6 +5832,15 @@
 			<m n=":fakeEnum"><e>String</e></m>
 		</meta>
 	</enum>
+	<enum path="flash.display3D.Context3DBufferUsage" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DBufferUsage.hx">
+		<DYNAMIC_DRAW/>
+		<STATIC_DRAW/>
+		<meta>
+			<m n=":flatEnum"/>
+			<m n=":fakeEnum"><e>String</e></m>
+			<m n=":require"><e>flash12</e></m>
+		</meta>
+	</enum>
 	<enum path="flash.display3D.Context3DCompareMode" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DCompareMode.hx">
 		<ALWAYS/>
 		<EQUAL/>
@@ -5444,6 +5853,15 @@
 		<meta>
 			<m n=":flatEnum"/>
 			<m n=":fakeEnum"><e>String</e></m>
+		</meta>
+	</enum>
+	<enum path="flash.display3D.Context3DFillMode" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DFillMode.hx">
+		<SOLID/>
+		<WIREFRAME/>
+		<meta>
+			<m n=":flatEnum"/>
+			<m n=":fakeEnum"><e>String</e></m>
+			<m n=":require"><e>flash16</e></m>
 		</meta>
 	</enum>
 	<enum path="flash.display3D.Context3DMipFilter" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DMipFilter.hx">
@@ -5459,6 +5877,8 @@
 		<BASELINE/>
 		<BASELINE_CONSTRAINED/>
 		<BASELINE_EXTENDED/>
+		<STANDARD/>
+		<STANDARD_CONSTRAINED/>
 		<meta>
 			<m n=":flatEnum"/>
 			<m n=":fakeEnum"><e>String</e></m>
@@ -5467,6 +5887,14 @@
 	<enum path="flash.display3D.Context3DProgramType" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DProgramType.hx">
 		<FRAGMENT/>
 		<VERTEX/>
+		<meta>
+			<m n=":flatEnum"/>
+			<m n=":fakeEnum"><e>String</e></m>
+		</meta>
+	</enum>
+	<enum path="flash.display3D.Context3DRenderMode" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DRenderMode.hx">
+		<AUTO/>
+		<SOFTWARE/>
 		<meta>
 			<m n=":flatEnum"/>
 			<m n=":fakeEnum"><e>String</e></m>
@@ -5487,6 +5915,10 @@
 		</meta>
 	</enum>
 	<enum path="flash.display3D.Context3DTextureFilter" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DTextureFilter.hx">
+		<ANISOTROPIC16X/>
+		<ANISOTROPIC2X/>
+		<ANISOTROPIC4X/>
+		<ANISOTROPIC8X/>
 		<LINEAR/>
 		<NEAREST/>
 		<meta>
@@ -5500,6 +5932,7 @@
 		<BGR_PACKED/>
 		<COMPRESSED/>
 		<COMPRESSED_ALPHA/>
+		<RGBA_HALF_FLOAT/>
 		<meta>
 			<m n=":flatEnum"/>
 			<m n=":fakeEnum"><e>String</e></m>
@@ -5528,7 +5961,9 @@
 	</enum>
 	<enum path="flash.display3D.Context3DWrapMode" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/Context3DWrapMode.hx">
 		<CLAMP/>
+		<CLAMP_U_REPEAT_V/>
 		<REPEAT/>
+		<REPEAT_U_CLAMP_V/>
 		<meta>
 			<m n=":flatEnum"/>
 			<m n=":fakeEnum"><e>String</e></m>
@@ -5582,25 +6017,34 @@
 	</class>
 	<class path="flash.display3D.textures.CubeTexture" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/textures/CubeTexture.hx" extern="1">
 		<extends path="flash.display3D.textures.TextureBase"/>
-		<uploadCompressedTextureFromByteArray public="1" set="method"><f a="data:byteArrayOffset:?async">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></uploadCompressedTextureFromByteArray>
-		<uploadFromBitmapData public="1" set="method"><f a="source:side:?miplevel">
-	<c path="flash.display.BitmapData"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></uploadFromBitmapData>
-		<uploadFromByteArray public="1" set="method"><f a="data:byteArrayOffset:side:?miplevel">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></uploadFromByteArray>
+		<uploadCompressedTextureFromByteArray public="1" set="method">
+			<f a="data:byteArrayOffset:?async" v="::false">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{async:false}</e></m></meta>
+		</uploadCompressedTextureFromByteArray>
+		<uploadFromBitmapData public="1" set="method">
+			<f a="source:side:?miplevel" v="::0">
+				<c path="flash.display.BitmapData"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{miplevel:0}</e></m></meta>
+		</uploadFromBitmapData>
+		<uploadFromByteArray public="1" set="method">
+			<f a="data:byteArrayOffset:side:?miplevel" v=":::0">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{miplevel:0}</e></m></meta>
+		</uploadFromByteArray>
 		<meta><m n=":final"/></meta>
 	</class>
 	<class path="flash.display3D.textures.RectangleTexture" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/textures/RectangleTexture.hx" extern="1">
@@ -5619,23 +6063,47 @@
 	</class>
 	<class path="flash.display3D.textures.Texture" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/textures/Texture.hx" extern="1">
 		<extends path="flash.display3D.textures.TextureBase"/>
-		<uploadCompressedTextureFromByteArray public="1" set="method"><f a="data:byteArrayOffset:?async">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="Bool"/>
+		<uploadCompressedTextureFromByteArray public="1" set="method">
+			<f a="data:byteArrayOffset:?async" v="::false">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{async:false}</e></m></meta>
+		</uploadCompressedTextureFromByteArray>
+		<uploadFromBitmapData public="1" set="method">
+			<f a="source:?miplevel" v=":0">
+				<c path="flash.display.BitmapData"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{miplevel:0}</e></m></meta>
+		</uploadFromBitmapData>
+		<uploadFromByteArray public="1" set="method">
+			<f a="data:byteArrayOffset:?miplevel" v="::0">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{miplevel:0}</e></m></meta>
+		</uploadFromByteArray>
+		<meta><m n=":final"/></meta>
+	</class>
+	<class path="flash.display3D.textures.VideoTexture" params="" file="C:\HaxeToolkit\haxe\std/flash/display3D/textures/VideoTexture.hx" extern="1">
+		<extends path="flash.display3D.textures.TextureBase"/>
+		<videoHeight public="1" set="null"><x path="Int"/></videoHeight>
+		<videoWidth public="1" set="null"><x path="Int"/></videoWidth>
+		<attachCamera public="1" set="method"><f a="theCamera">
+	<c path="flash.media.Camera"/>
 	<x path="Void"/>
-</f></uploadCompressedTextureFromByteArray>
-		<uploadFromBitmapData public="1" set="method"><f a="source:?miplevel">
-	<c path="flash.display.BitmapData"/>
-	<x path="UInt"/>
+</f></attachCamera>
+		<attachNetStream public="1" set="method"><f a="netStream">
+	<c path="flash.net.NetStream"/>
 	<x path="Void"/>
-</f></uploadFromBitmapData>
-		<uploadFromByteArray public="1" set="method"><f a="data:byteArrayOffset:?miplevel">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></uploadFromByteArray>
+</f></attachNetStream>
+		<new public="1" set="method"><f a=""><x path="Void"/></f></new>
 		<meta><m n=":final"/></meta>
 	</class>
 	<class path="flash.errors.Error" params="" file="C:\HaxeToolkit\haxe\std/flash/errors/Error.hx" extern="1">
@@ -5658,11 +6126,14 @@
 		<message public="1"><d/></message>
 		<name public="1"><d/></name>
 		<getStackTrace public="1" set="method"><f a=""><c path="String"/></f></getStackTrace>
-		<new public="1" set="method"><f a="?message:?id">
-	<d/>
-	<d/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?message:?id" v=":0">
+				<d/>
+				<d/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{id:0}</e></m></meta>
+		</new>
 		<haxe_dynamic><d/></haxe_dynamic>
 	</class>
 	<class path="flash.events.Event" params="" file="C:\HaxeToolkit\haxe\std/flash/events/Event.hx" extern="1">
@@ -5745,37 +6216,47 @@
 		<stopImmediatePropagation public="1" set="method"><f a=""><x path="Void"/></f></stopImmediatePropagation>
 		<stopPropagation public="1" set="method"><f a=""><x path="Void"/></f></stopPropagation>
 		<toString public="1" set="method"><f a=""><c path="String"/></f></toString>
-		<new public="1" set="method"><f a="type:?bubbles:?cancelable">
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="type:?bubbles:?cancelable" v=":false:false">
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{cancelable:false,bubbles:false}</e></m></meta>
+		</new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.events.TextEvent" params="" file="C:\HaxeToolkit\haxe\std/flash/events/TextEvent.hx" extern="1">
 		<extends path="flash.events.Event"/>
 		<LINK public="1" static="1"><c path="String"/></LINK>
 		<TEXT_INPUT public="1" static="1"><c path="String"/></TEXT_INPUT>
 		<text public="1"><c path="String"/></text>
-		<new public="1" set="method"><f a="type:?bubbles:?cancelable:?text">
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<c path="String"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="type:?bubbles:?cancelable:?text" v=":false:false:">
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<c path="String"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{cancelable:false,bubbles:false}</e></m></meta>
+		</new>
 	</class>
 	<class path="flash.events.ErrorEvent" params="" file="C:\HaxeToolkit\haxe\std/flash/events/ErrorEvent.hx" extern="1">
 		<extends path="flash.events.TextEvent"/>
 		<ERROR public="1" static="1"><c path="String"/></ERROR>
-		<new public="1" set="method"><f a="type:?bubbles:?cancelable:?text:?id">
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<c path="String"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="type:?bubbles:?cancelable:?text:?id" v=":false:false::0">
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<c path="String"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{id:0,cancelable:false,bubbles:false}</e></m></meta>
+		</new>
 	</class>
 	<enum path="flash.events.EventPhase" params="" file="C:\HaxeToolkit\haxe\std/flash/events/EventPhase.hx">
 		<AT_TARGET/>
@@ -5792,14 +6273,18 @@
 		<IO_ERROR public="1" static="1"><c path="String"/></IO_ERROR>
 		<NETWORK_ERROR public="1" static="1"><c path="String"/></NETWORK_ERROR>
 		<VERIFY_ERROR public="1" static="1"><c path="String"/></VERIFY_ERROR>
-		<new public="1" set="method"><f a="type:?bubbles:?cancelable:?text:?id">
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<c path="String"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="type:?bubbles:?cancelable:?text:?id" v=":false:false::0">
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<c path="String"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{id:0,cancelable:false,bubbles:false}</e></m></meta>
+		</new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.events.KeyboardEvent" params="" file="C:\HaxeToolkit\haxe\std/flash/events/KeyboardEvent.hx" extern="1">
 		<extends path="flash.events.Event"/>
@@ -5812,18 +6297,22 @@
 		<keyLocation public="1"><e path="flash.ui.KeyLocation"/></keyLocation>
 		<shiftKey public="1"><x path="Bool"/></shiftKey>
 		<updateAfterEvent public="1" set="method"><f a=""><x path="Void"/></f></updateAfterEvent>
-		<new public="1" set="method"><f a="type:?bubbles:?cancelable:?charCodeValue:?keyCodeValue:?keyLocationValue:?ctrlKeyValue:?altKeyValue:?shiftKeyValue">
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<e path="flash.ui.KeyLocation"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="type:?bubbles:?cancelable:?charCodeValue:?keyCodeValue:?keyLocationValue:?ctrlKeyValue:?altKeyValue:?shiftKeyValue" v=":true:false:0:0:0:false:false:false">
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<e path="flash.ui.KeyLocation"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{shiftKeyValue:false,altKeyValue:false,ctrlKeyValue:false,keyLocationValue:0,keyCodeValue:0,charCodeValue:0,cancelable:false,bubbles:true}</e></m></meta>
+		</new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.events.ProgressEvent" params="" file="C:\HaxeToolkit\haxe\std/flash/events/ProgressEvent.hx" extern="1">
 		<extends path="flash.events.Event"/>
@@ -5831,26 +6320,34 @@
 		<SOCKET_DATA public="1" static="1"><c path="String"/></SOCKET_DATA>
 		<bytesLoaded public="1"><x path="Float"/></bytesLoaded>
 		<bytesTotal public="1"><x path="Float"/></bytesTotal>
-		<new public="1" set="method"><f a="type:?bubbles:?cancelable:?bytesLoaded:?bytesTotal">
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="type:?bubbles:?cancelable:?bytesLoaded:?bytesTotal" v=":false:false:0:0">
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{bytesTotal:0,bytesLoaded:0,cancelable:false,bubbles:false}</e></m></meta>
+		</new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.events.SecurityErrorEvent" params="" file="C:\HaxeToolkit\haxe\std/flash/events/SecurityErrorEvent.hx" extern="1">
 		<extends path="flash.events.ErrorEvent"/>
 		<SECURITY_ERROR public="1" static="1"><c path="String"/></SECURITY_ERROR>
-		<new public="1" set="method"><f a="type:?bubbles:?cancelable:?text:?id">
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-	<c path="String"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="type:?bubbles:?cancelable:?text:?id" v=":false:false::0">
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+				<c path="String"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{id:0,cancelable:false,bubbles:false}</e></m></meta>
+		</new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.events.UncaughtErrorEvents" params="" file="C:\HaxeToolkit\haxe\std/flash/events/UncaughtErrorEvents.hx" extern="1">
 		<extends path="flash.events.EventDispatcher"/>
@@ -5895,17 +6392,20 @@
 	<x path="Void"/>
 </f></concat>
 		<toString public="1" set="method"><f a=""><c path="String"/></f></toString>
-		<new public="1" set="method"><f a="?redMultiplier:?greenMultiplier:?blueMultiplier:?alphaMultiplier:?redOffset:?greenOffset:?blueOffset:?alphaOffset">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?redMultiplier:?greenMultiplier:?blueMultiplier:?alphaMultiplier:?redOffset:?greenOffset:?blueOffset:?alphaOffset" v="1:1:1:1:0:0:0:0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{alphaOffset:0,blueOffset:0,greenOffset:0,redOffset:0,alphaMultiplier:1,blueMultiplier:1,greenMultiplier:1,redMultiplier:1}</e></m></meta>
+		</new>
 	</class>
 	<class path="flash.geom.Matrix" params="" file="C:\HaxeToolkit\haxe\std/flash/geom/Matrix.hx" extern="1">
 		<a public="1"><x path="Float"/></a>
@@ -5919,22 +6419,28 @@
 	<c path="flash.geom.Matrix"/>
 	<x path="Void"/>
 </f></concat>
-		<createBox public="1" set="method"><f a="scaleX:scaleY:?rotation:?tx:?ty">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></createBox>
-		<createGradientBox public="1" set="method"><f a="width:height:?rotation:?tx:?ty">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></createGradientBox>
+		<createBox public="1" set="method">
+			<f a="scaleX:scaleY:?rotation:?tx:?ty" v="::0:0:0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{ty:0,tx:0,rotation:0}</e></m></meta>
+		</createBox>
+		<createGradientBox public="1" set="method">
+			<f a="width:height:?rotation:?tx:?ty" v="::0:0:0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{ty:0,tx:0,rotation:0}</e></m></meta>
+		</createGradientBox>
 		<deltaTransformPoint public="1" set="method"><f a="point">
 	<c path="flash.geom.Point"/>
 	<c path="flash.geom.Point"/>
@@ -5960,15 +6466,18 @@
 	<x path="Float"/>
 	<x path="Void"/>
 </f></translate>
-		<new public="1" set="method"><f a="?a:?b:?c:?d:?tx:?ty">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?a:?b:?c:?d:?tx:?ty" v="1:0:0:1:0:0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{ty:0,tx:0,d:1,c:0,b:0,a:1}</e></m></meta>
+		</new>
 	</class>
 	<class path="flash.geom.Matrix3D" params="" file="C:\HaxeToolkit\haxe\std/flash/geom/Matrix3D.hx" extern="1">
 		<interpolate public="1" set="method" static="1"><f a="thisMat:toMat:percent">
@@ -6127,11 +6636,14 @@
 	<c path="flash.geom.Point"/>
 </f></subtract>
 		<toString public="1" set="method"><f a=""><c path="String"/></f></toString>
-		<new public="1" set="method"><f a="?x:?y">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?x:?y" v="0:0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{y:0,x:0}</e></m></meta>
+		</new>
 	</class>
 	<class path="flash.geom.Rectangle" params="" file="C:\HaxeToolkit\haxe\std/flash/geom/Rectangle.hx" extern="1">
 		<bottom public="1"><x path="Float"/></bottom>
@@ -6196,13 +6708,16 @@
 	<c path="flash.geom.Rectangle"/>
 	<c path="flash.geom.Rectangle"/>
 </f></union>
-		<new public="1" set="method"><f a="?x:?y:?width:?height">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?x:?y:?width:?height" v="0:0:0:0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{height:0,width:0,y:0,x:0}</e></m></meta>
+		</new>
 	</class>
 	<class path="flash.geom.Transform" params="" file="C:\HaxeToolkit\haxe\std/flash/geom/Transform.hx" extern="1">
 		<colorTransform public="1"><c path="flash.geom.ColorTransform"/></colorTransform>
@@ -6267,21 +6782,27 @@
 	<c path="flash.geom.Vector3D"/>
 	<x path="Float"/>
 </f></dotProduct>
-		<equals public="1" set="method"><f a="toCompare:?allFour">
-	<c path="flash.geom.Vector3D"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-</f></equals>
+		<equals public="1" set="method">
+			<f a="toCompare:?allFour" v=":false">
+				<c path="flash.geom.Vector3D"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":value"><e>{allFour:false}</e></m></meta>
+		</equals>
 		<incrementBy public="1" set="method"><f a="a">
 	<c path="flash.geom.Vector3D"/>
 	<x path="Void"/>
 </f></incrementBy>
-		<nearEquals public="1" set="method"><f a="toCompare:tolerance:?allFour">
-	<c path="flash.geom.Vector3D"/>
-	<x path="Float"/>
-	<x path="Bool"/>
-	<x path="Bool"/>
-</f></nearEquals>
+		<nearEquals public="1" set="method">
+			<f a="toCompare:tolerance:?allFour" v="::false">
+				<c path="flash.geom.Vector3D"/>
+				<x path="Float"/>
+				<x path="Bool"/>
+				<x path="Bool"/>
+			</f>
+			<meta><m n=":value"><e>{allFour:false}</e></m></meta>
+		</nearEquals>
 		<negate public="1" set="method"><f a=""><x path="Void"/></f></negate>
 		<normalize public="1" set="method"><f a=""><x path="Float"/></f></normalize>
 		<project public="1" set="method"><f a=""><x path="Void"/></f></project>
@@ -6294,13 +6815,16 @@
 	<c path="flash.geom.Vector3D"/>
 </f></subtract>
 		<toString public="1" set="method"><f a=""><c path="String"/></f></toString>
-		<new public="1" set="method"><f a="?x:?y:?z:?w">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?x:?y:?z:?w" v="0:0:0:0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{w:0,z:0,y:0,x:0}</e></m></meta>
+		</new>
 		<meta><m n=":require"><e>flash10</e></m></meta>
 	</class>
 	<class path="flash.media.AVCaptionStyle" params="" file="C:\HaxeToolkit\haxe\std/flash/media/AVCaptionStyle.hx" extern="1">
@@ -6345,6 +6869,7 @@
 		<YELLOW public="1" static="1"><c path="String"/></YELLOW>
 		<backgroundColor public="1"><c path="String"/></backgroundColor>
 		<backgroundOpacity public="1"><c path="String"/></backgroundOpacity>
+		<bottomInset public="1"><c path="String"/></bottomInset>
 		<edgeColor public="1"><c path="String"/></edgeColor>
 		<fillColor public="1"><c path="String"/></fillColor>
 		<fillOpacity public="1"><c path="String"/></fillOpacity>
@@ -6373,6 +6898,8 @@
 	</class>
 	<class path="flash.media.AVResult" params="" file="C:\HaxeToolkit\haxe\std/flash/media/AVResult.hx" extern="1">
 		<ASYNC_OPERATION_IN_PROGRESS public="1" static="1"><x path="Int"/></ASYNC_OPERATION_IN_PROGRESS>
+		<AUDIO_ONLY_STREAM_END public="1" static="1"><x path="Int"/></AUDIO_ONLY_STREAM_END>
+		<AUDIO_ONLY_STREAM_START public="1" static="1"><x path="Int"/></AUDIO_ONLY_STREAM_START>
 		<AUDIO_START_ERROR public="1" static="1"><x path="Int"/></AUDIO_START_ERROR>
 		<BAD_MANIFEST_SIGNATURE public="1" static="1"><x path="Int"/></BAD_MANIFEST_SIGNATURE>
 		<BAD_MEDIASAMPLE_FOUND public="1" static="1"><x path="Int"/></BAD_MEDIASAMPLE_FOUND>
@@ -6380,12 +6907,21 @@
 		<CALLED_FROM_WRONG_THREAD public="1" static="1"><x path="Int"/></CALLED_FROM_WRONG_THREAD>
 		<CANNOT_ERASE_TIMELINE public="1" static="1"><x path="Int"/></CANNOT_ERASE_TIMELINE>
 		<CANNOT_FAIL_OVER public="1" static="1"><x path="Int"/></CANNOT_FAIL_OVER>
+		<CANNOT_HANDLE_MAIN_MANIFEST_UPDATE public="1" static="1"><x path="Int"/></CANNOT_HANDLE_MAIN_MANIFEST_UPDATE>
 		<CANNOT_LOAD_PLAY_LIST public="1" static="1"><x path="Int"/></CANNOT_LOAD_PLAY_LIST>
 		<CANNOT_SPLIT_TIMELINE public="1" static="1"><x path="Int"/></CANNOT_SPLIT_TIMELINE>
 		<CODEC_NOT_SUPPORTED public="1" static="1"><x path="Int"/></CODEC_NOT_SUPPORTED>
 		<COMPONENT_CREATION_FAILURE public="1" static="1"><x path="Int"/></COMPONENT_CREATION_FAILURE>
 		<CONTAINER_NOT_SUPPORTED public="1" static="1"><x path="Int"/></CONTAINER_NOT_SUPPORTED>
 		<CONTENT_LENGTH_MISMATCH public="1" static="1"><x path="Int"/></CONTENT_LENGTH_MISMATCH>
+		<CRYPTO_ALGORITHM_NOT_SUPPORTED public="1" static="1"><x path="Int"/></CRYPTO_ALGORITHM_NOT_SUPPORTED>
+		<CRYPTO_ERROR_BAD_CERTIFICATE public="1" static="1"><x path="Int"/></CRYPTO_ERROR_BAD_CERTIFICATE>
+		<CRYPTO_ERROR_BAD_PARAMETER public="1" static="1"><x path="Int"/></CRYPTO_ERROR_BAD_PARAMETER>
+		<CRYPTO_ERROR_BUFFER_TOO_SMALL public="1" static="1"><x path="Int"/></CRYPTO_ERROR_BUFFER_TOO_SMALL>
+		<CRYPTO_ERROR_CORRUPTED_DATA public="1" static="1"><x path="Int"/></CRYPTO_ERROR_CORRUPTED_DATA>
+		<CRYPTO_ERROR_DIGEST_FINISH public="1" static="1"><x path="Int"/></CRYPTO_ERROR_DIGEST_FINISH>
+		<CRYPTO_ERROR_DIGEST_UPDATE public="1" static="1"><x path="Int"/></CRYPTO_ERROR_DIGEST_UPDATE>
+		<CRYPTO_ERROR_UNKNOWN public="1" static="1"><x path="Int"/></CRYPTO_ERROR_UNKNOWN>
 		<CURRENT_PERIOD_EXPIRED public="1" static="1"><x path="Int"/></CURRENT_PERIOD_EXPIRED>
 		<DECODER_FAILED public="1" static="1"><x path="Int"/></DECODER_FAILED>
 		<DEVICE_OPEN_ERROR public="1" static="1"><x path="Int"/></DEVICE_OPEN_ERROR>
@@ -6402,15 +6938,19 @@
 		<FRAGMENT_READ_ERROR public="1" static="1"><x path="Int"/></FRAGMENT_READ_ERROR>
 		<GENERIC_ERROR public="1" static="1"><x path="Int"/></GENERIC_ERROR>
 		<HTTP_TIME_OUT public="1" static="1"><x path="Int"/></HTTP_TIME_OUT>
+		<ID3_PARSE_ERROR public="1" static="1"><x path="Int"/></ID3_PARSE_ERROR>
 		<INCOMPATIBLE_RENDER_MODE public="1" static="1"><x path="Int"/></INCOMPATIBLE_RENDER_MODE>
 		<INCOMPATIBLE_VERSION public="1" static="1"><x path="Int"/></INCOMPATIBLE_VERSION>
 		<INTERNAL_ERROR public="1" static="1"><x path="Int"/></INTERNAL_ERROR>
+		<INVALID_KEY public="1" static="1"><x path="Int"/></INVALID_KEY>
 		<INVALID_OPERATION public="1" static="1"><x path="Int"/></INVALID_OPERATION>
 		<INVALID_PARAMETER public="1" static="1"><x path="Int"/></INVALID_PARAMETER>
 		<INVALID_REPLACE_DURATION public="1" static="1"><x path="Int"/></INVALID_REPLACE_DURATION>
 		<INVALID_SEEK_TIME public="1" static="1"><x path="Int"/></INVALID_SEEK_TIME>
 		<INVALID_WITH_AUDIO_ONLY_FILE public="1" static="1"><x path="Int"/></INVALID_WITH_AUDIO_ONLY_FILE>
 		<IRRECOVERABLE_ERROR public="1" static="1"><x path="Int"/></IRRECOVERABLE_ERROR>
+		<KEY_NOT_FOUND public="1" static="1"><x path="Int"/></KEY_NOT_FOUND>
+		<KEY_SERVER_NOT_FOUND public="1" static="1"><x path="Int"/></KEY_SERVER_NOT_FOUND>
 		<LISTENER_NOT_FOUND public="1" static="1"><x path="Int"/></LISTENER_NOT_FOUND>
 		<LIVE_HOLD public="1" static="1"><x path="Int"/></LIVE_HOLD>
 		<LIVE_WINDOW_MOVED_BACKWARD public="1" static="1"><x path="Int"/></LIVE_WINDOW_MOVED_BACKWARD>
@@ -6442,12 +6982,14 @@
 		<RENDITION_M3U8_ERROR public="1" static="1"><x path="Int"/></RENDITION_M3U8_ERROR>
 		<REPLACEMENT_FAILED public="1" static="1"><x path="Int"/></REPLACEMENT_FAILED>
 		<RESOURCE_NOT_SPECIFIED public="1" static="1"><x path="Int"/></RESOURCE_NOT_SPECIFIED>
+		<SECURITY_ERROR public="1" static="1"><x path="Int"/></SECURITY_ERROR>
 		<SEEK_FAILED public="1" static="1"><x path="Int"/></SEEK_FAILED>
 		<SEGMENT_SKIPPED_ON_FAILURE public="1" static="1"><x path="Int"/></SEGMENT_SKIPPED_ON_FAILURE>
 		<SIZE_UNKNOWN public="1" static="1"><x path="Int"/></SIZE_UNKNOWN>
 		<SPS_PPS_FOUND_OUTSIDE_AVCC public="1" static="1"><x path="Int"/></SPS_PPS_FOUND_OUTSIDE_AVCC>
 		<SUCCESS public="1" static="1"><x path="Int"/></SUCCESS>
 		<SWITCH_TO_ASYMMETRIC_PROFILE public="1" static="1"><x path="Int"/></SWITCH_TO_ASYMMETRIC_PROFILE>
+		<TIMELINE_TOO_SHORT public="1" static="1"><x path="Int"/></TIMELINE_TOO_SHORT>
 		<UNDERFLOW public="1" static="1"><x path="Int"/></UNDERFLOW>
 		<UNSUPPORTED_CONFIGURATION public="1" static="1"><x path="Int"/></UNSUPPORTED_CONFIGURATION>
 		<UNSUPPORTED_HLS_VERSION public="1" static="1"><x path="Int"/></UNSUPPORTED_HLS_VERSION>
@@ -6476,6 +7018,7 @@
 		<bufferTime public="1" get="null"><x path="Float"/></bufferTime>
 		<captionStyle public="1" get="null"><c path="flash.media.AVCaptionStyle"/></captionStyle>
 		<captionsEnabled public="1"><x path="Bool"/></captionsEnabled>
+		<clientLivePoint public="1" set="null"><x path="Float"/></clientLivePoint>
 		<currentFPS public="1" set="null"><x path="Float"/></currentFPS>
 		<decoderType public="1" set="null"><c path="String"/></decoderType>
 		<droppedFrames public="1" set="null"><x path="Int"/></droppedFrames>
@@ -6498,11 +7041,22 @@
 	<x path="Float"/>
 	<c path="flash.media.AVResult"/>
 </f></rewind>
-		<seek public="1" set="method"><f a="offset:?inBufferSeek">
-	<x path="Float"/>
-	<x path="Bool"/>
-	<c path="flash.media.AVResult"/>
-</f></seek>
+		<seek public="1" set="method">
+			<f a="offset:?inBufferSeek" v=":true">
+				<x path="Float"/>
+				<x path="Bool"/>
+				<c path="flash.media.AVResult"/>
+			</f>
+			<meta><m n=":value"><e>{inBufferSeek:true}</e></m></meta>
+		</seek>
+		<seekToKeyFrame public="1" set="method">
+			<f a="offset:?inBufferSeek" v=":true">
+				<x path="Float"/>
+				<x path="Bool"/>
+				<c path="flash.media.AVResult"/>
+			</f>
+			<meta><m n=":value"><e>{inBufferSeek:true}</e></m></meta>
+		</seekToKeyFrame>
 		<seekToLivePoint public="1" set="method"><f a=""><c path="flash.media.AVResult"/></f></seekToLivePoint>
 		<seekToLocalTime public="1" set="method"><f a="periodIndex:time">
 	<x path="Int"/>
@@ -6552,22 +7106,31 @@
 	<x path="Int"/>
 	<x path="Void"/>
 </f></setKeyFrameInterval>
-		<setLoopback public="1" set="method"><f a="?compress">
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></setLoopback>
-		<setMode public="1" set="method"><f a="width:height:fps:?favorArea">
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Float"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></setMode>
-		<setMotionLevel public="1" set="method"><f a="motionLevel:?timeout">
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></setMotionLevel>
+		<setLoopback public="1" set="method">
+			<f a="?compress" v="false">
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{compress:false}</e></m></meta>
+		</setLoopback>
+		<setMode public="1" set="method">
+			<f a="width:height:fps:?favorArea" v=":::true">
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Float"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{favorArea:true}</e></m></meta>
+		</setMode>
+		<setMotionLevel public="1" set="method">
+			<f a="motionLevel:?timeout" v=":2000">
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{timeout:2000}</e></m></meta>
+		</setMotionLevel>
 		<setQuality public="1" set="method"><f a="bandwidth:quality">
 	<x path="Int"/>
 	<x path="Int"/>
@@ -6579,10 +7142,13 @@
 	<class path="flash.media.Microphone" params="" file="C:\HaxeToolkit\haxe\std/flash/media/Microphone.hx" extern="1">
 		<extends path="flash.events.EventDispatcher"/>
 		<names public="1" set="null" static="1"><c path="Array"><d/></c></names>
-		<getMicrophone public="1" set="method" static="1"><f a="?index">
-	<x path="Int"/>
-	<c path="flash.media.Microphone"/>
-</f></getMicrophone>
+		<getMicrophone public="1" set="method" static="1">
+			<f a="?index" v="-1">
+				<x path="Int"/>
+				<c path="flash.media.Microphone"/>
+			</f>
+			<meta><m n=":value"><e>{index:-1}</e></m></meta>
+		</getMicrophone>
 		<activityLevel public="1" set="null"><x path="Float"/></activityLevel>
 		<codec public="1">
 			<e path="flash.media.SoundCodec"/>
@@ -6605,15 +7171,21 @@
 		<silenceTimeout public="1" set="null"><x path="Int"/></silenceTimeout>
 		<soundTransform public="1"><c path="flash.media.SoundTransform"/></soundTransform>
 		<useEchoSuppression public="1" set="null"><x path="Bool"/></useEchoSuppression>
-		<setLoopBack public="1" set="method"><f a="?state">
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></setLoopBack>
-		<setSilenceLevel public="1" set="method"><f a="silenceLevel:?timeout">
-	<x path="Float"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></setSilenceLevel>
+		<setLoopBack public="1" set="method">
+			<f a="?state" v="true">
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{state:true}</e></m></meta>
+		</setLoopBack>
+		<setSilenceLevel public="1" set="method">
+			<f a="silenceLevel:?timeout" v=":-1">
+				<x path="Float"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{timeout:-1}</e></m></meta>
+		</setSilenceLevel>
 		<setUseEchoSuppression public="1" set="method"><f a="useEchoSuppression">
 	<x path="Bool"/>
 	<x path="Void"/>
@@ -6662,11 +7234,14 @@
 		<rightToLeft public="1"><x path="Float"/></rightToLeft>
 		<rightToRight public="1"><x path="Float"/></rightToRight>
 		<volume public="1"><x path="Float"/></volume>
-		<new public="1" set="method"><f a="?vol:?panning">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?vol:?panning" v="1:0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{panning:0,vol:1}</e></m></meta>
+		</new>
 		<meta><m n=":final"/></meta>
 	</class>
 	<class path="flash.media.StageVideo" params="" file="C:\HaxeToolkit\haxe\std/flash/media/StageVideo.hx" extern="1">
@@ -6748,12 +7323,15 @@
 		</unconnectedPeerStreams>
 		<uri public="1" set="null"><c path="String"/></uri>
 		<usingTLS public="1" set="null"><x path="Bool"/></usingTLS>
-		<addHeader public="1" set="method"><f a="operation:?mustUnderstand:?param">
-	<c path="String"/>
-	<x path="Bool"/>
-	<t path="flash.utils.Object"/>
-	<x path="Void"/>
-</f></addHeader>
+		<addHeader public="1" set="method">
+			<f a="operation:?mustUnderstand:?param" v=":false:">
+				<c path="String"/>
+				<x path="Bool"/>
+				<t path="flash.utils.Object"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{mustUnderstand:false}</e></m></meta>
+		</addHeader>
 		<call public="1" set="method"><f a="command:responder:?p1:?p2:?p3:?p4:?p5">
 	<c path="String"/>
 	<c path="flash.net.Responder"/>
@@ -6829,11 +7407,14 @@
 	<c path="flash.media.Microphone"/>
 	<x path="Void"/>
 </f></attachAudio>
-		<attachCamera public="1" set="method"><f a="theCamera:?snapshotMilliseconds">
-	<c path="flash.media.Camera"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></attachCamera>
+		<attachCamera public="1" set="method">
+			<f a="theCamera:?snapshotMilliseconds" v=":-1">
+				<c path="flash.media.Camera"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{snapshotMilliseconds:-1}</e></m></meta>
+		</attachCamera>
 		<close public="1" set="method"><f a=""><x path="Void"/></f></close>
 		<onPeerConnect public="1" set="method">
 			<f a="subscriber">
@@ -6922,34 +7503,37 @@
 		<videoBytesPerSecond public="1" set="null"><x path="Float"/></videoBytesPerSecond>
 		<xmpData public="1" set="null"><d/></xmpData>
 		<toString public="1" set="method"><f a=""><c path="String"/></f></toString>
-		<new public="1" set="method"><f a="curBPS:byteCount:maxBPS:audioBPS:audioByteCount:videoBPS:videoByteCount:dataBPS:dataByteCount:playbackBPS:droppedFrames:audioBufferByteLength:videoBufferByteLength:dataBufferByteLength:audioBufferLength:videoBufferLength:dataBufferLength:srtt:audioLossRate:videoLossRate:?metaData:?xmpData:?uri:?resourceName:?isLive">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<d/>
-	<d/>
-	<c path="String"/>
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="curBPS:byteCount:maxBPS:audioBPS:audioByteCount:videoBPS:videoByteCount:dataBPS:dataByteCount:playbackBPS:droppedFrames:audioBufferByteLength:videoBufferByteLength:dataBufferByteLength:audioBufferLength:videoBufferLength:dataBufferLength:srtt:audioLossRate:videoLossRate:?metaData:?xmpData:?uri:?resourceName:?isLive" v="::::::::::::::::::::::::true">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<d/>
+				<d/>
+				<c path="String"/>
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{isLive:true}</e></m></meta>
+		</new>
 		<meta><m n=":final"/></meta>
 	</class>
 	<class path="flash.net.NetStreamMulticastInfo" params="" file="C:\HaxeToolkit\haxe\std/flash/net/NetStreamMulticastInfo.hx" extern="1">
@@ -7026,19 +7610,25 @@
 	<c path="String"/>
 	<x path="Int"/>
 </f></getDiskUsage>
-		<getLocal public="1" set="method" static="1"><f a="name:?localPath:?secure">
-	<c path="String"/>
-	<c path="String"/>
-	<x path="Bool"/>
-	<c path="flash.net.SharedObject"/>
-</f></getLocal>
-		<getRemote public="1" set="method" static="1"><f a="name:?remotePath:?persistence:?secure">
-	<c path="String"/>
-	<c path="String"/>
-	<d/>
-	<x path="Bool"/>
-	<c path="flash.net.SharedObject"/>
-</f></getRemote>
+		<getLocal public="1" set="method" static="1">
+			<f a="name:?localPath:?secure" v="::false">
+				<c path="String"/>
+				<c path="String"/>
+				<x path="Bool"/>
+				<c path="flash.net.SharedObject"/>
+			</f>
+			<meta><m n=":value"><e>{secure:false}</e></m></meta>
+		</getLocal>
+		<getRemote public="1" set="method" static="1">
+			<f a="name:?remotePath:?persistence:?secure" v="::false:false">
+				<c path="String"/>
+				<c path="String"/>
+				<d/>
+				<x path="Bool"/>
+				<c path="flash.net.SharedObject"/>
+			</f>
+			<meta><m n=":value"><e>{secure:false,persistence:false}</e></m></meta>
+		</getRemote>
 		<client public="1"><d/></client>
 		<data public="1" set="null"><d/></data>
 		<fps public="1" get="null"><x path="Float"/></fps>
@@ -7051,10 +7641,13 @@
 	<c path="String"/>
 	<x path="Void"/>
 </f></connect>
-		<flush public="1" set="method"><f a="?minDiskSpace">
-	<x path="Int"/>
-	<c path="String"/>
-</f></flush>
+		<flush public="1" set="method">
+			<f a="?minDiskSpace" v="0">
+				<x path="Int"/>
+				<c path="String"/>
+			</f>
+			<meta><m n=":value"><e>{minDiskSpace:0}</e></m></meta>
+		</flush>
 		<send public="1" set="method"><f a="?p1:?p2:?p3:?p4:?p5">
 	<d/>
 	<d/>
@@ -7073,6 +7666,7 @@
 	<x path="Void"/>
 </f></setProperty>
 		<new public="1" set="method"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.utils.IDataInput" params="" file="C:\HaxeToolkit\haxe\std/flash/utils/IDataInput.hx" extern="1" interface="1">
 		<bytesAvailable public="1" set="null"><x path="UInt"/></bytesAvailable>
@@ -7080,12 +7674,15 @@
 		<objectEncoding public="1"><x path="UInt"/></objectEncoding>
 		<readBoolean public="1" set="method"><f a=""><x path="Bool"/></f></readBoolean>
 		<readByte public="1" set="method"><f a=""><x path="Int"/></f></readByte>
-		<readBytes public="1" set="method"><f a="bytes:?offset:?length">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></readBytes>
+		<readBytes public="1" set="method">
+			<f a="bytes:?offset:?length" v=":0:0">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{length:0,offset:0}</e></m></meta>
+		</readBytes>
 		<readDouble public="1" set="method"><f a=""><x path="Float"/></f></readDouble>
 		<readFloat public="1" set="method"><f a=""><x path="Float"/></f></readFloat>
 		<readInt public="1" set="method"><f a=""><x path="Int"/></f></readInt>
@@ -7116,12 +7713,15 @@
 	<x path="Int"/>
 	<x path="Void"/>
 </f></writeByte>
-		<writeBytes public="1" set="method"><f a="bytes:?offset:?length">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></writeBytes>
+		<writeBytes public="1" set="method">
+			<f a="bytes:?offset:?length" v=":0:0">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{length:0,offset:0}</e></m></meta>
+		</writeBytes>
 		<writeDouble public="1" set="method"><f a="value">
 	<x path="Float"/>
 	<x path="Void"/>
@@ -7181,12 +7781,15 @@
 		<flush public="1" set="method"><f a=""><x path="Void"/></f></flush>
 		<readBoolean public="1" set="method"><f a=""><x path="Bool"/></f></readBoolean>
 		<readByte public="1" set="method"><f a=""><x path="Int"/></f></readByte>
-		<readBytes public="1" set="method"><f a="bytes:?offset:?length">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></readBytes>
+		<readBytes public="1" set="method">
+			<f a="bytes:?offset:?length" v=":0:0">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{length:0,offset:0}</e></m></meta>
+		</readBytes>
 		<readDouble public="1" set="method"><f a=""><x path="Float"/></f></readDouble>
 		<readFloat public="1" set="method"><f a=""><x path="Float"/></f></readFloat>
 		<readInt public="1" set="method"><f a=""><x path="Int"/></f></readInt>
@@ -7213,12 +7816,15 @@
 	<x path="Int"/>
 	<x path="Void"/>
 </f></writeByte>
-		<writeBytes public="1" set="method"><f a="bytes:?offset:?length">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></writeBytes>
+		<writeBytes public="1" set="method">
+			<f a="bytes:?offset:?length" v=":0:0">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{length:0,offset:0}</e></m></meta>
+		</writeBytes>
 		<writeDouble public="1" set="method"><f a="value">
 	<x path="Float"/>
 	<x path="Void"/>
@@ -7256,11 +7862,15 @@
 	<x path="UInt"/>
 	<x path="Void"/>
 </f></writeUnsignedInt>
-		<new public="1" set="method"><f a="?host:?port">
-	<c path="String"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?host:?port" v=":0">
+				<c path="String"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{port:0}</e></m></meta>
+		</new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.net.URLRequest" params="" file="C:\HaxeToolkit\haxe\std/flash/net/URLRequest.hx" extern="1">
 		<contentType public="1"><c path="String"/></contentType>
@@ -7269,13 +7879,16 @@
 		<method public="1"><c path="String"/></method>
 		<requestHeaders public="1"><c path="Array"><c path="flash.net.URLRequestHeader"/></c></requestHeaders>
 		<url public="1"><c path="String"/></url>
-		<useRedirectedURL public="1" set="method"><f a="sourceRequest:?wholeURL:?pattern:?replace">
-	<c path="flash.net.URLRequest"/>
-	<x path="Bool"/>
-	<d/>
-	<c path="String"/>
-	<x path="Void"/>
-</f></useRedirectedURL>
+		<useRedirectedURL public="1" set="method">
+			<f a="sourceRequest:?wholeURL:?pattern:?replace" v=":false::">
+				<c path="flash.net.URLRequest"/>
+				<x path="Bool"/>
+				<d/>
+				<c path="String"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{wholeURL:false}</e></m></meta>
+		</useRedirectedURL>
 		<new public="1" set="method"><f a="?url">
 	<c path="String"/>
 	<x path="Void"/>
@@ -7329,12 +7942,15 @@
 		<applicationDomain public="1"><c path="flash.system.ApplicationDomain"/></applicationDomain>
 		<checkPolicyFile public="1"><x path="Bool"/></checkPolicyFile>
 		<securityDomain public="1"><c path="flash.system.SecurityDomain"/></securityDomain>
-		<new public="1" set="method"><f a="?checkPolicyFile:?applicationDomain:?securityDomain">
-	<x path="Bool"/>
-	<c path="flash.system.ApplicationDomain"/>
-	<c path="flash.system.SecurityDomain"/>
-	<x path="Void"/>
-</f></new>
+		<new public="1" set="method">
+			<f a="?checkPolicyFile:?applicationDomain:?securityDomain" v="false::">
+				<x path="Bool"/>
+				<c path="flash.system.ApplicationDomain"/>
+				<c path="flash.system.SecurityDomain"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{checkPolicyFile:false}</e></m></meta>
+		</new>
 	</class>
 	<class path="flash.system.Security" params="" file="C:\HaxeToolkit\haxe\std/flash/system/Security.hx" extern="1">
 		<LOCAL_TRUSTED public="1" static="1"><c path="String"/></LOCAL_TRUSTED>
@@ -7368,6 +7984,7 @@
 	<e path="flash.system.SecurityPanel"/>
 	<x path="Void"/>
 </f></showSettings>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<class path="flash.system.SecurityDomain" params="" file="C:\HaxeToolkit\haxe\std/flash/system/SecurityDomain.hx" extern="1"><currentDomain public="1" set="null" static="1"><c path="flash.system.SecurityDomain"/></currentDomain></class>
 	<enum path="flash.system.SecurityPanel" params="" file="C:\HaxeToolkit\haxe\std/flash/system/SecurityPanel.hx">
@@ -7525,28 +8142,40 @@
 	<x path="Int"/>
 </f></getParagraphLength>
 		<getRawText public="1" set="method"><f a=""><c path="String"/></f></getRawText>
-		<getTextFormat public="1" set="method"><f a="?beginIndex:?endIndex">
-	<x path="Int"/>
-	<x path="Int"/>
-	<c path="flash.text.TextFormat"/>
-</f></getTextFormat>
-		<getTextRuns public="1" set="method"><f a="?beginIndex:?endIndex">
-	<x path="Int"/>
-	<x path="Int"/>
-	<c path="Array"><d/></c>
-</f></getTextRuns>
-		<getXMLText public="1" set="method"><f a="?beginIndex:?endIndex">
-	<x path="Int"/>
-	<x path="Int"/>
-	<c path="String"/>
-</f></getXMLText>
-		<insertXMLText public="1" set="method"><f a="beginIndex:endIndex:richText:?pasting">
-	<x path="Int"/>
-	<x path="Int"/>
-	<c path="String"/>
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></insertXMLText>
+		<getTextFormat public="1" set="method">
+			<f a="?beginIndex:?endIndex" v="-1:-1">
+				<x path="Int"/>
+				<x path="Int"/>
+				<c path="flash.text.TextFormat"/>
+			</f>
+			<meta><m n=":value"><e>{endIndex:-1,beginIndex:-1}</e></m></meta>
+		</getTextFormat>
+		<getTextRuns public="1" set="method">
+			<f a="?beginIndex:?endIndex" v="0:2147483647">
+				<x path="Int"/>
+				<x path="Int"/>
+				<c path="Array"><d/></c>
+			</f>
+			<meta><m n=":value"><e>{endIndex:2147483647,beginIndex:0}</e></m></meta>
+		</getTextRuns>
+		<getXMLText public="1" set="method">
+			<f a="?beginIndex:?endIndex" v="0:2147483647">
+				<x path="Int"/>
+				<x path="Int"/>
+				<c path="String"/>
+			</f>
+			<meta><m n=":value"><e>{endIndex:2147483647,beginIndex:0}</e></m></meta>
+		</getXMLText>
+		<insertXMLText public="1" set="method">
+			<f a="beginIndex:endIndex:richText:?pasting" v=":::false">
+				<x path="Int"/>
+				<x path="Int"/>
+				<c path="String"/>
+				<x path="Bool"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{pasting:false}</e></m></meta>
+		</insertXMLText>
 		<pasteRichText public="1" set="method"><f a="richText">
 	<c path="String"/>
 	<x path="Bool"/>
@@ -7566,13 +8195,17 @@
 	<x path="Int"/>
 	<x path="Void"/>
 </f></setSelection>
-		<setTextFormat public="1" set="method"><f a="format:?beginIndex:?endIndex">
-	<c path="flash.text.TextFormat"/>
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Void"/>
-</f></setTextFormat>
+		<setTextFormat public="1" set="method">
+			<f a="format:?beginIndex:?endIndex" v=":-1:-1">
+				<c path="flash.text.TextFormat"/>
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{endIndex:-1,beginIndex:-1}</e></m></meta>
+		</setTextFormat>
 		<new public="1" set="method"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<enum path="flash.text.TextFieldAutoSize" params="" file="C:\HaxeToolkit\haxe\std/flash/text/TextFieldAutoSize.hx">
 		<CENTER/>
@@ -7580,6 +8213,7 @@
 		<NONE/>
 		<RIGHT/>
 		<meta>
+			<m n=":directlyUsed"/>
 			<m n=":flatEnum"/>
 			<m n=":fakeEnum"><e>String</e></m>
 		</meta>
@@ -7588,6 +8222,7 @@
 		<DYNAMIC/>
 		<INPUT/>
 		<meta>
+			<m n=":directlyUsed"/>
 			<m n=":flatEnum"/>
 			<m n=":fakeEnum"><e>String</e></m>
 		</meta>
@@ -7628,6 +8263,7 @@
 	<x path="Float"/>
 	<x path="Void"/>
 </f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<enum path="flash.text.TextFormatAlign" params="" file="C:\HaxeToolkit\haxe\std/flash/text/TextFormatAlign.hx">
 		<CENTER/>
@@ -7687,31 +8323,43 @@
 	<x path="Int"/>
 	<x path="Bool"/>
 </f></getSelected>
-		<getSelectedText public="1" set="method"><f a="?includeLineEndings">
-	<x path="Bool"/>
-	<c path="String"/>
-</f></getSelectedText>
-		<getText public="1" set="method"><f a="beginIndex:endIndex:?includeLineEndings">
-	<x path="Int"/>
-	<x path="Int"/>
-	<x path="Bool"/>
-	<c path="String"/>
-</f></getText>
+		<getSelectedText public="1" set="method">
+			<f a="?includeLineEndings" v="false">
+				<x path="Bool"/>
+				<c path="String"/>
+			</f>
+			<meta><m n=":value"><e>{includeLineEndings:false}</e></m></meta>
+		</getSelectedText>
+		<getText public="1" set="method">
+			<f a="beginIndex:endIndex:?includeLineEndings" v="::false">
+				<x path="Int"/>
+				<x path="Int"/>
+				<x path="Bool"/>
+				<c path="String"/>
+			</f>
+			<meta><m n=":value"><e>{includeLineEndings:false}</e></m></meta>
+		</getText>
 		<getTextRunInfo public="1" set="method"><f a="beginIndex:endIndex">
 	<x path="Int"/>
 	<x path="Int"/>
 	<c path="Array"><d/></c>
 </f></getTextRunInfo>
-		<hitTestTextNearPos public="1" set="method"><f a="x:y:?maxDistance">
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-	<x path="Float"/>
-</f></hitTestTextNearPos>
-		<setSelectColor public="1" set="method"><f a="?hexColor">
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></setSelectColor>
+		<hitTestTextNearPos public="1" set="method">
+			<f a="x:y:?maxDistance" v="::0">
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+				<x path="Float"/>
+			</f>
+			<meta><m n=":value"><e>{maxDistance:0}</e></m></meta>
+		</hitTestTextNearPos>
+		<setSelectColor public="1" set="method">
+			<f a="?hexColor" v="16776960">
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{hexColor:16776960}</e></m></meta>
+		</setSelectColor>
 		<setSelected public="1" set="method"><f a="beginIndex:endIndex:select">
 	<x path="Int"/>
 	<x path="Int"/>
@@ -7828,6 +8476,7 @@
 		<capsLock public="1" set="null" static="1"><x path="Bool"/></capsLock>
 		<numLock public="1" set="null" static="1"><x path="Bool"/></numLock>
 		<isAccessible public="1" set="method" static="1"><f a=""><x path="Bool"/></f></isAccessible>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<enum path="flash.ui.KeyboardType" params="" file="C:\HaxeToolkit\haxe\std/flash/ui/KeyboardType.hx">
 		<ALPHANUMERIC/>
@@ -7867,12 +8516,15 @@
 		</inflate>
 		<readBoolean public="1" set="method"><f a=""><x path="Bool"/></f></readBoolean>
 		<readByte public="1" set="method"><f a=""><x path="Int"/></f></readByte>
-		<readBytes public="1" set="method"><f a="bytes:?offset:?length">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></readBytes>
+		<readBytes public="1" set="method">
+			<f a="bytes:?offset:?length" v=":0:0">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{length:0,offset:0}</e></m></meta>
+		</readBytes>
 		<readDouble public="1" set="method"><f a=""><x path="Float"/></f></readDouble>
 		<readFloat public="1" set="method"><f a=""><x path="Float"/></f></readFloat>
 		<readInt public="1" set="method"><f a=""><x path="Int"/></f></readInt>
@@ -7904,12 +8556,15 @@
 	<x path="Int"/>
 	<x path="Void"/>
 </f></writeByte>
-		<writeBytes public="1" set="method"><f a="bytes:?offset:?length">
-	<c path="flash.utils.ByteArray"/>
-	<x path="UInt"/>
-	<x path="UInt"/>
-	<x path="Void"/>
-</f></writeBytes>
+		<writeBytes public="1" set="method">
+			<f a="bytes:?offset:?length" v=":0:0">
+				<c path="flash.utils.ByteArray"/>
+				<x path="UInt"/>
+				<x path="UInt"/>
+				<x path="Void"/>
+			</f>
+			<meta><m n=":value"><e>{length:0,offset:0}</e></m></meta>
+		</writeBytes>
 		<writeDouble public="1" set="method"><f a="value">
 	<x path="Float"/>
 	<x path="Void"/>
@@ -7948,6 +8603,7 @@
 	<x path="Void"/>
 </f></writeUnsignedInt>
 		<new public="1" set="method"><f a=""><x path="Void"/></f></new>
+		<meta><m n=":directlyUsed"/></meta>
 	</class>
 	<enum path="flash.utils.CompressionAlgorithm" params="" file="C:\HaxeToolkit\haxe\std/flash/utils/CompressionAlgorithm.hx">
 		<DEFLATE/>
@@ -7959,17 +8615,11 @@
 			<m n=":require"><e>flash11</e></m>
 		</meta>
 	</enum>
-	<class path="flash.utils.Dictionary" params="" file="C:\HaxeToolkit\haxe\std/flash/utils/Dictionary.hx" extern="1">
-		<new public="1" set="method"><f a="?weakKeys">
-	<x path="Bool"/>
-	<x path="Void"/>
-</f></new>
-		<haxe_dynamic><d/></haxe_dynamic>
-	</class>
 	<enum path="flash.utils.Endian" params="" file="C:\HaxeToolkit\haxe\std/flash/utils/Endian.hx">
 		<BIG_ENDIAN/>
 		<LITTLE_ENDIAN/>
 		<meta>
+			<m n=":directlyUsed"/>
 			<m n=":flatEnum"/>
 			<m n=":fakeEnum"><e>String</e></m>
 		</meta>
@@ -8013,7 +8663,10 @@
 	<d/>
 	<x path="Void"/>
 </f></new>
-		<meta><m n=":native"><e>"RegExp"</e></m></meta>
+		<meta>
+			<m n=":directlyUsed"/>
+			<m n=":native"><e>"RegExp"</e></m>
+		</meta>
 		<haxe_dynamic><d/></haxe_dynamic>
 	</class>
 	<class path="flash.xml.XML" params="" file="C:\HaxeToolkit\haxe\std/flash/xml/XML.hx" extern="1">
@@ -8235,6 +8888,25 @@
 </f></new>
 		<meta><m n=":final"/></meta>
 	</class>
+	<abstract path="haxe.Function" params="" file="C:\HaxeToolkit\haxe\std/haxe/Constraints.hx" module="haxe.Constraints">
+		<this><d/></this>
+		<haxe_doc>This type unifies with any function type.
+
+	It is intended to be used as a type parameter constraint. If used as a real
+	type, the underlying type will be `Dynamic`.</haxe_doc>
+		<meta><m n=":callable"/></meta>
+		<impl><class path="haxe._Constraints.Function_Impl_" params="" file="C:\HaxeToolkit\haxe\std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
+	</abstract>
+	<abstract path="haxe.FlatEnum" params="" file="C:\HaxeToolkit\haxe\std/haxe/Constraints.hx" module="haxe.Constraints">
+		<this><d/></this>
+		<haxe_doc>This type unifies with an enum instance if all constructors of the enum
+	require no arguments.
+
+	It is intended to be used as a type parameter constraint. If used as a real
+	type, the underlying type will be `Dynamic`.</haxe_doc>
+		<impl><class path="haxe._Constraints.FlatEnum_Impl_" params="" file="C:\HaxeToolkit\haxe\std/haxe/Constraints.hx" private="1" module="haxe.Constraints"><meta><m n=":keep"/></meta></class></impl>
+	</abstract>
+	<class path="haxe.IMap" params="K:V" file="C:\HaxeToolkit\haxe\std/haxe/Constraints.hx" module="haxe.Constraints" interface="1"><meta><m n=":keep"/></meta></class>
 	<class path="haxe.EnumTools" params="" file="C:\HaxeToolkit\haxe\std/haxe/EnumTools.hx" extern="1">
 		<getName public="1" params="T" get="inline" set="null" line="41" static="1">
 			<f a="e">
@@ -8256,7 +8928,7 @@
 		The enum name does not include any type parameters.</haxe_doc>
 		</getName>
 		<createByName public="1" params="T" get="inline" set="null" line="54" static="1">
-			<f a="e:constr:?params" v="::null">
+			<f a="e:constr:?params">
 				<x path="Enum"><c path="createByName.T"/></x>
 				<c path="String"/>
 				<c path="Array"><d/></c>
@@ -8271,7 +8943,7 @@
 		invalid type, the result is unspecified.</haxe_doc>
 		</createByName>
 		<createByIndex public="1" params="T" get="inline" set="null" line="70" static="1">
-			<f a="e:index:?params" v="::null">
+			<f a="e:index:?params">
 				<x path="Enum"><c path="createByIndex.T"/></x>
 				<x path="Int"/>
 				<c path="Array"><d/></c>
@@ -8283,10 +8955,10 @@
 		The constructor indices are preserved from haxe syntax, so the first
 		declared is index 0, the next index 1 etc.
 
-		If `e` or `constr` is null, or if enum `e` has no constructor named
-		`constr`, or if the number of elements in `params` does not match the
-		expected number of constructor arguments, or if any argument has an
-		invalid type, the result is unspecified.</haxe_doc>
+		If `e` or `index` is null, or if enum `e` has no constructor
+		corresponding to index `index`, or if the number of elements in `params`
+		does not match the expected number of constructor arguments, or if any
+		argument has an invalid type, the result is unspecified.</haxe_doc>
 		</createByIndex>
 		<createAll public="1" params="T" get="inline" set="null" line="87" static="1">
 			<f a="e">
@@ -8369,14 +9041,48 @@
 
 		If `e` is null, the result is unspecified.</haxe_doc>
 		</getIndex>
+		<match public="1" set="method" static="1">
+			<f a="e:pattern">
+				<x path="EnumValue"/>
+				<d/>
+				<x path="Bool"/>
+			</f>
+			<haxe_doc>Matches enum instance `e` against pattern `pattern`, returning true if
+		matching succeeded and false otherwise.
+
+		Example usage:
+
+		```
+		if (e.match(pattern)) {
+			// codeIfTrue
+		} else {
+			// codeIfFalse
+		}
+		```
+
+		This is equivalent to the following code:
+
+		```
+		switch (e) {
+			case pattern:
+				// codeIfTrue
+			case _:
+				// codeIfFalse
+		}
+		```
+
+		This method is implemented in the compiler. This definition exists only
+		for documentation.</haxe_doc>
+		</match>
 	</class>
 	<class path="haxe.Log" params="" file="C:\HaxeToolkit\haxe\std/haxe/Log.hx">
 		<trace public="1" set="dynamic" line="45" static="1">
-			<f a="v:?infos" v=":null">
+			<f a="v:?infos">
 				<d/>
 				<t path="haxe.PosInfos"/>
 				<x path="Void"/>
 			</f>
+			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>Outputs `v` in a platform-dependent way.
 
 		The second parameter `infos` is injected by the compiler and contains
@@ -8393,7 +9099,10 @@
 		</trace>
 		<haxe_doc>Log primarily provides the trace() method, which is invoked upon a call to
 	trace() in haxe code.</haxe_doc>
-		<meta><m n=":keep"/></meta>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
 	<typedef path="haxe.PosInfos" params="" file="C:\HaxeToolkit\haxe\std/haxe/PosInfos.hx">
 		<a>
@@ -8401,7 +9110,7 @@
 			<lineNumber><x path="Int"/></lineNumber>
 			<fileName><c path="String"/></fileName>
 			<customParams>
-				<c path="Array"><d/></c>
+				<t path="Null"><c path="Array"><d/></c></t>
 				<meta><m n=":optional"/></meta>
 			</customParams>
 			<className><c path="String"/></className>
@@ -8417,7 +9126,7 @@
 	framework.</haxe_doc>
 	</typedef>
 	<class path="haxe.Timer" params="" file="C:\HaxeToolkit\haxe\std/haxe/Timer.hx">
-		<stamp public="1" set="method" line="161" static="1">
+		<stamp public="1" set="method" line="156" static="1">
 			<f a=""><x path="Float"/></f>
 			<haxe_doc>Returns a timestamp, in seconds with fractions.
 
@@ -8436,67 +9145,104 @@
 
 	It is also possible to extend this class and override its run() method in
 	the child class.</haxe_doc>
-		<meta><m n=":keep"/></meta>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
-	<abstract path="haxe.ds.HashMap" params="K:V" file="C:\HaxeToolkit\haxe\std/haxe/ds/HashMap.hx">
-		<this><a>
-	<values><c path="haxe.ds.IntMap"><c path="haxe.ds.HashMap.V"/></c></values>
-	<keys><c path="haxe.ds.IntMap"><c path="haxe.ds.HashMap.K"/></c></keys>
-</a></this>
-		<impl><class path="haxe.ds._HashMap.HashMap_Impl_" params="" file="C:\HaxeToolkit\haxe\std/haxe/ds/HashMap.hx" private="1" module="haxe.ds.HashMap"><meta><m n=":keep"/></meta></class></impl>
-	</abstract>
 	<class path="haxe.ds.StringMap" params="T" file="C:\HaxeToolkit\haxe\std/flash/_std/haxe/ds/StringMap.hx">
-		<implements path="IMap">
+		<implements path="haxe.IMap">
 			<c path="String"/>
 			<c path="haxe.ds.StringMap.T"/>
 		</implements>
-		<h><c path="flash.utils.Dictionary"/></h>
-		<get public="1" set="method" line="36">
+		<reserved line="28" static="1"><a/></reserved>
+		<h><d/></h>
+		<rh><d/></rh>
+		<getReserved set="method" line="62">
 			<f a="key">
 				<c path="String"/>
 				<t path="Null"><c path="haxe.ds.StringMap.T"/></t>
 			</f>
-			<haxe_doc>See `Map.get`</haxe_doc>
-		</get>
-		<keys public="1" set="method" line="51">
-			<f a=""><t path="Iterator"><c path="String"/></t></f>
-			<haxe_doc>See `Map.keys`</haxe_doc>
-		</keys>
+			<meta><m n=":has_untyped"/></meta>
+		</getReserved>
 		<haxe_doc>StringMap allows mapping of String keys to arbitrary values.
 
 	See `Map` for documentation details.</haxe_doc>
 		<meta>
 			<m n=":keep"/>
+			<m n=":directlyUsed"/>
 			<m n=":coreApi"/>
+		</meta>
+	</class>
+	<class path="haxe.ds._StringMap.StringMapKeysIterator" params="" file="C:\HaxeToolkit\haxe\std/flash/_std/haxe/ds/StringMap.hx" private="1" module="haxe.ds.StringMap">
+		<h><d/></h>
+		<rh><d/></rh>
+		<index><x path="Int"/></index>
+		<nextIndex><x path="Int"/></nextIndex>
+		<isReserved><x path="Bool"/></isReserved>
+		<hasNext public="1" get="inline" set="null" line="152">
+			<f a=""><x path="Bool"/></f>
+			<meta><m n=":has_untyped"/></meta>
+		</hasNext>
+		<next public="1" get="inline" set="null" line="166">
+			<f a=""><c path="String"/></f>
+			<meta><m n=":has_untyped"/></meta>
+		</next>
+		<new get="inline" set="null" line="144"><f a="h:rh">
+	<d/>
+	<d/>
+	<x path="Void"/>
+</f></new>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+			<m n=":allow"><e>haxe.ds.StringMap</e></m>
 		</meta>
 	</class>
 	<class path="haxe.format.JsonParser" params="" file="C:\HaxeToolkit\haxe\std/haxe/format/JsonParser.hx">
 		<str><c path="String"/></str>
 		<pos><x path="Int"/></pos>
-		<parseRec set="method" line="17"><f a=""><d/></f></parseRec>
-		<parseString set="method" line="99"><f a=""><c path="String"/></f></parseString>
-		<invalidChar set="method" line="202"><f a=""><x path="Void"/></f></invalidChar>
-		<invalidNumber set="method" line="207"><f a="start">
+		<parseRec set="method" line="54"><f a=""><d/></f></parseRec>
+		<parseString set="method" line="136"><f a=""><c path="String"/></f></parseString>
+		<invalidChar set="method" line="247"><f a=""><x path="Void"/></f></invalidChar>
+		<invalidNumber set="method" line="252"><f a="start">
 	<x path="Int"/>
 	<x path="Void"/>
 </f></invalidNumber>
-		<new set="method" line="12"><f a="str">
+		<new set="method" line="49"><f a="str">
 	<c path="String"/>
 	<x path="Void"/>
 </f></new>
-		<meta><m n=":keep"/></meta>
+		<haxe_doc>An implementation of JSON parser in Haxe.
+
+	This class is used by `haxe.Json` when native JSON implementation
+	is not available.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
 	<class path="haxe.format.JsonPrinter" params="" file="C:\HaxeToolkit\haxe\std/haxe/format/JsonPrinter.hx">
-		<print public="1" set="method" line="5" static="1"><f a="o:?replacer:?space" v=":null:null">
-	<d/>
-	<f a=":">
-		<d/>
-		<d/>
-		<d/>
-	</f>
-	<c path="String"/>
-	<c path="String"/>
-</f></print>
+		<print public="1" set="method" line="42" static="1">
+			<f a="o:?replacer:?space">
+				<d/>
+				<f a=":">
+					<d/>
+					<d/>
+					<d/>
+				</f>
+				<c path="String"/>
+				<c path="String"/>
+			</f>
+			<haxe_doc>Encodes `o` value and returns the resulting JSON string.
+
+		If `replacer` is given and is not null, it is used to retrieve
+		actual object to be encoded. The `replacer` function two parameters,
+		the key and the value being encoded. Initial key value is an empty string.
+
+		If `space` is given and is not null, the result will be pretty-printed.
+		Successive levels will be indented by this string.</haxe_doc>
+		</print>
 		<buf><c path="flash.utils.ByteArray"/></buf>
 		<replacer><f a=":">
 	<d/>
@@ -8506,25 +9252,25 @@
 		<indent><c path="String"/></indent>
 		<pretty><x path="Bool"/></pretty>
 		<nind><x path="Int"/></nind>
-		<write set="method" line="40"><f a="k:v">
+		<write set="method" line="77"><f a="k:v">
 	<d/>
 	<d/>
 	<x path="Void"/>
 </f></write>
-		<classString set="method" line="119"><f a="v">
+		<classString set="method" line="156"><f a="v">
 	<d/>
 	<x path="Void"/>
 </f></classString>
-		<fieldsString set="method" line="128"><f a="v:fields">
+		<fieldsString set="method" line="165"><f a="v:fields">
 	<d/>
 	<c path="Array"><c path="String"/></c>
 	<x path="Void"/>
 </f></fieldsString>
-		<quote set="method" line="153"><f a="s">
+		<quote set="method" line="191"><f a="s">
 	<c path="String"/>
 	<x path="Void"/>
 </f></quote>
-		<new set="method" line="17"><f a="replacer:space">
+		<new set="method" line="54"><f a="replacer:space">
 	<f a=":">
 		<d/>
 		<d/>
@@ -8533,6 +9279,13 @@
 	<c path="String"/>
 	<x path="Void"/>
 </f></new>
-		<meta><m n=":keep"/></meta>
+		<haxe_doc>An implementation of JSON printer in Haxe.
+
+	This class is used by `haxe.Json` when native JSON implementation
+	is not available.</haxe_doc>
+		<meta>
+			<m n=":keep"/>
+			<m n=":directlyUsed"/>
+		</meta>
 	</class>
 </haxe>

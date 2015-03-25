@@ -78,8 +78,9 @@ class SockPipe
 				}
 				catch (e:Dynamic)
 				{
-					trace(e, t);
-					onReceive( SockMsgGen.getSend(SendSubject.errorSystem, "Parse error: " + t) );
+					// *** TODO ***
+					//trace(e, t);
+					//onReceive( SockMsgGen.getSend(SendSubject.errorSystem, "Parse error: " + t) );
 				}
 			}
 		}

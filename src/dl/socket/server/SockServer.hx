@@ -50,7 +50,7 @@ class SocketServer
 	public var clientN:Int;
 	
 	#if !nosqlite
-	public var users:Null<dl.socket.server.db.dl.socket.server.db.SockUserDB>;
+	public var users:Null<dl.socket.server.db.SockUserDB>;
 	#end
 	
 	public var console:SockConsole;

@@ -109,17 +109,19 @@ class SockClientTchatUI extends Sprite
 	
 	public inline function changeRoom( room:String, userList:Array<SockClientUser> )
 	{
-		if ( room == _room )
-			return;
 		
-		if ( _room != "" )
-			clear();
+		if ( room != _room )
+			appendText( '<i>You joined <b>' + _room + '</b> (' + (userList.length + 1) + ")</i>" );
+		
+		/*if ( _room != "" )
+			clear();*/
 		
 		_room = room;
-		appendText( '<i>You joined <b>' + _room + '</b> (' + (userList.length+1) + ")</i>" );
+		//appendText( '<i>You joined <b>' + _room + '</b> (' + (userList.length+1) + ")</i>" );
 		
-		_others = cloneList(userList);
-		refreshRight();
+		refreshOthers( userList );
+		//_others = cloneList(userList);
+		//refreshRight();
 	}
 	
 	inline function cloneList( list:Array<SockClientUser> ):Array<SockClientUser>
