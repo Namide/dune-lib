@@ -92,6 +92,21 @@
 
 
 # --------------------------------
+# 			NAPE
+# --------------------------------
+
+--next
+--macro Sys.println('Compile: nape')
+-cp src
+-lib nape
+-main dl.samples.Nape
+-swf bin-all/Nape.swf
+-swf-header 512:640:60:000000
+-swf-version 11.8
+-dce full
+
+
+# --------------------------------
 # 			DOC
 # --------------------------------
 
