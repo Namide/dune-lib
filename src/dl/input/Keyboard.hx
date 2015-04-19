@@ -28,6 +28,12 @@ abstract Keys(UInt)
 	}
 }
 
+typedef Listener = {
+	var key: Keys;
+	@:optional var press: Void->Void;
+	@:optional var release: Void->Void;
+}
+
 /**
  * Intermediate for keyboard inputs
  * 
@@ -35,6 +41,8 @@ abstract Keys(UInt)
  */
 class Keyboard
 {
+	var _listener:Array<Listener>;
+	
 	var _listKeyPressed:Array<UInt>;
 	var _listKeyPressedTime:Array<Float>;
 	var _accTime:Float = 0.08;
@@ -51,11 +59,39 @@ class Keyboard
 		
 		_listKeyPressed = [];
 		_listKeyPressedTime = [];
+		_listener = [];
 		
 		flash.Lib.current.stage.addEventListener( KeyboardEvent.KEY_DOWN, keyDown );
 		flash.Lib.current.stage.addEventListener( KeyboardEvent.KEY_UP, keyUp );
 		
 		_menuEnabled = false;
+	}
+	
+	public function addKeyListener( key:Keys, pressCallback:Void->Void = null, releaseCallback:Void->Void = null )
+	{
+		var l:Listener = { key:key };
+		
+		if ( pressCallback != null )
+			l.press = pressCallback;
+		
+		if ( releaseCallback != null )
+			l.release = releaseCallback;
+		
+		_listener.push( l );
+	}
+	
+	public function removeKeyListener( key:Keys, pressCallback:Void->Void = null, releaseCallback:Void->Void = null )
+	{
+		var e = Lambda.find( _listener, function( d:Listener ) { return d.key == key && d.press == pressCallback && d.release == releaseCallback; } );
+		if ( e != null )
+		{
+			_listener.remove( e );
+		}
+	}
+	
+	public function removeAllKeyListener()
+	{
+		_listener = [];
 	}
 	
 	public function addListener( onPrev:Keys->Void, onNext:Keys->Void, onValid:Keys->Void, onCancel:Keys->Void )
@@ -121,6 +157,8 @@ class Keyboard
 		
 		_listKeyPressed = [];
 		_listKeyPressedTime = [];
+		
+		removeAllKeyListener();
 	}
 	
 	function getFloat(key:UInt):Float
@@ -138,6 +176,12 @@ class Keyboard
 	{
 		_listKeyPressed.push( e.keyCode );
 		_listKeyPressedTime.push( haxe.Timer.stamp() );
+		
+		for ( l in _listener )
+		{
+			if ( l.key == e.keyCode && l.press != null )
+				l.press();
+		}
 	}
 	
 	function keyUp( e:KeyboardEvent ):Void
@@ -173,6 +217,12 @@ class Keyboard
 				if ( _onMenuCancel != null )
 					_onMenuCancel(key);
 			}
+		}
+		
+		for ( l in _listener )
+		{
+			if ( l.key == key && l.release != null )
+				l.release();
 		}
 	}
 }

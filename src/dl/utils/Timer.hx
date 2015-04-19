@@ -17,7 +17,8 @@ class Timer
 	
 	public var distord( default, default ):Float;
 	
-	public var onFrameUpdate:Float->Bool->Void;
+	public var onFrameUpdate:Float->Void;
+	public var onDisplayUpdate:Float->Void;
 	
 	public function new( FPS:Int = 50, sec:Float = 0 ) 
 	{
@@ -54,13 +55,21 @@ class Timer
 		frameRest += ( dtSec / frameTime );
 		_realT = getRealSec();
 		
-		if ( onFrameUpdate != null )
+		var t:Float = 0;
+		if ( onFrameUpdate != null || onDisplayUpdate != null )
 		{
-			while ( !(frameRest < 1) )
+			while ( frameRest > 0 )
 			{
 				frameRest--;
-				onFrameUpdate( frameTime, (frameRest < 1) );
+				t += frameTime;
+				if ( onFrameUpdate != null )
+					onFrameUpdate( frameTime/*, (frameRest < 1)*/ );
 			}
+		}
+		
+		if ( t > 0 && onDisplayUpdate != null )
+		{
+			onDisplayUpdate( t );
 		}
 	}
 	

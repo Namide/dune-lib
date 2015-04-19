@@ -72,9 +72,6 @@ class PlatformPlayerController extends Keyboard
 		
 		setRun( runPxSec, accTime );
 		setJump( jumpHeightMin, jumpHeightMax , jumpLengthMin, jumpLengthMax, accTime, timeLock, gravityY );
-		
-		//trace( _jumpStartVY );
-		//trace( jumpLengthMax, jumpHeightMax, PlatformUtils.getTopXYMax( _jumpStartVY, _jumpVXMax, _jumpVY, gravityY ) );
 	}
 	
 	public function jump()
@@ -98,33 +95,12 @@ class PlatformPlayerController extends Keyboard
 	
 	public function update( t:Float ):Void
 	{
-		//_t += dt;
-		
 		var bottomWall:Bool = _body.contacts.fixedLimits & BodyLimitFlags.bottom != 0;
 		var leftWall:Bool = _body.contacts.fixedLimits & BodyLimitFlags.left != 0;
 		var rightWall:Bool = _body.contacts.fixedLimits & BodyLimitFlags.right != 0;
 		var topWall:Bool = _body.contacts.fixedLimits & BodyLimitFlags.top != 0;
 		
 		var xAxis:Float = this.getAxisX();
-		//var g = _sm.settings.gravity;
-		
-		/*if ( !leftWall && !rightWall || entity.transform.vY < 0 )
-		{
-			entity.transform.vY += g;
-		}
-		else
-		{
-			entity.transform.vY += wallBrake * g;
-		}*/
-		
-		/*if (entity.health != null && entity.health.isHearted())
-		{
-			if ( BitUtils.has( _display.type, ComponentType.DISPLAY_ANIMATED ) )
-			{
-				_display.play( "hurt" );
-			}
-			return;
-		}*/
 		
 		if ( xAxis != 0 )
 		{
