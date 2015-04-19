@@ -18,7 +18,7 @@ abstract Keys(UInt)
 	inline function new( i:UInt ) { this = i; }
 	
 	@:from
-	public static function fromInt(i:UInt):Keys {
+	public static function fromUInt(i:UInt):Keys {
 		return new Keys(i);
 	}
 	
