@@ -222,6 +222,8 @@ class SocketServer
 	
 	public function new()
 	{
+		SockConfig.IP = new sys.net.Host( sys.net.Host.localhost() ).toString();
+		
 		console = new SockConsole();
 		
 		#if !nosqlite

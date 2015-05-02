@@ -164,25 +164,26 @@ class LevelGeneration extends Sprite
 		
 		PlatformLevelFactory.getInstance().generate( levelData, physic );
 		
-		time.onFrameUpdate = refresh;
+		time.onFrameUpdate = refreshPhysic;
+		time.onDisplayUpdate = refreshGraphic;
 	}
 	
-	public function refresh( dt:Float, lastUpdateForFrame:Bool )
+	public function refreshPhysic( dt:Float )
 	{
 		playerControl.update( dt );
 		physic.updateMoves();
 		space.hitTest();
 		physic.updatePositions(space);
-		
-		if ( lastUpdateForFrame )
+	}
+	
+	public function refreshGraphic( dt:Float )
+	{
+		player.refresh();
+		if ( player.body.y > 1024 )
 		{
-			player.refresh();
-			if ( player.body.y > 1024 )
-			{
-				player.body.setPos( TILE_SIZE, TILE_SIZE );
-				player.body.physic.vX =
-				player.body.physic.vY = 0;
-			}
+			player.body.setPos( TILE_SIZE, TILE_SIZE );
+			player.body.physic.vX =
+			player.body.physic.vY = 0;
 		}
 	}
 }
